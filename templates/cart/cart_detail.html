@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Bag | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- Title -->
+    <div class="mb-5 scroll-reveal">
+        <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">Your Bag</span>
+        <h1 class="text-luxury-title mt-1">Shopping Cart</h1>
+    </div>
+
+    {% if cart.items.count > 0 %}
+        <div class="row g-5 scroll-reveal" id="cart-content-wrapper">
+            <!-- 1. Cart Items List -->
+            <div class="col-lg-8">
+                <div class="d-flex flex-column gap-3">
+                    {% for item in cart.items.all %}
+                        <div class="glass-card spotlight-card p-4 cart-item-row" id="cart-item-{{ item.id }}">
+                            <div class="row align-items-center g-3">
+                                <!-- Product Image -->
+                                <div class="col-md-2 col-4">
+                                    <div class="border border-secondary rounded overflow-hidden bg-tertiary" style="aspect-ratio: 3/4;">
+                                        {% if item.product.image and item.product.image.url != '/media/products/default.jpg' %}
+                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-100 h-100" style="object-fit: cover;">
+                                        {% else %}
+                                            <div class="luxury-image-placeholder h-100">
+                                                <i class="fas fa-tshirt" style="font-size: 1.2rem;"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <!-- Product Details -->
+                                <div class="col-md-5 col-8">
+                                    <h5 class="font-serif mb-1">
+                                        <a href="{% url 'products:product_detail' item.product.slug %}" class="text-white text-decoration-none hover-warning">
+                                            {{ item.product.name }}
+                                        </a>
+                                    </h5>
+                                    <div class="small text-muted mb-2">Brand: <span class="text-white">{{ item.product.brand }}</span></div>
+                                    <div class="d-flex gap-3 small text-muted">
+                                        <span>Size: <strong class="text-warning">{{ item.size }}</strong></span>
+                                        <span>Color: <strong class="text-warning">{{ item.color }}</strong></span>
+                                    </div>
+                                </div>
+
+                                <!-- Quantity / Update Form -->
+                                <div class="col-md-3 col-6">
+                                    <form action="{% url 'cart:cart_update' item.id %}" method="POST" class="ajax-cart-update-form d-flex align-items-center gap-2">
+                                        {% csrf_token %}
+                                        <label class="small text-muted d-md-none">Qty:</label>
+                                        <input type="number" name="quantity" class="form-control bg-transparent text-white border-secondary text-center cart-qty-input" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" onchange="submitCartUpdate(this)" style="width: 75px; height: 38px;">
+                                    </form>
+                                </div>
+
+                                <!-- Subtotal & Remove -->
+                                <div class="col-md-2 col-6 text-end">
+                                    <div class="fw-bold text-white mb-2 fs-5">$<span class="item-subtotal-val">{{ item.get_subtotal }}</span></div>
+                                    
+                                    <form action="{% url 'cart:cart_remove' item.id %}" method="POST" class="ajax-cart-remove-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm text-danger p-0 border-0" onclick="return removeCartItem(this)">
+                                            <i class="far fa-trash-alt me-1"></i> Remove
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 2. Cart Summary card -->
+            <div class="col-lg-4">
+                <div class="glass-card spotlight-card p-4 sticky-top" style="top: 100px; z-index: 10;">
+                    <h4 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Summary</h4>
+                    
+                    <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.05) !important;">
+                        <span class="text-muted">Subtotal</span>
+                        <span class="text-white fw-bold">$<span id="cart-summary-subtotal">{{ cart.get_total_price }}</span></span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.05) !important;">
+                        <span class="text-muted">Shipping</span>
+                        <span class="text-success small">Free Shipping</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-white fw-bold">Total Amount</span>
+                        <span class="text-warning fw-bold fs-4">$<span id="cart-summary-total">{{ cart.get_total_price }}</span></span>
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'orders:checkout' %}" class="btn btn-neon py-3" style="border-radius: 6px;">Proceed to Checkout</a>
+                        <a href="{% url 'products:product_list' %}" class="btn btn-neon-outline py-2">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Empty Cart message -->
+        <div class="text-center py-5 my-5 scroll-reveal">
+            <i class="fas fa-shopping-bag text-muted display-1 mb-4" style="opacity: 0.3;"></i>
+            <h3 class="font-serif text-uppercase">Your cart is empty</h3>
+            <p class="text-muted small mt-2">Looks like you haven't added any luxury items to your shopping cart yet.</p>
+            <a href="{% url 'products:product_list' %}" class="btn btn-neon mt-4 py-3 px-5" style="border-radius: 6px;">Shop Now</a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // AJAX update call
+    function submitCartUpdate(inputElement) {
+        const form = inputElement.closest('form');
+        const url = form.getAttribute('action');
+        const formData = new FormData(form);
+        const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                // Update Badge Counts
+                updateCartBadges(data.cart_count);
+                
+                if (data.item_deleted) {
+                    const row = form.closest('.cart-item-row');
+                    row.remove();
+                    if (data.cart_count === 0) {
+                        location.reload(); // Reload to show empty cart view
+                    }
+                } else {
+                    // Update current item subtotal
+                    const subtotalSpan = form.closest('.cart-item-row').querySelector('.item-subtotal-val');
+                    if (subtotalSpan) subtotalSpan.textContent = data.item_subtotal;
+                }
+                
+                // Update final totals
+                const subtotalSum = document.getElementById('cart-summary-subtotal');
+                const totalSum = document.getElementById('cart-summary-total');
+                if (subtotalSum) subtotalSum.textContent = data.cart_total;
+                if (totalSum) totalSum.textContent = data.cart_total;
+            } else {
+                showToast(data.message, 'error');
+                // Reset to default
+                location.reload();
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showToast("Failed to update cart.", "error");
+        });
+    }
+
+    // AJAX remove item call
+    function removeCartItem(buttonElement) {
+        const form = buttonElement.closest('form');
+        const url = form.getAttribute('action');
+        const formData = new FormData(form);
+        const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                updateCartBadges(data.cart_count);
+                
+                const row = form.closest('.cart-item-row');
+                row.style.opacity = '0';
+                setTimeout(() => {
+                    row.remove();
+                    if (data.cart_count === 0) {
+                        location.reload();
+                    }
+                }, 400);
+
+                const subtotalSum = document.getElementById('cart-summary-subtotal');
+                const totalSum = document.getElementById('cart-summary-total');
+                if (subtotalSum) subtotalSum.textContent = data.cart_total;
+                if (totalSum) totalSum.textContent = data.cart_total;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showToast("Failed to remove item.", "error");
+        });
+        
+        return false;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Store Coordinates | {{ store_settings.store_name }}{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-5">
+    <h2 class="text-luxury-title mb-0">Store Coordinates</h2>
+    <p class="text-muted small">Update store-wide branding details, addresses, and handles.</p>
+</div>
+
+<div class="glass-card spotlight-card p-5">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row g-4">
+            <h5 class="font-serif text-uppercase text-warning mb-2" style="letter-spacing: 1px;">Branding</h5>
+            
+            <!-- Store Name -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Store Name</label>
+                <input type="text" name="store_name" class="form-control bg-transparent text-white border-secondary" value="{{ form.store_name.value|default:'' }}" required style="height: 46px;">
+            </div>
+
+            <!-- Logo -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Upload Store Logo</label>
+                <input type="file" name="logo" class="form-control bg-transparent border-secondary text-muted">
+                {% if form.instance.logo %}
+                    <div class="mt-2 small text-muted">Current logo: <a href="{{ form.instance.logo.url }}" target="_blank" class="text-warning">{{ form.instance.logo.name }}</a></div>
+                {% endif %}
+            </div>
+
+            <h5 class="font-serif text-uppercase text-warning mt-5 mb-2" style="letter-spacing: 1px;">Support Channels</h5>
+
+            <!-- Contact Email -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Support Email Coordinate</label>
+                <input type="email" name="contact_email" class="form-control bg-transparent text-white border-secondary" value="{{ form.contact_email.value|default:'' }}" required style="height: 46px;">
+            </div>
+
+            <!-- Contact Phone -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Support Phone Coordinate</label>
+                <input type="text" name="contact_phone" class="form-control bg-transparent text-white border-secondary" value="{{ form.contact_phone.value|default:'' }}" required style="height: 46px;">
+            </div>
+
+            <!-- Address -->
+            <div class="col-12">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Store Showroom Address</label>
+                <textarea name="address" class="form-control bg-transparent text-white border-secondary" rows="3" required>{{ form.address.value|default:'' }}</textarea>
+            </div>
+
+            <h5 class="font-serif text-uppercase text-warning mt-5 mb-2" style="letter-spacing: 1px;">Social Accents</h5>
+
+            <!-- Facebook -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Facebook URL</label>
+                <input type="url" name="facebook_url" class="form-control bg-transparent text-white border-secondary" value="{{ form.facebook_url.value|default:'' }}" style="height: 46px;">
+            </div>
+
+            <!-- Instagram -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Instagram URL</label>
+                <input type="url" name="instagram_url" class="form-control bg-transparent text-white border-secondary" value="{{ form.instagram_url.value|default:'' }}" style="height: 46px;">
+            </div>
+
+            <!-- Twitter -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Twitter URL</label>
+                <input type="url" name="twitter_url" class="form-control bg-transparent text-white border-secondary" value="{{ form.twitter_url.value|default:'' }}" style="height: 46px;">
+            </div>
+        </div>
+
+        <div class="d-grid mt-5">
+            <button type="submit" class="btn btn-neon py-3">Save Store Settings</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

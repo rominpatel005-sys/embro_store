@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- Title -->
+    <div class="mb-5 scroll-reveal">
+        <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">Get In Touch</span>
+        <h1 class="text-luxury-title mt-1">Contact Us</h1>
+    </div>
+
+    <div class="row g-5">
+        <!-- 1. Contact Information card -->
+        <div class="col-lg-5 scroll-reveal">
+            <div class="glass-card spotlight-card p-5 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <h3 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Embro Atelier</h3>
+                    <p class="text-muted small mb-4">Visit our showroom or connect with our modern generation design consultants for bespoke collections and fits.</p>
+                    
+                    <div class="d-flex flex-column gap-4 my-5">
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="text-warning fs-4"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <h6 class="text-white mb-1">Showroom Address</h6>
+                                <p class="small text-muted mb-0">{{ store_settings.address }}</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="text-warning fs-4"><i class="fas fa-phone-alt"></i></div>
+                            <div>
+                                <h6 class="text-white mb-1">Call Representative</h6>
+                                <p class="small text-muted mb-0">{{ store_settings.contact_phone }}</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="text-warning fs-4"><i class="fas fa-envelope"></i></div>
+                            <div>
+                                <h6 class="text-white mb-1">Support Email</h6>
+                                <p class="small text-muted mb-0">{{ store_settings.contact_email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-top border-secondary pt-4" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h6 class="text-white small text-uppercase tracking-wider mb-2">Social Accents</h6>
+                    <div class="social-icons-box">
+                        {% if store_settings.facebook_url %}
+                            <a href="{{ store_settings.facebook_url }}" class="social-icon-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        {% endif %}
+                        {% if store_settings.instagram_url %}
+                            <a href="{{ store_settings.instagram_url }}" class="social-icon-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+                        {% endif %}
+                        {% if store_settings.twitter_url %}
+                            <a href="{{ store_settings.twitter_url }}" class="social-icon-btn" target="_blank"><i class="fab fa-twitter"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Message Form -->
+        <div class="col-lg-7 scroll-reveal">
+            <div class="glass-card spotlight-card p-5">
+                <h3 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Send Message</h3>
+                
+                <form action="{% url 'contacts:contact_page' %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Your Name</label>
+                            <input type="text" name="name" class="form-control bg-transparent text-white border-secondary" placeholder="Enter your full name" required style="height: 46px;">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Your Email</label>
+                            <input type="email" name="email" class="form-control bg-transparent text-white border-secondary" placeholder="Enter your email" required style="height: 46px;">
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Subject</label>
+                            <input type="text" name="subject" class="form-control bg-transparent text-white border-secondary" placeholder="Enter inquiry subject" required style="height: 46px;">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Message</label>
+                            <textarea name="message" class="form-control bg-transparent text-white border-secondary" rows="5" placeholder="Write your feedback, inquiry, or styling support request details here..." required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-neon py-3">Submit Inquiry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

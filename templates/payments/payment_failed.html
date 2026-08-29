@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Failed | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-8 scroll-reveal">
+            <div class="glass-card spotlight-card text-center p-5 border border-danger" style="border-color: rgba(239, 68, 68, 0.3) !important;">
+                <i class="fas fa-exclamation-triangle text-danger display-4 mb-4"></i>
+                <h2 class="text-luxury-title mb-3">Transaction Failed</h2>
+                <p class="small text-muted mb-4">Your online payment could not be processed successfully. This might be due to a network simulation issue or incorrect payment details.</p>
+                
+                <div class="p-3 bg-secondary rounded text-start mb-4 border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <div class="small text-muted mb-1">Order ID: <strong class="text-white">#{{ order.id }}</strong></div>
+                    <div class="small text-muted mb-1">Simulated Method: <strong class="text-white">{{ payment.payment_method }}</strong></div>
+                    <div class="small text-muted">Amount: <strong class="text-warning">${{ order.total_amount }}</strong></div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <a href="{% url 'payments:process_payment' order.id %}" class="btn btn-neon py-3" style="border-radius: 6px;">Try Again</a>
+                    <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-neon-outline py-2">View Order Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

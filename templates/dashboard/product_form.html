@@ -1,0 +1,112 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}{{ title }} | {{ store_settings.store_name }}{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-5">
+    <h2 class="text-luxury-title mb-0">{{ title }}</h2>
+    <p class="text-muted small">Fill in the product specifications below.</p>
+</div>
+
+<div class="glass-card spotlight-card p-5">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row g-4">
+            <!-- Name -->
+            <div class="col-md-8">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Product Name</label>
+                <input type="text" name="name" class="form-control bg-transparent text-white border-secondary" value="{{ form.name.value|default:'' }}" required style="height:46px;">
+            </div>
+
+            <!-- Brand -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Brand</label>
+                <input type="text" name="brand" class="form-control bg-transparent text-white border-secondary" value="{{ form.brand.value|default:'Faction' }}" required style="height:46px;">
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Description</label>
+                <textarea name="description" class="form-control bg-transparent text-white border-secondary" rows="4" required>{{ form.description.value|default:'' }}</textarea>
+            </div>
+
+            <!-- Price -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Price ($)</label>
+                <input type="number" step="0.01" name="price" class="form-control bg-transparent text-white border-secondary" value="{{ form.price.value|default:'' }}" required style="height:46px;">
+            </div>
+
+            <!-- Discount Price -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Discount Price ($ - Optional)</label>
+                <input type="number" step="0.01" name="discount_price" class="form-control bg-transparent text-white border-secondary" value="{{ form.discount_price.value|default:'' }}" style="height:46px;">
+            </div>
+
+            <!-- Stock -->
+            <div class="col-md-4">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Inventory Stock</label>
+                <input type="number" name="stock" class="form-control bg-transparent text-white border-secondary" value="{{ form.stock.value|default:'10' }}" required style="height:46px;">
+            </div>
+
+            <!-- Category -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Category</label>
+                <select name="category" class="form-select bg-transparent text-white border-secondary" style="height:46px;" required>
+                    {% for cat in form.fields.category.queryset %}
+                        <option value="{{ cat.id }}" class="bg-dark" {% if form.category.value|stringformat:"s" == cat.id|stringformat:"s" %}selected{% endif %}>
+                            {{ cat.get_gender_display }} - {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Sizes -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Sizes (Comma-separated)</label>
+                <input type="text" name="sizes" class="form-control bg-transparent text-white border-secondary" value="{{ form.sizes.value|default:'S,M,L,XL' }}" placeholder="e.g. S,M,L,XL" required style="height:46px;">
+            </div>
+
+            <!-- Colors -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Colors (Comma-separated)</label>
+                <input type="text" name="colors" class="form-control bg-transparent text-white border-secondary" value="{{ form.colors.value|default:'Black,White,Grey' }}" placeholder="e.g. Black,White,Grey" required style="height:46px;">
+            </div>
+
+            <!-- Main Image -->
+            <div class="col-md-6">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Main Product Image</label>
+                <input type="file" name="image" class="form-control bg-transparent border-secondary text-muted">
+                {% if product.image %}
+                    <div class="mt-2 small text-muted">Current image: <a href="{{ product.image.url }}" target="_blank" class="text-warning">{{ product.image.name }}</a></div>
+                {% endif %}
+            </div>
+
+            <!-- Gallery Images (Multiple) -->
+            <div class="col-12 border-top border-secondary pt-4 mt-4" style="border-color: rgba(255,255,255,0.05) !important;">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Upload Multiple Gallery Photos</label>
+                <input type="file" name="gallery_images" class="form-control bg-transparent border-secondary text-muted" multiple>
+                <div class="form-text text-muted" style="font-size:0.75rem;">Select one or more images to build the product gallery.</div>
+                
+                {% if product.gallery.exists %}
+                    <div class="row g-2 mt-3">
+                        {% for img in product.gallery.all %}
+                            <div class="col-md-2 col-4">
+                                <div class="border border-secondary rounded overflow-hidden" style="aspect-ratio: 1;">
+                                    <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="d-flex gap-3 mt-5">
+            <button type="submit" class="btn btn-neon py-3 px-5">Save Product</button>
+            <a href="{% url 'dashboard:manage_products' %}" class="btn btn-neon-outline py-3 px-5 text-muted">Cancel</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

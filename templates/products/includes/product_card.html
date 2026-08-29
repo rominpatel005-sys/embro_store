@@ -1,0 +1,97 @@
+{% load static %}
+{% load wishlist_tags %}
+<div class="product-card spotlight-card">
+    
+    <!-- Discount Badge -->
+    {% if product.is_discounted %}
+        <span class="product-badge">-{{ product.get_discount_percentage }}%</span>
+    {% endif %}
+    
+    <!-- Out of Stock Badge -->
+    {% if not product.is_in_stock %}
+        <span class="product-badge bg-danger text-white" style="left: auto; right: 15px;">Sold Out</span>
+    {% endif %}
+    
+    <!-- AJAX Wishlist button -->
+    {% if request.user.is_authenticated %}
+        {% if product.id|is_in_wishlist:request.user.wishlist_items.all %}
+            <a href="{% url 'wishlist:wishlist_toggle' product.id %}" class="product-wishlist-btn ajax-wishlist-toggle active" title="Remove from Wishlist">
+                <i class="fas fa-heart"></i>
+            </a>
+        {% else %}
+            <a href="{% url 'wishlist:wishlist_toggle' product.id %}" class="product-wishlist-btn ajax-wishlist-toggle" title="Add to Wishlist">
+                <i class="far fa-heart"></i>
+            </a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'accounts:login' %}" class="product-wishlist-btn" title="Login to Wishlist">
+            <i class="far fa-heart"></i>
+        </a>
+    {% endif %}
+
+    <!-- Image Gallery -->
+    <a href="{% url 'products:product_detail' product.slug %}" class="product-img-container d-block">
+        {% if product.image and product.image.url != '/media/products/default.jpg' %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img" loading="lazy">
+        {% else %}
+            <!-- Beautiful luxury CSS fallback if no image file exists -->
+            <div class="luxury-image-placeholder">
+                <i class="fas fa-tshirt"></i>
+                <span>{{ product.name|slice:":12" }}...</span>
+            </div>
+        {% endif %}
+    </a>
+
+    <!-- Info details -->
+    <div class="product-info">
+        <div>
+            <div class="product-category">{{ product.category.get_gender_display }} / {{ product.category.name }}</div>
+            <a href="{% url 'products:product_detail' product.slug %}" class="product-title" title="{{ product.name }}">
+                {{ product.name }}
+            </a>
+            
+            <!-- Brand -->
+            <div class="small text-muted mb-2" style="font-size: 0.8rem; font-weight: 500;">
+                Brand: <span class="text-white">{{ product.brand }}</span>
+            </div>
+
+            <!-- Average Stars -->
+            <div class="mb-3">
+                <div class="stars-outer" style="font-size: 0.8rem;">
+                    <div class="stars-inner" data-width="{{ product.rating_percentage }}"></div>
+                </div>
+                <span class="small text-muted ms-1" style="font-size: 0.75rem;">({{ product.rating }})</span>
+            </div>
+        </div>
+
+        <div>
+            <div class="product-price-box">
+                {% if product.is_discounted %}
+                    <span class="price-discount">${{ product.discount_price }}</span>
+                    <span class="price-old">${{ product.price }}</span>
+                {% else %}
+                    <span class="price-regular">${{ product.price }}</span>
+                {% endif %}
+            </div>
+
+            <div class="d-grid">
+                {% if product.is_in_stock %}
+                    <form action="{% url 'cart:cart_add' product.id %}" method="POST" class="ajax-cart-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1">
+                        <!-- Default size/color for quick checkout -->
+                        <input type="hidden" name="size" value="M">
+                        <input type="hidden" name="color" value="Black">
+                        <button type="submit" class="btn btn-neon-outline w-100 py-2" style="border-radius: 6px; font-size: 0.75rem; letter-spacing: 1px;">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </form>
+                {% else %}
+                    <button class="btn btn-secondary w-100 py-2 disabled" style="border-radius: 6px; font-size: 0.75rem; letter-spacing: 1px;" disabled>
+                        Out of Stock
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

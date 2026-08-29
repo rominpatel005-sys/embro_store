@@ -1,0 +1,40 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Category Form | {{ store_settings.store_name }}{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-5">
+    <h2 class="text-luxury-title mb-0">{{ title }}</h2>
+    <p class="text-muted small">Specify category classifications.</p>
+</div>
+
+<div class="glass-card spotlight-card p-5" style="max-width: 600px;">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="row g-4">
+            <!-- Category Name -->
+            <div class="col-12">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Category Name</label>
+                <input type="text" name="name" class="form-control bg-transparent text-white border-secondary" value="{{ form.name.value|default:'' }}" placeholder="e.g. Hoodies, Tops, Shirts" required style="height:46px;">
+            </div>
+
+            <!-- Gender choices -->
+            <div class="col-12">
+                <label class="small text-uppercase tracking-wider text-white mb-2">Gender Classification</label>
+                <select name="gender" class="form-select bg-transparent text-white border-secondary" style="height:46px;" required>
+                    <option value="MEN" class="bg-dark" {% if form.gender.value == 'MEN' %}selected{% endif %}>Men</option>
+                    <option value="WOMEN" class="bg-dark" {% if form.gender.value == 'WOMEN' %}selected{% endif %}>Women</option>
+                    <option value="UNISEX" class="bg-dark" {% if form.gender.value == 'UNISEX' %}selected{% endif %}>Unisex</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex gap-3 mt-5">
+            <button type="submit" class="btn btn-neon py-3 px-5">Save Category</button>
+            <a href="{% url 'dashboard:manage_categories' %}" class="btn btn-neon-outline py-3 px-5 text-muted">Cancel</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

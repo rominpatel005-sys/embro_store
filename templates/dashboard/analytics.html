@@ -1,0 +1,477 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Store Analytics | {{ store_settings.store_name }}{% endblock %}
+
+{% block dashboard_content %}
+<!-- Analytics Header -->
+<div class="d-flex justify-content-between align-items-center mb-5 animate__animated animate__fadeIn">
+    <div>
+        <h2 class="text-luxury-title mb-0">Store Analytics</h2>
+        <p class="text-muted small">Deep dive into user traffic, apparel performance, and customer lifetime value.</p>
+    </div>
+</div>
+
+<!-- KPI Cards Grid -->
+<div class="row g-4 mb-5 animate__animated animate__fadeIn">
+    <!-- Logins Today -->
+    <div class="col-xl-3 col-sm-6">
+        <div class="glass-card spotlight-card p-4 h-100">
+            <span class="text-muted small text-uppercase">Logins Today</span>
+            <div class="d-flex align-items-baseline gap-2 mt-2">
+                <h3 class="text-warning font-serif mb-0">{{ logins_today }}</h3>
+                {% if login_growth is not None %}
+                    {% if login_growth > 0 %}
+                        <span class="badge bg-success-subtle text-success text-xs">
+                            <i class="fas fa-caret-up me-1"></i>+{{ login_growth }}%
+                        </span>
+                    {% elif login_growth < 0 %}
+                        <span class="badge bg-danger-subtle text-danger text-xs">
+                            <i class="fas fa-caret-down me-1"></i>{{ login_growth }}%
+                        </span>
+                    {% else %}
+                        <span class="badge bg-secondary-subtle text-muted text-xs">0%</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <small class="text-muted text-xs mt-1 d-block">Logins yesterday: {{ logins_yesterday }}</small>
+        </div>
+    </div>
+    
+    <!-- Average Order Value (AOV) -->
+    <div class="col-xl-3 col-sm-6">
+        <div class="glass-card spotlight-card p-4 h-100">
+            <span class="text-muted small text-uppercase">Avg Order Value (AOV)</span>
+            <h3 class="text-white font-serif mt-2 mb-0">${{ avg_order_value|floatformat:2 }}</h3>
+            <small class="text-muted text-xs mt-1 d-block">From non-cancelled checkouts</small>
+        </div>
+    </div>
+
+    <!-- Best Selling Variant -->
+    <div class="col-xl-3 col-sm-6">
+        <div class="glass-card spotlight-card p-4 h-100">
+            <span class="text-muted small text-uppercase">Best Selling Variant</span>
+            {% if best_selling_variant %}
+                <h4 class="text-white font-serif mt-2 mb-0 text-truncate" title="{{ best_selling_variant.product_name }}">
+                    {{ best_selling_variant.product_name|slice:":18" }}{% if best_selling_variant.product_name|length > 18 %}...{% endif %}
+                </h4>
+                <div class="d-flex justify-content-between align-items-center mt-1">
+                    <small class="text-warning text-xs">Size: {{ best_selling_variant.size }}</small>
+                    <span class="badge bg-warning text-dark text-xs">{{ best_selling_variant.total_sold }} units</span>
+                </div>
+            {% else %}
+                <h4 class="text-muted font-serif mt-2 mb-0">N/A</h4>
+                <small class="text-muted text-xs mt-1">No items sold yet</small>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Top Buyer -->
+    <div class="col-xl-3 col-sm-6">
+        <div class="glass-card spotlight-card p-4 h-100">
+            <span class="text-muted small text-uppercase">Top Customer</span>
+            {% if top_buyer %}
+                <h4 class="text-white font-serif mt-2 mb-0 text-truncate" title="{{ top_buyer.order__user__username }}">
+                    {{ top_buyer.order__user__username }}
+                </h4>
+                <div class="d-flex justify-content-between align-items-center mt-1">
+                    <small class="text-muted text-xs">{{ top_buyer.order__user__email }}</small>
+                    <span class="badge bg-success text-xs">${{ top_buyer.total_spent|floatformat:2 }}</span>
+                </div>
+            {% else %}
+                <h4 class="text-muted font-serif mt-2 mb-0">N/A</h4>
+                <small class="text-muted text-xs mt-1">No orders yet</small>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Visual Graphs Section -->
+<div class="row g-4 mb-5">
+    <!-- User Login Trends -->
+    <div class="col-lg-7">
+        <div class="glass-card spotlight-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="font-serif text-uppercase mb-0" style="letter-spacing: 1px;">User Login Traffic (30 Days)</h5>
+                <i class="fas fa-users text-muted"></i>
+            </div>
+            <div style="position: relative; height:320px;">
+                <canvas id="loginTrendChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popularity of Apparel (Name & Size) -->
+    <div class="col-lg-5">
+        <div class="glass-card spotlight-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="font-serif text-uppercase mb-0" style="letter-spacing: 1px;">Best Selling Apparel</h5>
+                <i class="fas fa-tshirt text-muted"></i>
+            </div>
+            <div style="position: relative; height:320px;">
+                <canvas id="apparelChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <!-- Top Customer Spending -->
+    <div class="col-12">
+        <div class="glass-card spotlight-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="font-serif text-uppercase mb-0" style="letter-spacing: 1px;">Top Buyers Distribution ($)</h5>
+                <i class="fas fa-wallet text-muted"></i>
+            </div>
+            <div style="position: relative; height:240px;">
+                <canvas id="topBuyersChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabular Numeric Details Section -->
+<div class="glass-card spotlight-card p-4 mb-5 animate__animated animate__fadeInUp">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <h5 class="font-serif text-uppercase mb-0" style="letter-spacing: 1px;">Numeric Data & Leaderboards</h5>
+        
+        <!-- Tab Controllers -->
+        <ul class="nav nav-pills custom-analytics-tabs" id="analyticsTabs" role="tablist" style="border: 1px solid rgba(255,255,255,0.08); padding: 4px; border-radius: 8px;">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active text-uppercase small py-2 px-3 text-xs" id="apparel-tab" data-bs-toggle="tab" data-bs-target="#apparel-pane" type="button" role="tab" aria-controls="apparel-pane" aria-selected="true" style="border-radius:6px; font-weight:600; letter-spacing: 1px;">
+                    Apparel Leaderboard
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-uppercase small py-2 px-3 text-xs" id="buyers-tab" data-bs-toggle="tab" data-bs-target="#buyers-pane" type="button" role="tab" aria-controls="buyers-pane" aria-selected="false" style="border-radius:6px; font-weight:600; letter-spacing: 1px;">
+                    Top Customers
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-uppercase small py-2 px-3 text-xs" id="logins-tab" data-bs-toggle="tab" data-bs-target="#logins-pane" type="button" role="tab" aria-controls="logins-pane" aria-selected="false" style="border-radius:6px; font-weight:600; letter-spacing: 1px;">
+                    User Logins
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-content text-white" id="analyticsTabsContent">
+        
+        <!-- Tab 1: Apparel Sales -->
+        <div class="tab-pane fade show active" id="apparel-pane" role="tabpanel" aria-labelledby="apparel-tab" tabindex="0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent; --bs-table-border-color: rgba(255,255,255,0.05); vertical-align: middle;">
+                    <thead>
+                        <tr class="small text-muted text-uppercase" style="border-bottom: 2px solid rgba(255,255,255,0.08);">
+                            <th>Rank</th>
+                            <th>Apparel Product Name</th>
+                            <th>Size Variant</th>
+                            <th class="text-center">Units Sold</th>
+                            <th class="text-end">Total Revenue Generated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if popular_apparel %}
+                            {% for item in popular_apparel %}
+                                <tr>
+                                    <td class="small fw-bold text-warning">#{{ forloop.counter }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-warning-subtle text-warning d-flex justify-content-center align-items-center rounded-circle me-3" style="width: 32px; height: 32px; font-size: 0.9rem;">
+                                                <i class="fas fa-tshirt text-xs text-warning"></i>
+                                            </div>
+                                            <span class="fw-medium text-white">{{ item.product_name }}</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge bg-secondary" style="font-size:0.75rem;">{{ item.size }}</span></td>
+                                    <td class="text-center fw-semibold">{{ item.total_sold }}</td>
+                                    <td class="text-end font-serif text-warning">${{ item.revenue|floatformat:2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="5" class="text-center text-muted small py-5">No apparel items have been purchased yet.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 2: Top Customers -->
+        <div class="tab-pane fade" id="buyers-pane" role="tabpanel" aria-labelledby="buyers-tab" tabindex="0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent; --bs-table-border-color: rgba(255,255,255,0.05); vertical-align: middle;">
+                    <thead>
+                        <tr class="small text-muted text-uppercase" style="border-bottom: 2px solid rgba(255,255,255,0.08);">
+                            <th>Rank</th>
+                            <th>Username</th>
+                            <th>Email Address</th>
+                            <th class="text-center">Total Orders</th>
+                            <th class="text-center">Units Bought</th>
+                            <th class="text-end">Total Amount Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if top_buyers %}
+                            {% for buyer in top_buyers %}
+                                <tr>
+                                    <td class="small fw-bold text-warning">#{{ forloop.counter }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary-subtle text-primary d-flex justify-content-center align-items-center rounded-circle me-3" style="width: 32px; height: 32px; font-size: 0.9rem;">
+                                                <i class="fas fa-user text-xs text-white"></i>
+                                            </div>
+                                            <span class="fw-medium text-white">{{ buyer.order__user__username }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-muted">{{ buyer.order__user__email }}</td>
+                                    <td class="text-center">{{ buyer.order_count }}</td>
+                                    <td class="text-center">{{ buyer.total_units }}</td>
+                                    <td class="text-end font-serif text-success fw-bold">${{ buyer.total_spent|floatformat:2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="6" class="text-center text-muted small py-5">No client checkouts recorded yet.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 3: Recent User Logins -->
+        <div class="tab-pane fade" id="logins-pane" role="tabpanel" aria-labelledby="logins-tab" tabindex="0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent; --bs-table-border-color: rgba(255,255,255,0.05); vertical-align: middle;">
+                    <thead>
+                        <tr class="small text-muted text-uppercase" style="border-bottom: 2px solid rgba(255,255,255,0.08);">
+                            <th>Index</th>
+                            <th>User Client</th>
+                            <th>IP Address</th>
+                            <th class="text-end">Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_logins %}
+                            {% for login in recent_logins %}
+                                <tr>
+                                    <td class="small text-muted">{{ forloop.counter }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-sign-in-alt text-warning me-3"></i>
+                                            <span class="fw-semibold text-white">{{ login.user.username }}</span>
+                                            {% if login.user.is_staff %}
+                                                <span class="badge bg-danger text-xs ms-2" style="font-size:0.6rem;">Admin</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td class="font-monospace text-muted">{{ login.ip_address|default:"Unknown" }}</td>
+                                    <td class="text-end small text-white">{{ login.timestamp|date:"M d, Y, h:i A" }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="4" class="text-center text-muted small py-5">No user login sessions logged yet.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* Styling overrides for premium visual tabs */
+    .custom-analytics-tabs .nav-link {
+        color: #a0a0ab;
+        background: transparent;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    .custom-analytics-tabs .nav-link.active {
+        color: #121216 !important;
+        background-color: #d4af37 !important;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+    }
+    .custom-analytics-tabs .nav-link:hover:not(.active) {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+{{ login_labels|json_script:"login-labels" }}
+{{ login_counts|json_script:"login-counts" }}
+{{ apparel_labels|json_script:"apparel-labels" }}
+{{ apparel_counts|json_script:"apparel-counts" }}
+{{ buyer_labels|json_script:"buyer-labels" }}
+{{ buyer_spent|json_script:"buyer-spent" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load data elements
+        const loginLabels = JSON.parse(document.getElementById('login-labels').textContent);
+        const loginCounts = JSON.parse(document.getElementById('login-counts').textContent);
+        const apparelLabels = JSON.parse(document.getElementById('apparel-labels').textContent);
+        const apparelCounts = JSON.parse(document.getElementById('apparel-counts').textContent);
+        const buyerLabels = JSON.parse(document.getElementById('buyer-labels').textContent);
+        const buyerSpent = JSON.parse(document.getElementById('buyer-spent').textContent);
+
+        // Chart 1: User Logins Trend Line Chart
+        const loginCtx = document.getElementById('loginTrendChart').getContext('2d');
+        const loginGradient = loginCtx.createLinearGradient(0, 0, 0, 300);
+        loginGradient.addColorStop(0, 'rgba(212, 175, 55, 0.3)');
+        loginGradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
+
+        new Chart(loginCtx, {
+            type: 'line',
+            data: {
+                labels: loginLabels,
+                datasets: [{
+                    label: 'Daily Logins',
+                    data: loginCounts,
+                    borderColor: '#d4af37',
+                    borderWidth: 2,
+                    fill: true,
+                    backgroundColor: loginGradient,
+                    tension: 0.35,
+                    pointBackgroundColor: '#d4af37',
+                    pointBorderColor: '#121216',
+                    pointBorderWidth: 2,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#a0a0ab', font: { family: 'Outfit' } },
+                        grid: { color: 'rgba(255,255,255,0.04)' }
+                    },
+                    x: {
+                        ticks: { color: '#a0a0ab', font: { family: 'Outfit' }, maxRotation: 45, minRotation: 45 },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(18, 18, 22, 0.95)',
+                        titleColor: '#d4af37',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Best Selling Apparel Bar Chart
+        const apparelCtx = document.getElementById('apparelChart').getContext('2d');
+        new Chart(apparelCtx, {
+            type: 'bar',
+            data: {
+                labels: apparelLabels,
+                datasets: [{
+                    label: 'Units Sold',
+                    data: apparelCounts,
+                    backgroundColor: [
+                        'rgba(212, 175, 55, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(168, 85, 247, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(249, 115, 22, 0.8)',
+                        'rgba(6, 182, 212, 0.8)',
+                        'rgba(236, 72, 153, 0.8)'
+                    ],
+                    borderColor: '#121216',
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Horizontal Bar Chart
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: { color: '#a0a0ab', font: { family: 'Outfit' } },
+                        grid: { color: 'rgba(255,255,255,0.04)' }
+                    },
+                    y: {
+                        ticks: { 
+                            color: '#fff', 
+                            font: { family: 'Outfit', size: 10 },
+                            callback: function(value, index) {
+                                const label = apparelLabels[index];
+                                return label && label.length > 20 ? label.slice(0, 17) + '...' : label;
+                            }
+                        },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(18, 18, 22, 0.95)',
+                        titleColor: '#fff',
+                        bodyColor: '#d4af37',
+                        borderColor: 'rgba(255, 255, 255, 0.05)',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Top Buyers Line/Bar Chart
+        const buyersCtx = document.getElementById('topBuyersChart').getContext('2d');
+        new Chart(buyersCtx, {
+            type: 'bar',
+            data: {
+                labels: buyerLabels,
+                datasets: [{
+                    label: 'Total Spent ($)',
+                    data: buyerSpent,
+                    backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                    borderColor: '#10b981',
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#a0a0ab', font: { family: 'Outfit' } },
+                        grid: { color: 'rgba(255,255,255,0.04)' }
+                    },
+                    x: {
+                        ticks: { color: '#a0a0ab', font: { family: 'Outfit' } },
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(18, 18, 22, 0.95)',
+                        titleColor: '#10b981',
+                        bodyColor: '#fff',
+                        callbacks: {
+                            label: function(context) {
+                                return ` Spent: $${context.parsed.y.toFixed(2)}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

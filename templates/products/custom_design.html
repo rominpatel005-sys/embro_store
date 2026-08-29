@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Custom T-Shirt Studio | {{ store_settings.store_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .studio-container {
+        min-height: 85vh;
+        padding: 3rem 0;
+    }
+    
+    .control-panel {
+        position: sticky;
+        top: 100px;
+        z-index: 20;
+    }
+    
+    .upload-zone {
+        border: 2px dashed rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+    }
+    
+    .upload-zone:hover, .upload-zone.dragover {
+        border-color: var(--accent);
+        background: rgba(212, 175, 55, 0.05);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+    }
+    
+    .upload-zone i {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+    }
+    
+    .preview-thumbnail {
+        max-width: 120px;
+        max-height: 120px;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: none;
+        object-fit: contain;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .slider-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .slider-group label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+
+    .slider-group label span {
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    .custom-range {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    .custom-range::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    /* T-shirt Mockup Presentation */
+    .tshirt-card {
+        transition: var(--transition-smooth);
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+    }
+
+    .tshirt-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .tshirt-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        background-color: #121216;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .tshirt-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        display: block;
+        transition: var(--transition-smooth);
+    }
+
+    .tshirt-design-overlay {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 32%;
+        pointer-events: none;
+        z-index: 10;
+        opacity: 0.85;
+        mix-blend-mode: multiply; /* Helps overlay blend naturally with shirt fabric shadows */
+        display: none;
+        filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));
+    }
+    
+    [data-theme="light"] .tshirt-design-overlay {
+        mix-blend-mode: multiply;
+    }
+    
+    /* If dark theme, standard source-over blending often works cleaner for png designs, 
+       but we can let the user toggle blend mode or use standard opacity overlay */
+    .tshirt-design-overlay.active {
+        display: block;
+    }
+
+    .blend-selector-btn.active {
+        background-color: var(--accent) !important;
+        color: var(--bg-primary) !important;
+        border-color: var(--accent) !important;
+    }
+
+    .no-design-placeholder {
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        padding: 3rem 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        color: var(--text-muted);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container studio-container">
+    <!-- Header Title -->
+    <div class="row mb-5 text-center animate__animated animate__fadeIn">
+        <div class="col-lg-8 mx-auto">
+            <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">Embro Atelier</span>
+            <h1 class="text-luxury-title mt-2 mb-3">T-Shirt Mockup Studio</h1>
+            <p class="text-muted leading-relaxed">Choose your custom design image and preview it instantly on our entire premium t-shirt collection. Drag, scale, and adjust the positioning to find your perfect style match.</p>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <!-- 1. Controls Column -->
+        <div class="col-lg-4 col-md-5 animate__animated animate__fadeInLeft">
+            <div class="glass-card spotlight-card p-4 control-panel">
+                <h4 class="font-serif text-uppercase mb-4 pb-2" style="border-bottom: 1px solid var(--glass-border); letter-spacing: 1px;">Studio Controls</h4>
+                
+                <!-- Upload Container -->
+                <div class="mb-4">
+                    <label class="small text-uppercase tracking-wider text-white mb-2 d-block">1. Upload Design Image</label>
+                    <div class="upload-zone" id="drop-zone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p class="mb-1 text-white small fw-semibold">Choose design or drag it here</p>
+                        <p class="text-muted text-xs mb-0">Supports PNG, JPG (Transparents recommended)</p>
+                        <input type="file" id="file-input" accept="image/*" class="d-none">
+                        <img id="upload-preview" class="preview-thumbnail mx-auto" alt="Preview">
+                    </div>
+                </div>
+
+                <!-- Interactive Sliders -->
+                <div class="mb-4">
+                    <label class="small text-uppercase tracking-wider text-white mb-3 d-block">2. Adjust Placement</label>
+                    
+                    <!-- Scale Slider -->
+                    <div class="slider-group">
+                        <label for="slider-scale">Size: <span id="val-scale">32%</span></label>
+                        <input type="range" id="slider-scale" class="custom-range" min="10" max="75" value="32">
+                    </div>
+
+                    <!-- Vertical Offset Slider -->
+                    <div class="slider-group">
+                        <label for="slider-vertical">Vertical Pos: <span id="val-vertical">45%</span></label>
+                        <input type="range" id="slider-vertical" class="custom-range" min="20" max="80" value="45">
+                    </div>
+
+                    <!-- Horizontal Offset Slider -->
+                    <div class="slider-group">
+                        <label for="slider-horizontal">Horizontal Pos: <span id="val-horizontal">50%</span></label>
+                        <input type="range" id="slider-horizontal" class="custom-range" min="30" max="70" value="50">
+                    </div>
+                </div>
+
+                <!-- Blend Options -->
+                <div class="mb-4">
+                    <label class="small text-uppercase tracking-wider text-white mb-2 d-block">3. Fabric Blend Method</label>
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn btn-outline-secondary btn-sm blend-selector-btn active py-2 text-xs" data-blend="multiply">Multiply (Texture)</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm blend-selector-btn py-2 text-xs" data-blend="normal">Normal (Solid)</button>
+                    </div>
+                </div>
+
+                <!-- Reset button -->
+                <button id="btn-reset" class="btn btn-neon-outline w-100 py-3" style="border-radius: 6px;">
+                    <i class="fas fa-undo-alt me-2"></i>Reset Customizer
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. Grid Display Column -->
+        <div class="col-lg-8 col-md-7 animate__animated animate__fadeInRight">
+            <h4 class="font-serif text-uppercase mb-4 pb-2" style="border-bottom: 1px solid var(--glass-border); letter-spacing: 1px;">Collection Mockups</h4>
+            
+            <div class="row g-4" id="tshirt-grid">
+                {% if tshirts %}
+                    {% for tshirt in tshirts %}
+                        <div class="col-xl-6 col-sm-12">
+                            <div class="glass-card tshirt-card p-3 h-100">
+                                <div class="tshirt-wrapper rounded">
+                                    <!-- Base T-Shirt Image -->
+                                    <img src="{{ tshirt.image.url }}" class="tshirt-image" alt="{{ tshirt.name }}">
+                                    <!-- Superimposed Uploaded Design Design -->
+                                    <img src="" class="tshirt-design-overlay" alt="Custom Design">
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <span class="text-warning text-xs text-uppercase tracking-wider">{{ tshirt.brand|default:"Embro Premium" }}</span>
+                                    <h5 class="text-white mt-1 mb-1 font-serif text-truncate" style="font-size: 1rem;" title="{{ tshirt.name }}">{{ tshirt.name }}</h5>
+                                    <p class="text-muted small mb-0">${{ tshirt.price }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="no-design-placeholder">
+                            <i class="fas fa-tshirt display-4 mb-3 text-warning opacity-50"></i>
+                            <h5>No T-Shirts Found</h5>
+                            <p class="small text-muted mb-0">Ensure you have products matching category 'T-Shirt' or containing 'T-Shirt' in the database.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const uploadPreview = document.getElementById('upload-preview');
+    
+    const sliderScale = document.getElementById('slider-scale');
+    const sliderVertical = document.getElementById('slider-vertical');
+    const sliderHorizontal = document.getElementById('slider-horizontal');
+    
+    const valScale = document.getElementById('val-scale');
+    const valVertical = document.getElementById('val-vertical');
+    const valHorizontal = document.getElementById('val-horizontal');
+    
+    const btnReset = document.getElementById('btn-reset');
+    const blendBtns = document.querySelectorAll('.blend-selector-btn');
+    const overlays = document.querySelectorAll('.tshirt-design-overlay');
+
+    let uploadedImageBase64 = null;
+    let blendMode = 'multiply';
+
+    // File Input trigger
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    // File Drag and Drop events
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            handleFile(e.dataTransfer.files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFile(e.target.files[0]);
+        }
+    });
+
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+            showToast("Please choose an image file only.", "error");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            uploadedImageBase64 = event.target.result;
+            
+            // Show thumbnail preview
+            uploadPreview.src = uploadedImageBase64;
+            uploadPreview.style.display = 'block';
+            
+            // Set image to overlays
+            overlays.forEach(overlay => {
+                overlay.src = uploadedImageBase64;
+                overlay.classList.add('active');
+            });
+            
+            applyAdjustments();
+            showToast("Design loaded successfully!", "success");
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Apply Sliders to Design Overlay
+    function applyAdjustments() {
+        const scale = sliderScale.value;
+        const vertical = sliderVertical.value;
+        const horizontal = sliderHorizontal.value;
+
+        // Update value labels
+        valScale.textContent = `${scale}%`;
+        valVertical.textContent = `${vertical}%`;
+        valHorizontal.textContent = `${horizontal}%`;
+
+        // Update css parameters for overlays
+        overlays.forEach(overlay => {
+            overlay.style.width = `${scale}%`;
+            overlay.style.top = `${vertical}%`;
+            overlay.style.left = `${horizontal}%`;
+            overlay.style.mixBlendMode = blendMode;
+        });
+    }
+
+    // Sliders event listeners
+    sliderScale.addEventListener('input', applyAdjustments);
+    sliderVertical.addEventListener('input', applyAdjustments);
+    sliderHorizontal.addEventListener('input', applyAdjustments);
+
+    // Blend Mode selection
+    blendBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            blendBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            blendMode = this.getAttribute('data-blend');
+            applyAdjustments();
+        });
+    });
+
+    // Reset Customizer
+    btnReset.addEventListener('click', () => {
+        // Reset inputs
+        fileInput.value = '';
+        uploadPreview.src = '';
+        uploadPreview.style.display = 'none';
+        uploadedImageBase64 = null;
+
+        sliderScale.value = 32;
+        sliderVertical.value = 45;
+        sliderHorizontal.value = 50;
+
+        blendMode = 'multiply';
+        blendBtns.forEach(b => b.classList.remove('active'));
+        document.querySelector('[data-blend="multiply"]').classList.add('active');
+
+        // Hide overlay images
+        overlays.forEach(overlay => {
+            overlay.src = '';
+            overlay.classList.remove('active');
+            overlay.style.width = '32%';
+            overlay.style.top = '45%';
+            overlay.style.left = '50%';
+        });
+
+        applyAdjustments();
+        showToast("Customizer has been reset.", "info");
+    });
+});
+</script>
+{% endblock %}

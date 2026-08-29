@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #030303;
+  --color-foreground: #f4f4f5;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-outfit), system-ui, sans-serif;
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2.5s ease-in-out infinite;
+  --animate-truck-bounce: truck-bounce 0.6s ease-in-out infinite;
+  --animate-wheel-spin: wheel-spin 0.4s linear infinite;
+  --animate-headlight-pulse: headlight-pulse 1.5s ease-in-out infinite;
+  --animate-road-dash: road-dash 1.2s linear infinite;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.5; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); }
+    50% { opacity: 0.9; box-shadow: 0 0 25px 4px rgba(168, 85, 247, 0.7), inset 0 0 8px rgba(168, 85, 247, 0.2); }
+  }
+  @keyframes truck-bounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-1.5px); }
+  }
+  @keyframes wheel-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes headlight-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8)); }
+  }
+  @keyframes road-dash {
+    from { stroke-dashoffset: 40; }
+    to { stroke-dashoffset: 0; }
+  }
+}
+
+:root {
+  --background: #030303;
+  --foreground: #f4f4f5;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom premium styling classes */
+.bg-aurora-mesh {
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+    #030303;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5),
+              inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+}
+
+.glass-card-bright {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6),
+              inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+}
+
+.glass-card-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-6px);
+  border-color: rgba(168, 85, 247, 0.25);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7),
+              0 0 20px 0px rgba(168, 85, 247, 0.08),
+              inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Neon glow properties */
+.glow-text-purple {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+.glow-shadow-purple {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.25);
+}
+
+.glow-shadow-cyan {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.25);
+}
+
+.glow-shadow-green {
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.25);
+}
+
+/* Custom Webkit Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(3, 3, 3, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  border: 2px solid #030303;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Smooth active states */
+.active-pulse-purple {
+  animation: active-pulse-purple 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes active-pulse-purple {
+  0%, 100% { opacity: 1; box-shadow: 0 0 12px 2px rgba(168, 85, 247, 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 20px 5px rgba(168, 85, 247, 0.7); }
+}
+
+.active-pulse-green {
+  animation: active-pulse-green 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes active-pulse-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 10px 2px rgba(34, 197, 94, 0.5); }
+  50% { opacity: 0.8; box-shadow: 0 0 16px 4px rgba(34, 197, 94, 0.8); }
+}

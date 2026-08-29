@@ -1,0 +1,2713 @@
+[
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2026-06-21T02:46:15.556Z",
+        "user": 1,
+        "content_type": 7,
+        "object_id": "1",
+        "object_repr": "admin's Profile",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 3,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 3,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 3,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 3,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 2,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 2,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 2,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 2,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 4,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 4,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 4,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 4,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 5,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 5,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 5,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 5,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 6,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 6,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 6,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 6,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add user profile",
+        "content_type": 7,
+        "codename": "add_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change user profile",
+        "content_type": 7,
+        "codename": "change_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete user profile",
+        "content_type": 7,
+        "codename": "delete_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view user profile",
+        "content_type": 7,
+        "codename": "view_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add category",
+        "content_type": 8,
+        "codename": "add_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change category",
+        "content_type": 8,
+        "codename": "change_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete category",
+        "content_type": 8,
+        "codename": "delete_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view category",
+        "content_type": 8,
+        "codename": "view_category"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add product",
+        "content_type": 9,
+        "codename": "add_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change product",
+        "content_type": 9,
+        "codename": "change_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete product",
+        "content_type": 9,
+        "codename": "delete_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view product",
+        "content_type": 9,
+        "codename": "view_product"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add product image",
+        "content_type": 10,
+        "codename": "add_productimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change product image",
+        "content_type": 10,
+        "codename": "change_productimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete product image",
+        "content_type": 10,
+        "codename": "delete_productimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view product image",
+        "content_type": 10,
+        "codename": "view_productimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add cart",
+        "content_type": 11,
+        "codename": "add_cart"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change cart",
+        "content_type": 11,
+        "codename": "change_cart"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete cart",
+        "content_type": 11,
+        "codename": "delete_cart"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view cart",
+        "content_type": 11,
+        "codename": "view_cart"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add cart item",
+        "content_type": 12,
+        "codename": "add_cartitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change cart item",
+        "content_type": 12,
+        "codename": "change_cartitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete cart item",
+        "content_type": 12,
+        "codename": "delete_cartitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view cart item",
+        "content_type": 12,
+        "codename": "view_cartitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add order",
+        "content_type": 13,
+        "codename": "add_order"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change order",
+        "content_type": 13,
+        "codename": "change_order"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete order",
+        "content_type": 13,
+        "codename": "delete_order"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can view order",
+        "content_type": 13,
+        "codename": "view_order"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can add order item",
+        "content_type": 14,
+        "codename": "add_orderitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can change order item",
+        "content_type": 14,
+        "codename": "change_orderitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can delete order item",
+        "content_type": 14,
+        "codename": "delete_orderitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can view order item",
+        "content_type": 14,
+        "codename": "view_orderitem"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+        "name": "Can add payment",
+        "content_type": 15,
+        "codename": "add_payment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+        "name": "Can change payment",
+        "content_type": 15,
+        "codename": "change_payment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+        "name": "Can delete payment",
+        "content_type": 15,
+        "codename": "delete_payment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+        "name": "Can view payment",
+        "content_type": 15,
+        "codename": "view_payment"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+        "name": "Can add review",
+        "content_type": 16,
+        "codename": "add_review"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+        "name": "Can change review",
+        "content_type": 16,
+        "codename": "change_review"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+        "name": "Can delete review",
+        "content_type": 16,
+        "codename": "delete_review"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+        "name": "Can view review",
+        "content_type": 16,
+        "codename": "view_review"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+        "name": "Can add wishlist",
+        "content_type": 17,
+        "codename": "add_wishlist"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+        "name": "Can change wishlist",
+        "content_type": 17,
+        "codename": "change_wishlist"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+        "name": "Can delete wishlist",
+        "content_type": 17,
+        "codename": "delete_wishlist"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+        "name": "Can view wishlist",
+        "content_type": 17,
+        "codename": "view_wishlist"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+        "name": "Can add contact message",
+        "content_type": 18,
+        "codename": "add_contactmessage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+        "name": "Can change contact message",
+        "content_type": 18,
+        "codename": "change_contactmessage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+        "name": "Can delete contact message",
+        "content_type": 18,
+        "codename": "delete_contactmessage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+        "name": "Can view contact message",
+        "content_type": 18,
+        "codename": "view_contactmessage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+        "name": "Can add newsletter",
+        "content_type": 19,
+        "codename": "add_newsletter"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+        "name": "Can change newsletter",
+        "content_type": 19,
+        "codename": "change_newsletter"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+        "name": "Can delete newsletter",
+        "content_type": 19,
+        "codename": "delete_newsletter"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+        "name": "Can view newsletter",
+        "content_type": 19,
+        "codename": "view_newsletter"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+        "name": "Can add Store Setting",
+        "content_type": 20,
+        "codename": "add_settings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+        "name": "Can change Store Setting",
+        "content_type": 20,
+        "codename": "change_settings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+        "name": "Can delete Store Setting",
+        "content_type": 20,
+        "codename": "delete_settings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+        "name": "Can view Store Setting",
+        "content_type": 20,
+        "codename": "view_settings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+        "name": "Can add user login history",
+        "content_type": 21,
+        "codename": "add_userloginhistory"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+        "name": "Can change user login history",
+        "content_type": 21,
+        "codename": "change_userloginhistory"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+        "name": "Can delete user login history",
+        "content_type": 21,
+        "codename": "delete_userloginhistory"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+        "name": "Can view user login history",
+        "content_type": 21,
+        "codename": "view_userloginhistory"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+        "name": "Can add dashboard widget",
+        "content_type": 22,
+        "codename": "add_dashboardwidget"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+        "name": "Can change dashboard widget",
+        "content_type": 22,
+        "codename": "change_dashboardwidget"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+        "name": "Can delete dashboard widget",
+        "content_type": 22,
+        "codename": "delete_dashboardwidget"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+        "name": "Can view dashboard widget",
+        "content_type": 22,
+        "codename": "view_dashboardwidget"
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$lia1TawMaU5WEG9g7KbS9c$4Hx8LjGNK3ohLCS0mXSYrrQZO5UKQ+44Glq3Zfo2qG8=",
+        "last_login": "2026-07-14T03:38:50.080Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@factionstore.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-20T08:28:12.195Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$iHv6YLOyDvUewRQtLVHdAP$2UY0ZkuAG66BLs+ru34tCdSue77ilisQU+w9v6u79mE=",
+        "last_login": "2026-06-24T09:56:10.932Z",
+        "is_superuser": true,
+        "username": "romin",
+        "first_name": "romin",
+        "last_name": "patel",
+        "email": "rominpatel540@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-24T01:52:34.486Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 14,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$yOIsEqRwpUqACJ51bmmd1q$4HaSBvWLREdflWpE0pkrGIdmaA2MtdjhzLP5ULGtLwY=",
+        "last_login": "2026-06-27T02:06:17.333Z",
+        "is_superuser": false,
+        "username": "test_staff",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-06-27T02:06:15.523Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 16,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$SJ3YtUOIV2gCjBOqKGKq3S$hj+z72RXEFT0pGY0dsQb2N9fYOeCpQGubngGObeebgc=",
+        "last_login": "2026-07-15T04:30:42.039Z",
+        "is_superuser": false,
+        "username": "ROMIN9237",
+        "first_name": "romin",
+        "last_name": "patel",
+        "email": "rominpatel540@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-07-14T03:37:17.757Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "auth",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "accounts",
+        "model": "userprofile"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "products",
+        "model": "category"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "products",
+        "model": "product"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "products",
+        "model": "productimage"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "cart",
+        "model": "cart"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "cart",
+        "model": "cartitem"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "orders",
+        "model": "order"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "orders",
+        "model": "orderitem"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+        "app_label": "payments",
+        "model": "payment"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+        "app_label": "reviews",
+        "model": "review"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+        "app_label": "wishlist",
+        "model": "wishlist"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+        "app_label": "contacts",
+        "model": "contactmessage"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+        "app_label": "contacts",
+        "model": "newsletter"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+        "app_label": "dashboard",
+        "model": "settings"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+        "app_label": "accounts",
+        "model": "userloginhistory"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+        "app_label": "dashboard",
+        "model": "dashboardwidget"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "0izin8f1ndt7qa95l19gwcphfocu76p5",
+    "fields": {
+        "session_data": ".eJxVjMsOgjAQAP9lz6Zpge2Do3e_odntthY1kFA4Gf_dkHDQ68xk3hBp32rcW17jJDCCGeDyC5nSM8-HkQfN90WlZd7WidWRqNM2dVskv65n-zeo1CqMkBjJak_cheJwEIcWnaYiaELJHXdBrNHSO8yUXMDCaMQOwfXJBPYePl8MUTfu:1wdIQz:BjOpeuX1rFMdaQNybakuoQXLZh-HiGOD_U5Zkcafsdw",
+        "expire_date": "2026-07-11T02:06:17.351Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "mbup3mi78uo4apk3a3ggmzs7lg74kpvf",
+    "fields": {
+        "session_data": ".eJxVjMsOgjAQAP9lz6ahXfri6N1vaLbdxaIGEgon478bEg56nZnMGxLtW017kzVNDANoB5dfmKk8ZT4MP2i-L6os87ZOWR2JOm1Tt4XldT3bv0GlVmGAsaD10eXMzpEOuYtsLIUghCg9ZvHMxmMJHEh6wdgZQWu1HV0Jplj4fAEZhzhG:1wjrGc:ByBDjqO41iDCTpo_si76GB6dLBn8W4wUFLVLX33V4FA",
+        "expire_date": "2026-07-29T04:30:42.072Z"
+    }
+},
+{
+    "model": "accounts.userprofile",
+    "pk": 5,
+    "fields": {
+        "user": 5,
+        "mobile": "1234567890",
+        "address": null,
+        "state": null,
+        "city": null,
+        "pincode": null,
+        "profile_image": "",
+        "email_verified": false
+    }
+},
+{
+    "model": "accounts.userprofile",
+    "pk": 14,
+    "fields": {
+        "user": 1,
+        "mobile": null,
+        "address": null,
+        "state": null,
+        "city": null,
+        "pincode": null,
+        "profile_image": "",
+        "email_verified": false
+    }
+},
+{
+    "model": "accounts.userprofile",
+    "pk": 15,
+    "fields": {
+        "user": 14,
+        "mobile": null,
+        "address": null,
+        "state": null,
+        "city": null,
+        "pincode": null,
+        "profile_image": "",
+        "email_verified": false
+    }
+},
+{
+    "model": "accounts.userprofile",
+    "pk": 17,
+    "fields": {
+        "user": 16,
+        "mobile": "1234567890",
+        "address": null,
+        "state": null,
+        "city": null,
+        "pincode": null,
+        "profile_image": "",
+        "email_verified": false
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 1,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-05-25T15:15:39.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 4,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-05-25T21:42:16.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 23,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-05-27T15:26:55.409Z",
+        "ip_address": "192.168.1.10"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 34,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-05-28T11:51:37.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 37,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-05-29T07:56:11.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 48,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-05-30T03:40:26.409Z",
+        "ip_address": "192.168.1.10"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 49,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-05-30T02:43:06.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 50,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-05-30T07:37:19.409Z",
+        "ip_address": "203.0.113.195"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 51,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-05-30T14:04:49.409Z",
+        "ip_address": "192.168.1.11"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 69,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-02T04:53:09.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 71,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-02T04:51:54.409Z",
+        "ip_address": "192.168.1.10"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 76,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-03T13:31:57.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 79,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-03T16:08:52.409Z",
+        "ip_address": "203.0.113.195"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 86,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-04T06:40:58.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 89,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-04T06:44:37.409Z",
+        "ip_address": "198.51.100.4"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 94,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-05T09:33:44.409Z",
+        "ip_address": "203.0.113.195"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 98,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-05T18:31:13.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 102,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-05T03:15:31.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 109,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-06T13:57:46.409Z",
+        "ip_address": "198.51.100.4"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 115,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-07T22:44:44.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 119,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-07T01:01:56.409Z",
+        "ip_address": "198.51.100.4"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 123,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-07T02:21:02.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 128,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-08T21:01:48.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 132,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-08T23:51:51.409Z",
+        "ip_address": "198.51.100.4"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 136,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-09T00:43:39.409Z",
+        "ip_address": "192.168.1.10"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 137,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-09T17:32:01.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 141,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-09T01:21:09.409Z",
+        "ip_address": "203.0.113.195"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 146,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-09T22:20:36.409Z",
+        "ip_address": "192.168.1.11"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 153,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-11T23:08:40.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 163,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-13T01:34:02.409Z",
+        "ip_address": "192.168.1.11"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 165,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-13T16:17:40.409Z",
+        "ip_address": "203.0.113.195"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 170,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-14T13:58:34.409Z",
+        "ip_address": "192.168.1.10"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 171,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-14T23:48:51.409Z",
+        "ip_address": "192.168.1.12"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 179,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-16T12:26:22.409Z",
+        "ip_address": "192.168.1.10"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 182,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-16T18:05:22.409Z",
+        "ip_address": "192.168.1.12"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 193,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-17T19:48:52.409Z",
+        "ip_address": "8.8.8.8"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 200,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-18T05:26:17.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 208,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-20T05:17:21.409Z",
+        "ip_address": "192.168.1.12"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 209,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-20T06:57:11.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 210,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-20T15:56:51.409Z",
+        "ip_address": "192.168.1.11"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 213,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-20T03:38:47.409Z",
+        "ip_address": "198.51.100.4"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 219,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-21T18:18:50.409Z",
+        "ip_address": "192.168.1.12"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 221,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-21T10:49:02.409Z",
+        "ip_address": "203.0.113.50"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 241,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-24T14:00:49.409Z",
+        "ip_address": "192.168.1.11"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 242,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-24T02:24:23.376Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 243,
+    "fields": {
+        "user": 5,
+        "timestamp": "2026-06-24T09:56:10.919Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 244,
+    "fields": {
+        "user": 14,
+        "timestamp": "2026-06-27T02:06:17.322Z",
+        "ip_address": null
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 246,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-27T08:52:35.754Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 247,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-27T08:53:16.517Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 249,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-27T08:56:39.669Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 251,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-06-28T04:39:34.912Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 252,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-07-05T02:08:53.208Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 253,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-07-05T02:10:06.818Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 254,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-07-14T03:34:40.400Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 255,
+    "fields": {
+        "user": 16,
+        "timestamp": "2026-07-14T03:37:21.654Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 256,
+    "fields": {
+        "user": 1,
+        "timestamp": "2026-07-14T03:38:50.051Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 257,
+    "fields": {
+        "user": 16,
+        "timestamp": "2026-07-15T04:30:42.020Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 1,
+    "fields": {
+        "name": "T-Shirts",
+        "slug": "men-t-shirts",
+        "gender": "MEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 2,
+    "fields": {
+        "name": "Shirts",
+        "slug": "men-shirts",
+        "gender": "MEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 3,
+    "fields": {
+        "name": "Hoodies",
+        "slug": "men-hoodies",
+        "gender": "MEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 4,
+    "fields": {
+        "name": "Jackets",
+        "slug": "men-jackets",
+        "gender": "MEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 5,
+    "fields": {
+        "name": "Jeans",
+        "slug": "men-jeans",
+        "gender": "MEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 6,
+    "fields": {
+        "name": "Tops",
+        "slug": "women-tops",
+        "gender": "WOMEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 7,
+    "fields": {
+        "name": "Dresses",
+        "slug": "women-dresses",
+        "gender": "WOMEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 8,
+    "fields": {
+        "name": "Hoodies",
+        "slug": "women-hoodies",
+        "gender": "WOMEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 9,
+    "fields": {
+        "name": "Jackets",
+        "slug": "women-jackets",
+        "gender": "WOMEN"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 10,
+    "fields": {
+        "name": "Jeans",
+        "slug": "women-jeans",
+        "gender": "WOMEN"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "name": "Slim Fit Linen Shirt",
+        "slug": "slim-fit-linen-shirt",
+        "description": "A premium quality linen shirt, perfect for casual summer wear. Features a slim fit, button-down collar, and breathable fabric.",
+        "price": "49.99",
+        "discount_price": "39.99",
+        "category": 2,
+        "brand": "Faction Premium",
+        "stock": 25,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "S,M,L,XL",
+        "colors": "White,Light Blue,Navy",
+        "created_at": "2026-06-21T05:15:18.642Z",
+        "updated_at": "2026-06-27T08:57:49.803Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "name": "Graphic Streetwear Hoodie",
+        "slug": "graphic-streetwear-hoodie",
+        "description": "Over-sized graphic print hoodie. Made with thick loopback cotton fleece for maximum comfort and style.",
+        "price": "79.99",
+        "discount_price": null,
+        "category": 3,
+        "brand": "Faction Street",
+        "stock": 15,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "M,L,XL",
+        "colors": "Black,Sage Green",
+        "created_at": "2026-06-21T05:15:18.651Z",
+        "updated_at": "2026-06-27T08:57:49.797Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+        "name": "Classic Denim Jacket",
+        "slug": "classic-denim-jacket",
+        "description": "A timeless raw denim jacket that ages beautifully. Features button closure, chest pockets, and adjustable waist tabs.",
+        "price": "119.99",
+        "discount_price": "99.99",
+        "category": 4,
+        "brand": "Faction Denim",
+        "stock": 12,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "S,M,L,XL,XXL",
+        "colors": "Dark Blue,Light Wash",
+        "created_at": "2026-06-21T05:15:18.661Z",
+        "updated_at": "2026-06-27T08:57:49.795Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+        "name": "Vintage Wash Relaxed Jeans",
+        "slug": "vintage-wash-relaxed-jeans",
+        "description": "Relaxed fit jeans crafted from 100% organic cotton denim. Finished with a vintage wash for a broken-in look.",
+        "price": "89.99",
+        "discount_price": null,
+        "category": 5,
+        "brand": "Faction Denim",
+        "stock": 30,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "30,32,34,36",
+        "colors": "Indigo,Light Grey",
+        "created_at": "2026-06-21T05:15:18.670Z",
+        "updated_at": "2026-06-27T08:57:47.563Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+        "name": "Classic Crewneck T-Shirt",
+        "slug": "classic-crewneck-t-shirt",
+        "description": "Super-soft combed cotton basic crewneck. Designed for daily layering or standalone wear.",
+        "price": "24.99",
+        "discount_price": "19.99",
+        "category": 1,
+        "brand": "Faction Basics",
+        "stock": 50,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Heather Grey",
+        "created_at": "2026-06-21T05:15:18.682Z",
+        "updated_at": "2026-06-27T08:57:49.794Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+        "name": "Ribbed Knit Crop Top",
+        "slug": "ribbed-knit-crop-top",
+        "description": "Sleek ribbed knit crop top with a square neckline. High stretch and body-hugging silhouette.",
+        "price": "29.99",
+        "discount_price": null,
+        "category": 6,
+        "brand": "Faction Studio",
+        "stock": 40,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "XS,S,M,L",
+        "colors": "Beige,Black,Dusty Rose",
+        "created_at": "2026-06-21T05:15:18.692Z",
+        "updated_at": "2026-06-27T08:57:47.548Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 7,
+    "fields": {
+        "name": "Floral Summer Midi Dress",
+        "slug": "floral-summer-midi-dress",
+        "description": "Lightweight floral print midi dress featuring adjustable spaghetti straps and a side thigh slit. Elegant and breezy.",
+        "price": "69.99",
+        "discount_price": "59.99",
+        "category": 7,
+        "brand": "Faction Studio",
+        "stock": 18,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "XS,S,M,L,XL",
+        "colors": "Red Floral,Blue Floral",
+        "created_at": "2026-06-21T05:15:18.702Z",
+        "updated_at": "2026-06-27T08:57:47.545Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 8,
+    "fields": {
+        "name": "Cozy Knit Oversized Hoodie",
+        "slug": "cozy-knit-oversized-hoodie",
+        "description": "Ultra-soft fleece oversized hoodie with drop shoulders and a spacious front pocket. Your go-to lounge companion.",
+        "price": "59.99",
+        "discount_price": "49.99",
+        "category": 8,
+        "brand": "Faction Basics",
+        "stock": 22,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "S,M,L",
+        "colors": "Cream,Oatmeal,Charcoal",
+        "created_at": "2026-06-21T05:15:18.712Z",
+        "updated_at": "2026-06-27T08:57:47.543Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 9,
+    "fields": {
+        "name": "High-Waisted Wide Leg Jeans",
+        "slug": "high-waisted-wide-leg-jeans",
+        "description": "Modern high-rise wide-leg jeans in premium rigid denim. Flatters the waist and extends the leg line.",
+        "price": "99.99",
+        "discount_price": null,
+        "category": 10,
+        "brand": "Faction Denim",
+        "stock": 20,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "26,27,28,29,30",
+        "colors": "Stonewash,Ecru",
+        "created_at": "2026-06-21T05:15:18.723Z",
+        "updated_at": "2026-06-27T08:57:49.792Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 10,
+    "fields": {
+        "name": "Faux Leather Biker Jacket",
+        "slug": "faux-leather-biker-jacket",
+        "description": "Classic biker jacket in high-quality buttery soft faux leather. Complete with asymmetric zip and silver hardware.",
+        "price": "149.99",
+        "discount_price": "129.99",
+        "category": 9,
+        "brand": "Faction Premium",
+        "stock": 8,
+        "rating": "0.00",
+        "image": "products/default.jpg",
+        "sizes": "S,M,L",
+        "colors": "Black,Espresso",
+        "created_at": "2026-06-21T05:15:18.732Z",
+        "updated_at": "2026-06-27T08:57:49.790Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 11,
+    "fields": {
+        "name": "Elephant Embroidered Black T-Shirt",
+        "slug": "elephant-embroidered-black-t-shirt",
+        "description": "A premium black crewneck t-shirt featuring a detailed, colorful embroidered elephant head design on the chest. Crafted from 100% organic cotton for ultimate comfort.",
+        "price": "490.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Premium",
+        "stock": 15,
+        "rating": "4.80",
+        "image": "products/elephant_black.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.508Z",
+        "updated_at": "2026-06-24T10:03:21.335Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 12,
+    "fields": {
+        "name": "Tropical Palms Brown T-Shirt",
+        "slug": "tropical-palms-brown-t-shirt",
+        "description": "Earth-toned brown t-shirt featuring an elegant embroidery of tropical palm trees against a setting sun. Relaxed fit for casual wear.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Basics",
+        "stock": 15,
+        "rating": "4.50",
+        "image": "products/tropical_palms_brown.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.524Z",
+        "updated_at": "2026-06-24T10:03:21.347Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 13,
+    "fields": {
+        "name": "Marvel Icons Cream T-Shirt",
+        "slug": "marvel-icons-cream-t-shirt",
+        "description": "Cream-colored streetwear t-shirt embroidered with minimalist Marvel superhero shield, hammer, fist, mask, helmet, and hourglass icons.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Street",
+        "stock": 15,
+        "rating": "4.70",
+        "image": "products/marvel_icons_cream.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.540Z",
+        "updated_at": "2026-06-24T10:03:21.358Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 14,
+    "fields": {
+        "name": "Snoopy Chill Maroon T-Shirt",
+        "slug": "snoopy-chill-maroon-t-shirt",
+        "description": "Maroon casual t-shirt with a cozy Snoopy embroidery resting above a \"CHILL\" logo. Perfect for comfortable loungewear.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Basics",
+        "stock": 15,
+        "rating": "4.60",
+        "image": "products/snoopy_maroon.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.557Z",
+        "updated_at": "2026-06-24T10:03:21.368Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 15,
+    "fields": {
+        "name": "Royal Enfield Cream T-Shirt",
+        "slug": "royal-enfield-cream-t-shirt",
+        "description": "Premium cream t-shirt with a detailed embroidery of a classic Royal Enfield motorcycle. A must-have for riding enthusiasts.",
+        "price": "370.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Premium",
+        "stock": 15,
+        "rating": "4.90",
+        "image": "products/royal_enfield_cream.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.572Z",
+        "updated_at": "2026-06-24T10:03:21.378Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 16,
+    "fields": {
+        "name": "Majestic Stag Black T-Shirt",
+        "slug": "majestic-stag-black-t-shirt",
+        "description": "Jet black premium cotton t-shirt with a detailed orange embroidered stag head on the chest. Bold design, lightweight fabric.",
+        "price": "300.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Street",
+        "stock": 15,
+        "rating": "4.40",
+        "image": "products/majestic_stag_black.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.589Z",
+        "updated_at": "2026-06-24T10:03:21.388Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 17,
+    "fields": {
+        "name": "Marvel Team Cream T-Shirt",
+        "slug": "marvel-team-cream-t-shirt",
+        "description": "Alternative cream streetwear t-shirt embroidered with minimalist Marvel superhero character insignia. Premium knit material.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Street",
+        "stock": 15,
+        "rating": "4.70",
+        "image": "products/marvel_team_cream.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.605Z",
+        "updated_at": "2026-06-24T10:03:21.399Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 18,
+    "fields": {
+        "name": "Tropical Palms Espresso T-Shirt",
+        "slug": "tropical-palms-espresso-t-shirt",
+        "description": "Espresso brown heavy-cotton t-shirt featuring tropical palm tree embroidery. Styled for modern streetwear aesthetics.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Basics",
+        "stock": 15,
+        "rating": "4.50",
+        "image": "products/tropical_palms_espresso.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.616Z",
+        "updated_at": "2026-06-24T10:03:21.408Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 19,
+    "fields": {
+        "name": "Forest Deer Black T-Shirt",
+        "slug": "forest-deer-black-t-shirt",
+        "description": "Heavyweight black crewneck t-shirt with a beautifully stitched orange forest deer embroidery. Comfortable and durable.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Street",
+        "stock": 14,
+        "rating": "4.60",
+        "image": "products/forest_deer_black.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.632Z",
+        "updated_at": "2026-07-14T03:38:03.606Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 20,
+    "fields": {
+        "name": "Running Stallion Black T-Shirt",
+        "slug": "running-stallion-black-t-shirt",
+        "description": "Stunning black t-shirt featuring a highly detailed, golden-threaded embroidery of a running stallion. Perfect statement piece.",
+        "price": "350.00",
+        "discount_price": null,
+        "category": 1,
+        "brand": "Faction Premium",
+        "stock": 15,
+        "rating": "4.90",
+        "image": "products/running_stallion_black.png",
+        "sizes": "S,M,L,XL",
+        "colors": "Black,White,Cream,Maroon,Brown",
+        "created_at": "2026-06-21T06:29:50.644Z",
+        "updated_at": "2026-06-24T10:03:21.431Z"
+    }
+},
+{
+    "model": "cart.cart",
+    "pk": 1,
+    "fields": {
+        "user": null,
+        "session_key": "y3lfkskcyq6t08ty9qnkk5vl2yf2hlop",
+        "created_at": "2026-06-21T04:42:36.573Z",
+        "updated_at": "2026-06-21T04:42:36.573Z"
+    }
+},
+{
+    "model": "cart.cart",
+    "pk": 2,
+    "fields": {
+        "user": 5,
+        "session_key": null,
+        "created_at": "2026-06-24T01:52:55.788Z",
+        "updated_at": "2026-06-24T01:52:55.788Z"
+    }
+},
+{
+    "model": "cart.cart",
+    "pk": 3,
+    "fields": {
+        "user": 1,
+        "session_key": null,
+        "created_at": "2026-06-24T05:44:12.959Z",
+        "updated_at": "2026-06-24T05:44:12.959Z"
+    }
+},
+{
+    "model": "cart.cart",
+    "pk": 4,
+    "fields": {
+        "user": 16,
+        "session_key": null,
+        "created_at": "2026-07-14T03:37:35.015Z",
+        "updated_at": "2026-07-14T03:37:35.015Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 8,
+    "fields": {
+        "user": 5,
+        "full_name": "romin patel",
+        "mobile": "+1 525-555-1452",
+        "email": "rominpatel540@gmail.com",
+        "address": "629 Fashion Ave",
+        "state": "Texas",
+        "city": "Houston",
+        "pincode": "77001",
+        "total_amount": "1750.00",
+        "status": "DELIVERED",
+        "created_at": "2026-05-21T12:13:15.409Z",
+        "updated_at": "2026-07-15T04:08:37.119Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 16,
+    "fields": {
+        "user": 5,
+        "full_name": "romin patel",
+        "mobile": "+1 263-555-3034",
+        "email": "rominpatel540@gmail.com",
+        "address": "616 Fashion Ave",
+        "state": "Illinois",
+        "city": "Chicago",
+        "pincode": "60601",
+        "total_amount": "650.00",
+        "status": "DELIVERED",
+        "created_at": "2026-05-29T01:21:15.409Z",
+        "updated_at": "2026-07-15T04:08:40.185Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 22,
+    "fields": {
+        "user": 5,
+        "full_name": "romin patel",
+        "mobile": "+1 625-555-5332",
+        "email": "rominpatel540@gmail.com",
+        "address": "459 Fashion Ave",
+        "state": "New York",
+        "city": "New York City",
+        "pincode": "10001",
+        "total_amount": "350.00",
+        "status": "PACKED",
+        "created_at": "2026-06-04T22:42:15.409Z",
+        "updated_at": "2026-07-15T04:08:45.148Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 25,
+    "fields": {
+        "user": 5,
+        "full_name": "romin patel",
+        "mobile": "+1 956-555-8952",
+        "email": "rominpatel540@gmail.com",
+        "address": "592 Fashion Ave",
+        "state": "New York",
+        "city": "New York City",
+        "pincode": "10001",
+        "total_amount": "59.99",
+        "status": "DELIVERED",
+        "created_at": "2026-06-07T21:37:15.409Z",
+        "updated_at": "2026-07-15T04:08:48.879Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 31,
+    "fields": {
+        "user": 1,
+        "full_name": " ",
+        "mobile": "+1 679-555-8873",
+        "email": "admin@factionstore.com",
+        "address": "796 Fashion Ave",
+        "state": "New York",
+        "city": "New York City",
+        "pincode": "10001",
+        "total_amount": "619.95",
+        "status": "DELIVERED",
+        "created_at": "2026-06-13T17:12:15.409Z",
+        "updated_at": "2026-07-15T04:08:52.603Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 36,
+    "fields": {
+        "user": 5,
+        "full_name": "romin patel",
+        "mobile": "+1 837-555-5348",
+        "email": "rominpatel540@gmail.com",
+        "address": "846 Fashion Ave",
+        "state": "Florida",
+        "city": "Miami",
+        "pincode": "33101",
+        "total_amount": "2100.00",
+        "status": "CANCELLED",
+        "created_at": "2026-06-18T17:12:15.409Z",
+        "updated_at": "2026-06-28T04:40:43.127Z"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 43,
+    "fields": {
+        "user": 16,
+        "full_name": "romin patel",
+        "mobile": "1234567890",
+        "email": "rominpatel540@gmail.com",
+        "address": "wdkfefefkmd;kisjfsrkfslkmn",
+        "state": "rtuhrtrt",
+        "city": "mehsana",
+        "pincode": "4",
+        "total_amount": "350.00",
+        "status": "CONFIRMED",
+        "created_at": "2026-07-14T03:38:03.583Z",
+        "updated_at": "2026-07-15T04:07:59.485Z"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 12,
+    "fields": {
+        "order": 8,
+        "product": 17,
+        "product_name": "Marvel Team Cream T-Shirt",
+        "price": "350.00",
+        "quantity": 2,
+        "size": "M",
+        "color": "Maroon"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 13,
+    "fields": {
+        "order": 8,
+        "product": 17,
+        "product_name": "Marvel Team Cream T-Shirt",
+        "price": "350.00",
+        "quantity": 2,
+        "size": "XL",
+        "color": "Cream"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 14,
+    "fields": {
+        "order": 8,
+        "product": 19,
+        "product_name": "Forest Deer Black T-Shirt",
+        "price": "350.00",
+        "quantity": 1,
+        "size": "L",
+        "color": "Brown"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 26,
+    "fields": {
+        "order": 16,
+        "product": 16,
+        "product_name": "Majestic Stag Black T-Shirt",
+        "price": "300.00",
+        "quantity": 1,
+        "size": "L",
+        "color": "Cream"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 27,
+    "fields": {
+        "order": 16,
+        "product": 14,
+        "product_name": "Snoopy Chill Maroon T-Shirt",
+        "price": "350.00",
+        "quantity": 1,
+        "size": "S",
+        "color": "White"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 38,
+    "fields": {
+        "order": 22,
+        "product": 14,
+        "product_name": "Snoopy Chill Maroon T-Shirt",
+        "price": "350.00",
+        "quantity": 1,
+        "size": "XL",
+        "color": "Cream"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 44,
+    "fields": {
+        "order": 25,
+        "product": 7,
+        "product_name": "Floral Summer Midi Dress",
+        "price": "59.99",
+        "quantity": 1,
+        "size": "XL",
+        "color": "Blue Floral"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 57,
+    "fields": {
+        "order": 31,
+        "product": 6,
+        "product_name": "Ribbed Knit Crop Top",
+        "price": "29.99",
+        "quantity": 3,
+        "size": "S",
+        "color": "Dusty Rose"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 58,
+    "fields": {
+        "order": 31,
+        "product": 13,
+        "product_name": "Marvel Icons Cream T-Shirt",
+        "price": "350.00",
+        "quantity": 1,
+        "size": "L",
+        "color": "White"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 59,
+    "fields": {
+        "order": 31,
+        "product": 4,
+        "product_name": "Vintage Wash Relaxed Jeans",
+        "price": "89.99",
+        "quantity": 2,
+        "size": "30",
+        "color": "Light Grey"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 68,
+    "fields": {
+        "order": 36,
+        "product": 18,
+        "product_name": "Tropical Palms Espresso T-Shirt",
+        "price": "350.00",
+        "quantity": 3,
+        "size": "M",
+        "color": "Maroon"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 69,
+    "fields": {
+        "order": 36,
+        "product": 18,
+        "product_name": "Tropical Palms Espresso T-Shirt",
+        "price": "350.00",
+        "quantity": 3,
+        "size": "XL",
+        "color": "Cream"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 81,
+    "fields": {
+        "order": 43,
+        "product": 19,
+        "product_name": "Forest Deer Black T-Shirt",
+        "price": "350.00",
+        "quantity": 1,
+        "size": "S",
+        "color": "Black"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 8,
+    "fields": {
+        "order": 8,
+        "payment_method": "NET_BANKING",
+        "transaction_id": "TXN43621815",
+        "amount": "1750.00",
+        "status": "PAID",
+        "created_at": "2026-06-24T02:13:17.833Z"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 16,
+    "fields": {
+        "order": 16,
+        "payment_method": "CREDIT_CARD",
+        "transaction_id": "TXN38282973",
+        "amount": "650.00",
+        "status": "PAID",
+        "created_at": "2026-06-24T02:13:18.180Z"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 22,
+    "fields": {
+        "order": 22,
+        "payment_method": "CREDIT_CARD",
+        "transaction_id": "TXN75606715",
+        "amount": "350.00",
+        "status": "PAID",
+        "created_at": "2026-06-24T02:13:18.455Z"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 25,
+    "fields": {
+        "order": 25,
+        "payment_method": "NET_BANKING",
+        "transaction_id": "TXN53162908",
+        "amount": "59.99",
+        "status": "PAID",
+        "created_at": "2026-06-24T02:13:18.604Z"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 31,
+    "fields": {
+        "order": 31,
+        "payment_method": "NET_BANKING",
+        "transaction_id": "TXN34225053",
+        "amount": "619.95",
+        "status": "PAID",
+        "created_at": "2026-06-24T02:13:18.968Z"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 36,
+    "fields": {
+        "order": 36,
+        "payment_method": "COD",
+        "transaction_id": "TXN29803311",
+        "amount": "2100.00",
+        "status": "PAID",
+        "created_at": "2026-06-24T02:13:19.234Z"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 43,
+    "fields": {
+        "order": 43,
+        "payment_method": "COD",
+        "transaction_id": null,
+        "amount": "350.00",
+        "status": "PENDING",
+        "created_at": "2026-07-14T03:38:03.662Z"
+    }
+},
+{
+    "model": "dashboard.settings",
+    "pk": 1,
+    "fields": {
+        "store_name": "Faction Store",
+        "logo": "",
+        "contact_email": "support@factionstore.com",
+        "contact_phone": "+1 234 567 8900",
+        "address": "123 Fashion Ave, New York, NY 10001",
+        "facebook_url": "https://facebook.com",
+        "instagram_url": "https://instagram.com",
+        "twitter_url": "https://twitter.com"
+    }
+},
+{
+    "model": "dashboard.dashboardwidget",
+    "pk": 13,
+    "fields": {
+        "key": "revenue",
+        "title": "Total Revenue",
+        "widget_type": "CARD",
+        "value_override": null,
+        "subtitle": "Paid transactions",
+        "icon": "fas fa-check-circle",
+        "text_color": "#ffc107",
+        "bg_color": "rgba(18, 18, 22, 0.55)",
+        "border_color": "rgba(255, 255, 255, 0.08)",
+        "chart_type": null,
+        "colors_json": "[\"#d4af37\", \"#ffaa00\", \"#3b82f6\", \"#10b981\", \"#ef4444\", \"#a855f7\"]",
+        "legend_visible": true,
+        "labels_json": null,
+        "refresh_interval": 0,
+        "is_visible": true,
+        "is_pinned": false,
+        "position": 0,
+        "custom_html": null,
+        "custom_description": null
+    }
+},
+{
+    "model": "dashboard.dashboardwidget",
+    "pk": 14,
+    "fields": {
+        "key": "orders",
+        "title": "Total Orders",
+        "widget_type": "CARD",
+        "value_override": null,
+        "subtitle": "All checkout drops",
+        "icon": "fas fa-shopping-bag",
+        "text_color": "#ffffff",
+        "bg_color": "rgba(18, 18, 22, 0.55)",
+        "border_color": "rgba(255, 255, 255, 0.08)",
+        "chart_type": null,
+        "colors_json": "[\"#d4af37\", \"#ffaa00\", \"#3b82f6\", \"#10b981\", \"#ef4444\", \"#a855f7\"]",
+        "legend_visible": true,
+        "labels_json": null,
+        "refresh_interval": 0,
+        "is_visible": true,
+        "is_pinned": false,
+        "position": 1,
+        "custom_html": null,
+        "custom_description": null
+    }
+},
+{
+    "model": "dashboard.dashboardwidget",
+    "pk": 15,
+    "fields": {
+        "key": "products",
+        "title": "Products In Catalog",
+        "widget_type": "CARD",
+        "value_override": null,
+        "subtitle": "Add Apparel",
+        "icon": "fas fa-plus",
+        "text_color": "#ffffff",
+        "bg_color": "rgba(18, 18, 22, 0.55)",
+        "border_color": "rgba(255, 255, 255, 0.08)",
+        "chart_type": null,
+        "colors_json": "[\"#d4af37\", \"#ffaa00\", \"#3b82f6\", \"#10b981\", \"#ef4444\", \"#a855f7\"]",
+        "legend_visible": true,
+        "labels_json": null,
+        "refresh_interval": 0,
+        "is_visible": true,
+        "is_pinned": false,
+        "position": 2,
+        "custom_html": null,
+        "custom_description": null
+    }
+},
+{
+    "model": "dashboard.dashboardwidget",
+    "pk": 16,
+    "fields": {
+        "key": "clients",
+        "title": "Registered Clients",
+        "widget_type": "CARD",
+        "value_override": null,
+        "subtitle": "Excluding administrators",
+        "icon": "fas fa-users",
+        "text_color": "#ffffff",
+        "bg_color": "rgba(18, 18, 22, 0.55)",
+        "border_color": "rgba(255, 255, 255, 0.08)",
+        "chart_type": null,
+        "colors_json": "[\"#d4af37\", \"#ffaa00\", \"#3b82f6\", \"#10b981\", \"#ef4444\", \"#a855f7\"]",
+        "legend_visible": true,
+        "labels_json": null,
+        "refresh_interval": 0,
+        "is_visible": true,
+        "is_pinned": false,
+        "position": 3,
+        "custom_html": null,
+        "custom_description": null
+    }
+},
+{
+    "model": "dashboard.dashboardwidget",
+    "pk": 17,
+    "fields": {
+        "key": "category_chart",
+        "title": "Categories Share",
+        "widget_type": "CHART",
+        "value_override": null,
+        "subtitle": "Products distribution",
+        "icon": "fas fa-chart-pie",
+        "text_color": "#ffffff",
+        "bg_color": "rgba(18, 18, 22, 0.55)",
+        "border_color": "rgba(255, 255, 255, 0.08)",
+        "chart_type": "PIE",
+        "colors_json": "[\"#d4af37\", \"#ffaa00\", \"#3b82f6\", \"#10b981\", \"#ef4444\", \"#a855f7\"]",
+        "legend_visible": true,
+        "labels_json": null,
+        "refresh_interval": 0,
+        "is_visible": true,
+        "is_pinned": false,
+        "position": 4,
+        "custom_html": null,
+        "custom_description": null
+    }
+},
+{
+    "model": "dashboard.dashboardwidget",
+    "pk": 18,
+    "fields": {
+        "key": "status_chart",
+        "title": "Order Statuses",
+        "widget_type": "CHART",
+        "value_override": null,
+        "subtitle": "Order status distribution",
+        "icon": "fas fa-chart-bar",
+        "text_color": "#ffffff",
+        "bg_color": "rgba(18, 18, 22, 0.55)",
+        "border_color": "rgba(255, 255, 255, 0.08)",
+        "chart_type": "BAR",
+        "colors_json": "[\"#d4af37\", \"#ffaa00\", \"#3b82f6\", \"#10b981\", \"#ef4444\", \"#a855f7\"]",
+        "legend_visible": true,
+        "labels_json": null,
+        "refresh_interval": 0,
+        "is_visible": true,
+        "is_pinned": false,
+        "position": 5,
+        "custom_html": null,
+        "custom_description": null
+    }
+}
+]

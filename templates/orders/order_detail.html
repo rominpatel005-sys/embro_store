@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order #{{ order.id }} Details | {{ store_settings.store_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Premium Tracking Steps styling */
+    .tracking-timeline {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    .tracking-timeline::before {
+        content: '';
+        position: absolute;
+        top: 25px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--bg-tertiary);
+        z-index: 1;
+    }
+    .timeline-progress-bar {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        height: 3px;
+        background-color: var(--accent);
+        z-index: 2;
+        transition: width 0.5s ease;
+    }
+    .timeline-step {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .step-icon-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--bg-secondary);
+        border: 3px solid var(--bg-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        transition: all 0.5s ease;
+    }
+    .timeline-step.active .step-icon-circle {
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .timeline-step.completed .step-icon-circle {
+        border-color: var(--accent);
+        background-color: var(--accent);
+        color: #000000;
+    }
+    .step-text {
+        margin-top: 10px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+    .timeline-step.active .step-text, .timeline-step.completed .step-text {
+        color: var(--text-primary);
+    }
+    
+    /* Progress Bar status width classes to avoid template tag inline style diagnostics */
+    .status-width-PENDING { width: 0%; }
+    .status-width-CONFIRMED { width: 25%; }
+    .status-width-PACKED { width: 50%; }
+    .status-width-SHIPPED { width: 75%; }
+    .status-width-DELIVERED { width: 100%; }
+
+    @media (max-width: 768px) {
+        .tracking-timeline {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
+            padding-left: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .tracking-timeline::before {
+            left: 45px;
+            top: 25px;
+            width: 3px;
+            height: calc(100% - 50px);
+        }
+        .timeline-progress-bar {
+            left: 45px;
+            top: 25px;
+            width: 3px;
+            height: 0%;
+            transition: height 0.5s ease;
+        }
+        .timeline-step {
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+            gap: 20px;
+        }
+        .step-icon-circle {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+        }
+        .step-text {
+            margin-top: 0;
+            font-size: 0.8rem;
+        }
+        /* Mobile height classes */
+        .status-height-PENDING { height: 0%; width: 3px !important; }
+        .status-height-CONFIRMED { height: 25%; width: 3px !important; }
+        .status-height-PACKED { height: 50%; width: 3px !important; }
+        .status-height-SHIPPED { height: 75%; width: 3px !important; }
+        .status-height-DELIVERED { height: 100%; width: 3px !important; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- Title & Tracking Code -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 scroll-reveal">
+        <div>
+            <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">Purchases</span>
+            <h1 class="text-luxury-title mt-1 mb-0">Order #{{ order.id }}</h1>
+            <p class="text-muted small mt-1">Placed on {{ order.created_at|date:"M d, Y, h:i A" }}</p>
+        </div>
+        
+        <div>
+            <a href="{% url 'orders:order_list' %}" class="btn btn-neon-outline py-2 px-4" style="font-size: 0.8rem;"><i class="fas fa-arrow-left me-2"></i>My Purchases</a>
+        </div>
+    </div>
+
+    <!-- 1. Tracking Timeline Section -->
+    {% if order.status != 'CANCELLED' %}
+        <div class="glass-card spotlight-card p-5 mb-5 scroll-reveal">
+            <h5 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Order Tracker</h5>
+            
+            <div class="tracking-timeline">
+                <!-- Progress Line overlay -->
+                <div class="timeline-progress-bar status-width-{{ order.status }} status-height-{{ order.status }}">
+                </div>
+                
+                <!-- Step 1: Placed -->
+                <div class="timeline-step {% if order.status == 'PENDING' %}active{% else %}completed{% endif %}">
+                    <div class="step-icon-circle"><i class="fas fa-file-invoice"></i></div>
+                    <div class="step-text">Placed</div>
+                </div>
+                
+                <!-- Step 2: Confirmed -->
+                <div class="timeline-step 
+                    {% if order.status == 'CONFIRMED' %}active
+                    {% elif order.status != 'PENDING' %}completed
+                    {% endif %}">
+                    <div class="step-icon-circle"><i class="fas fa-check"></i></div>
+                    <div class="step-text">Confirmed</div>
+                </div>
+                
+                <!-- Step 3: Packed -->
+                <div class="timeline-step 
+                    {% if order.status == 'PACKED' %}active
+                    {% elif order.status != 'PENDING' and order.status != 'CONFIRMED' %}completed
+                    {% endif %}">
+                    <div class="step-icon-circle"><i class="fas fa-box"></i></div>
+                    <div class="step-text">Packed</div>
+                </div>
+                
+                <!-- Step 4: Shipped -->
+                <div class="timeline-step 
+                    {% if order.status == 'SHIPPED' %}active
+                    {% elif order.status == 'DELIVERED' %}completed
+                    {% endif %}">
+                    <div class="step-icon-circle"><i class="fas fa-shipping-fast"></i></div>
+                    <div class="step-text">Shipped</div>
+                </div>
+                
+                <!-- Step 5: Delivered -->
+                <div class="timeline-step {% if order.status == 'DELIVERED' %}completed{% endif %}">
+                    <div class="step-icon-circle"><i class="fas fa-home"></i></div>
+                    <div class="step-text">Delivered</div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Cancellation Banner alert -->
+        <div class="alert alert-danger bg-transparent border-danger text-danger p-4 mb-5 scroll-reveal" style="border-radius:10px;">
+            <h5 class="fw-bold mb-1"><i class="fas fa-times-circle me-2"></i>Order Cancelled</h5>
+            <p class="small mb-0 text-muted">This order has been cancelled and items have been restocked to inventory. Payment collections are stopped.</p>
+        </div>
+    {% endif %}
+
+    <div class="row g-5">
+        <!-- 2. Shipping Details & Summary checklist -->
+        <div class="col-lg-7 scroll-reveal">
+            <div class="glass-card spotlight-card p-5 mb-4">
+                <h4 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Recipient Details</h4>
+                <div class="row g-3 small text-muted">
+                    <div class="col-sm-6">
+                        <span class="text-white d-block mb-1">Name</span>
+                        <strong>{{ order.full_name }}</strong>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="text-white d-block mb-1">Contact Phone</span>
+                        <strong>{{ order.mobile }}</strong>
+                    </div>
+                    <div class="col-sm-12">
+                        <span class="text-white d-block mb-1">Shipping Address</span>
+                        <strong>{{ order.address }}, {{ order.city }}, {{ order.state }} - {{ order.pincode }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items list -->
+            <div class="glass-card spotlight-card p-5">
+                <h4 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Itemized Summary</h4>
+                <div class="d-flex flex-column gap-3">
+                    {% for item in order.items.all %}
+                        <div class="d-flex gap-3 align-items-center {% if not forloop.last %}border-bottom border-secondary pb-3{% endif %}" style="border-color: rgba(255,255,255,0.05) !important;">
+                            <div class="bg-secondary rounded border border-secondary overflow-hidden" style="width: 50px; height: 65px; flex-shrink: 0;">
+                                {% if item.product.image and item.product.image.url != '/media/products/default.jpg' %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product_name }}" class="w-100 h-100" style="object-fit: cover;">
+                                {% else %}
+                                    <div class="luxury-image-placeholder h-100">
+                                        <i class="fas fa-tshirt" style="font-size: 0.9rem;"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="flex-grow-1">
+                                <h6 class="small text-white mb-1">
+                                    {% if item.product %}
+                                        <a href="{% url 'products:product_detail' item.product.slug %}" class="text-white text-decoration-none hover-warning">{{ item.product_name }}</a>
+                                    {% else %}
+                                        {{ item.product_name }}
+                                    {% endif %}
+                                </h6>
+                                <div class="d-flex gap-2 text-muted" style="font-size:0.75rem;">
+                                    <span>Size: <strong>{{ item.size }}</strong></span>
+                                    <span>Color: <strong>{{ item.color }}</strong></span>
+                                    <span>Quantity: <strong>{{ item.quantity }}</strong></span>
+                                </div>
+                            </div>
+                            
+                            <div class="fw-bold text-white small">${{ item.get_subtotal }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Payment details & Actions -->
+        <div class="col-lg-5 scroll-reveal">
+            <div class="glass-card spotlight-card p-4 mb-4">
+                <h4 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Payment Information</h4>
+                
+                <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <span class="text-muted small">Payment Method</span>
+                    <span class="text-white small fw-bold">
+                        {% if order.payment.payment_method == 'COD' %}Cash On Delivery
+                        {% else %}{{ order.payment.payment_method }}
+                        {% endif %}
+                    </span>
+                </div>
+                
+                {% if order.payment.transaction_id %}
+                    <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.05) !important;">
+                        <span class="text-muted small">Transaction ID</span>
+                        <span class="text-white small text-break">{{ order.payment.transaction_id }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <span class="text-muted small">Payment Status</span>
+                    <span class="badge 
+                        {% if order.payment.status == 'PAID' %}bg-success
+                        {% elif order.payment.status == 'FAILED' %}bg-danger
+                        {% else %}bg-warning text-dark
+                        {% endif %}">
+                        {{ order.payment.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="text-white fw-bold">Grand Total</span>
+                    <span class="text-warning fw-bold fs-4">${{ order.total_amount }}</span>
+                </div>
+
+                <!-- Online Payment simulator retry -->
+                {% if order.payment.status == 'FAILED' or order.payment.status == 'PENDING' and order.payment.payment_method != 'COD' %}
+                    <div class="d-grid mb-3">
+                        <a href="{% url 'payments:process_payment' order.id %}" class="btn btn-warning text-dark fw-bold py-3" style="border-radius: 6px;">
+                            <i class="fas fa-credit-card me-2"></i> Pay Online Now
+                        </a>
+                    </div>
+                {% endif %}
+
+                <!-- Cancel Button -->
+                {% if order.is_cancellable %}
+                    <div class="d-grid">
+                        <form action="{% url 'orders:order_cancel' order.id %}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-neon-outline w-100 py-3 text-danger border-danger" style="border-radius: 6px;">
+                                <i class="fas fa-trash-alt me-2"></i> Cancel Order
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <!-- 1. Admin Sidebar -->
+    <aside class="dashboard-sidebar">
+        <h5 class="font-serif text-uppercase mb-4 text-warning" style="letter-spacing: 2px;">Atelier Admin</h5>
+        
+        <ul class="sidebar-menu-list">
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:home' %}" class="sidebar-menu-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_products' %}" class="sidebar-menu-link {% if 'products' in request.path %}active{% endif %}">
+                    <i class="fas fa-tshirt"></i> Products Catalog
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_categories' %}" class="sidebar-menu-link {% if 'categories' in request.path %}active{% endif %}">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_orders' %}" class="sidebar-menu-link {% if 'orders' in request.path %}active{% endif %}">
+                    <i class="fas fa-box-open"></i> Orders Tracker
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_customers' %}" class="sidebar-menu-link {% if 'customers' in request.path %}active{% endif %}">
+                    <i class="fas fa-users"></i> Customer List
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_reviews' %}" class="sidebar-menu-link {% if 'reviews' in request.path %}active{% endif %}">
+                    <i class="fas fa-star"></i> Reviews Control
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_contacts' %}" class="sidebar-menu-link {% if 'contacts' in request.path %}active{% endif %}">
+                    <i class="fas fa-envelope-open-text"></i> Customer Messages
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{% url 'dashboard:manage_settings' %}" class="sidebar-menu-link {% if 'settings' in request.path %}active{% endif %}">
+                    <i class="fas fa-sliders-h"></i> Store Coordinates
+                </a>
+            </li>
+            <li class="sidebar-menu-item mt-4 pt-3" style="border-top: 1px solid var(--glass-border);">
+                <a href="/admin/db/" class="sidebar-menu-link text-warning" target="_blank">
+                    <i class="fas fa-database text-warning"></i> Django DB Admin
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- 2. Admin Workspace Column -->
+    <div class="dashboard-main-content">
+        {% block dashboard_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

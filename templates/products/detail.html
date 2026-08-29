@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- Product Main Block -->
+    <div class="row g-5 mb-5 scroll-reveal">
+        <!-- 1. Interactive Image Gallery -->
+        <div class="col-lg-6">
+            <div class="glass-card spotlight-card p-3 h-100">
+                <!-- Main Frame -->
+                <div class="main-gallery-frame border border-secondary rounded overflow-hidden mb-3 bg-tertiary" style="aspect-ratio: 3/4;">
+                    {% if product.image and product.image.url != '/media/products/default.jpg' %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" id="gallery-main-img" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+                    {% else %}
+                        <div class="luxury-image-placeholder h-100">
+                            <i class="fas fa-tshirt" style="font-size: 3rem;"></i>
+                            <span>{{ product.name }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Thumbnails -->
+                <div class="row g-2">
+                    <!-- Main Image Thumbnail -->
+                    {% if product.image and product.image.url != '/media/products/default.jpg' %}
+                        <div class="col-3">
+                            <div class="border border-warning rounded overflow-hidden cursor-pointer gallery-thumb-box active" onclick="swapGalleryImage('{{ product.image.url }}', this)" style="aspect-ratio: 1; opacity: 1;">
+                                <img src="{{ product.image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Gallery Images -->
+                    {% for img in product.gallery.all %}
+                        <div class="col-3">
+                            <div class="border border-secondary rounded overflow-hidden cursor-pointer gallery-thumb-box" onclick="swapGalleryImage('{{ img.image.url }}', this)" style="aspect-ratio: 1; opacity: 0.6;">
+                                <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2. Product Specs and Actions -->
+        <div class="col-lg-6">
+            <div class="d-flex flex-column justify-content-between h-100">
+                <div>
+                    <!-- Category / Brand Header -->
+                    <span class="text-warning text-uppercase small tracking-widest">{{ product.category.get_gender_display }} / {{ product.category.name }}</span>
+                    <h1 class="font-serif display-5 my-2">{{ product.name }}</h1>
+                    
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <span class="small text-muted">Brand: <strong class="text-white">{{ product.brand }}</strong></span>
+                        <span class="text-muted">|</span>
+                        <div class="d-flex align-items-center">
+                            <div class="stars-outer" style="font-size: 0.85rem;">
+                                <div class="stars-inner" data-width="{{ product.rating_percentage }}"></div>
+                            </div>
+                            <span class="small text-white ms-2">({{ product.rating }} / 5.0)</span>
+                        </div>
+                    </div>
+
+                    <!-- Pricing -->
+                    <div class="mb-4">
+                        {% if product.is_discounted %}
+                            <div class="d-flex align-items-baseline gap-3">
+                                <h2 class="text-warning display-6 font-serif">${{ product.discount_price }}</h2>
+                                <h4 class="text-muted text-decoration-line-through">${{ product.price }}</h4>
+                                <span class="badge bg-danger">SAVE {{ product.get_discount_percentage }}%</span>
+                            </div>
+                        {% else %}
+                            <h2 class="text-white display-6 font-serif">${{ product.price }}</h2>
+                        {% endif %}
+                    </div>
+
+                    <p class="text-muted mb-4 lead" style="font-size: 0.95rem;">{{ product.description }}</p>
+
+                    <form action="{% url 'cart:cart_add' product.id %}" method="POST" class="ajax-cart-form mt-4">
+                        {% csrf_token %}
+                        
+                        <!-- Size Selection -->
+                        {% if product_sizes %}
+                            <div class="mb-4">
+                                <h6 class="small text-uppercase tracking-wider text-white mb-3">Select Size</h6>
+                                <div class="d-flex gap-2">
+                                    {% for size in product_sizes %}
+                                        <input type="radio" class="btn-check" name="size" id="size-{{ size }}" value="{{ size }}" {% if forloop.first %}checked{% endif %}>
+                                        <label class="btn btn-outline-secondary px-3 py-2" for="size-{{ size }}" style="font-size: 0.85rem; min-width: 45px;">{{ size }}</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Color Selection -->
+                        {% if product_colors %}
+                            <div class="mb-4">
+                                <h6 class="small text-uppercase tracking-wider text-white mb-3">Select Color</h6>
+                                <div class="d-flex gap-2">
+                                    {% for color in product_colors %}
+                                        <input type="radio" class="btn-check" name="color" id="color-{{ color }}" value="{{ color }}" {% if forloop.first %}checked{% endif %}>
+                                        <label class="btn btn-outline-secondary px-3 py-2" for="color-{{ color }}" style="font-size: 0.85rem;">{{ color }}</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Stock and Quantity -->
+                        <div class="row g-3 align-items-end mb-4">
+                            <div class="col-md-4">
+                                <label class="small text-uppercase tracking-wider text-white mb-2 d-block">Quantity</label>
+                                <input type="number" name="quantity" class="form-control bg-transparent text-white border-secondary" value="1" min="1" max="{{ product.stock }}" style="height: 46px;">
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center gap-2 mb-2" style="height: 46px;">
+                                    {% if product.stock == 0 %}
+                                        <span class="text-danger small"><i class="fas fa-exclamation-circle me-1"></i> Sold Out</span>
+                                    {% elif product.stock < 5 %}
+                                        <span class="text-warning small"><i class="fas fa-exclamation-triangle me-1"></i> Only {{ product.stock }} items left!</span>
+                                    {% else %}
+                                        <span class="text-success small"><i class="fas fa-check-circle me-1"></i> In Stock</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex gap-3">
+                            {% if product.is_in_stock %}
+                                <button type="submit" class="btn btn-neon py-3 px-5 flex-grow-1" style="border-radius: 6px;">
+                                    <i class="fas fa-shopping-bag me-2"></i> Add to Bag
+                                </button>
+                            {% else %}
+                                <button class="btn btn-secondary py-3 px-5 flex-grow-1 disabled" style="border-radius: 6px;" disabled>
+                                    Sold Out
+                                </button>
+                            {% endif %}
+                            
+                            <!-- Wishlist Toggle -->
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'wishlist:wishlist_toggle' product.id %}" class="btn btn-neon-outline p-0 ajax-wishlist-toggle" style="width: 54px; height: 54px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                                    <i class="far fa-heart"></i>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}" class="btn btn-neon-outline p-0" style="width: 54px; height: 54px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                                    <i class="far fa-heart"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="py-5 border-top border-secondary my-5" style="border-color: rgba(255,255,255,0.05) !important;">
+        <h3 class="text-luxury-title mb-4 scroll-reveal">You May Also Like</h3>
+        <div class="row g-4 scroll-reveal">
+            {% if related_products %}
+                {% for prod in related_products %}
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        {% include 'products/includes/product_card.html' with product=prod %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 py-3 text-muted">No related products found.</div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Recently Viewed Products -->
+    {% if recently_viewed_products %}
+        <section class="py-5 border-top border-secondary my-5" style="border-color: rgba(255,255,255,0.05) !important;">
+            <h3 class="text-luxury-title mb-4 scroll-reveal">Recently Viewed</h3>
+            <div class="row g-4 scroll-reveal">
+                {% for prod in recently_viewed_products %}
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        {% include 'products/includes/product_card.html' with product=prod %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    <!-- Reviews Block -->
+    <section class="py-5 border-top border-secondary my-5" style="border-color: rgba(255,255,255,0.05) !important;">
+        <div class="row g-5">
+            <!-- Reviews List -->
+            <div class="col-lg-7 scroll-reveal">
+                <h3 class="text-luxury-title mb-4">Customer Reviews</h3>
+                
+                {% if reviews %}
+                    <div class="d-flex flex-column gap-4">
+                        {% for r in reviews %}
+                            <div class="bg-secondary p-4 rounded border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        {% if r.profile_image %}
+                                            <img src="{{ r.profile_image.url }}" alt="{{ r.user.username }}" class="rounded-circle border border-warning" style="width: 40px; height: 40px; object-fit: cover;">
+                                        {% else %}
+                                            <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.95rem;">
+                                                {{ r.user.username|slice:":1"|upper }}
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-0 text-white">{{ r.user.username }}</h6>
+                                            <small class="text-muted">{{ r.created_at|date:"M d, Y" }}</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="stars-outer" style="font-size: 0.8rem;">
+                                        <div class="stars-inner" data-width="{{ r.rating_percentage }}"></div>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-0">"{{ r.comment }}"</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="py-4 text-muted border border-secondary border-dashed rounded text-center">
+                        <p class="small mb-0">No reviews yet for this product. Be the first to share your thoughts!</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Submit Review Form -->
+            <div class="col-lg-5 scroll-reveal">
+                <div class="glass-card spotlight-card p-4">
+                    <h4 class="font-serif text-uppercase mb-3" style="letter-spacing: 1px;">Write a Review</h4>
+                    {% if request.user.is_authenticated %}
+                        <form action="{% url 'reviews:add_review' product.id %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <!-- Rating -->
+                            <div class="mb-3">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">Your Rating</label>
+                                <select name="rating" class="form-select bg-transparent text-white border-secondary small" style="font-size:0.85rem;" required>
+                                    <option value="5" class="bg-dark">5 Stars (Excellent)</option>
+                                    <option value="4" class="bg-dark">4 Stars (Good)</option>
+                                    <option value="3" class="bg-dark">3 Stars (Average)</option>
+                                    <option value="2" class="bg-dark">2 Stars (Poor)</option>
+                                    <option value="1" class="bg-dark">1 Star (Very Bad)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Comment -->
+                            <div class="mb-3">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">Your Review</label>
+                                <textarea name="comment" class="form-control bg-transparent text-white border-secondary small" rows="4" placeholder="Describe your experience with this apparel (fabric feel, fit sizing, design accents)..." style="font-size:0.85rem;" required></textarea>
+                            </div>
+
+                            <!-- Profile Image override -->
+                            <div class="mb-4">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">Upload Profile Photo (Optional)</label>
+                                <input type="file" name="profile_image" class="form-control bg-transparent border-secondary text-muted" style="font-size: 0.85rem;">
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-neon py-2">Submit Review</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <p class="small text-muted mb-4">You must be logged in to write a product review.</p>
+                        <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-neon-outline w-100 py-2">Login to Review</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function swapGalleryImage(imgUrl, thumbBox) {
+        const mainImg = document.getElementById('gallery-main-img');
+        if (mainImg) {
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = imgUrl;
+                mainImg.style.opacity = '1';
+            }, 200);
+        }
+        
+        // Update highlight border
+        const thumbs = document.querySelectorAll('.gallery-thumb-box');
+        thumbs.forEach(t => {
+            t.classList.remove('border-warning');
+            t.classList.add('border-secondary');
+            t.style.opacity = '0.6';
+        });
+        thumbBox.classList.remove('border-secondary');
+        thumbBox.classList.add('border-warning');
+        thumbBox.style.opacity = '1';
+    }
+</script>
+{% endblock %}

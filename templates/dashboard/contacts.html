@@ -1,0 +1,68 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Customer Messages | {{ store_settings.store_name }}{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-5">
+    <h2 class="text-luxury-title mb-0">Customer Messages</h2>
+    <p class="text-muted small">View inquiries and feedback sent via the Contact page.</p>
+</div>
+
+<div class="glass-card spotlight-card p-4">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent; --bs-table-border-color: rgba(255,255,255,0.05);">
+            <thead>
+                <tr class="small text-muted text-uppercase">
+                    <th>Sender</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Date Received</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if messages_list %}
+                    {% for msg in messages_list %}
+                        <tr style="vertical-align: middle;">
+                            <td class="small text-white fw-bold">{{ msg.name }}</td>
+                            <td class="small text-muted">{{ msg.email }}</td>
+                            <td class="small text-white">{{ msg.subject }}</td>
+                            <td class="small text-muted">{{ msg.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <!-- View details button trigger modal -->
+                                <button type="button" class="btn btn-sm btn-neon-outline me-2 py-1" data-bs-toggle="modal" data-bs-target="#msgModal-{{ msg.id }}"><i class="far fa-eye"></i> View</button>
+                                <a href="{% url 'dashboard:delete_contact' msg.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="return confirm('Delete this message?')"><i class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+
+                        <!-- View Message Modal Dialog -->
+                        <div class="modal fade" id="msgModal-{{ msg.id }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content bg-secondary text-white border-secondary">
+                                    <div class="modal-header border-bottom border-secondary">
+                                        <h5 class="modal-title font-serif">{{ msg.subject }}</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="small text-muted mb-2">From: <strong>{{ msg.name }}</strong> ({{ msg.email }})</p>
+                                        <p class="small text-muted mb-4">Received: {{ msg.created_at|date:"F d, Y, h:i A" }}</p>
+                                        <div class="p-3 bg-dark rounded text-muted small" style="white-space: pre-line;">
+                                            {{ msg.message }}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-top border-secondary">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="5" class="text-center text-muted py-5">No contact messages received.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- Header -->
+    <div class="mb-5 scroll-reveal">
+        <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">Settings</span>
+        <h1 class="text-luxury-title mt-1">My Profile</h1>
+    </div>
+
+    <!-- Email Verification Alert Banner -->
+    {% if not request.user.profile.email_verified %}
+        <div class="alert alert-warning bg-transparent border-warning text-warning d-flex justify-content-between align-items-center mb-5 p-4 scroll-reveal" style="border-radius:10px;">
+            <div>
+                <h6 class="fw-bold mb-1"><i class="fas fa-exclamation-circle me-2"></i>Email Verification Required</h6>
+                <p class="small mb-0 text-muted">Please verify your email address to secure your account and enable order support updates.</p>
+            </div>
+            <a href="{% url 'accounts:verify_email_request' %}" class="btn btn-warning text-dark py-2 px-3 fw-bold small" style="font-size: 0.8rem; border-radius: 4px;">Send Verification Email</a>
+        </div>
+    {% endif %}
+
+    <div class="row g-5">
+        <!-- Sidebar Summary -->
+        <div class="col-lg-4 scroll-reveal">
+            <div class="glass-card spotlight-card text-center p-5">
+                <div class="mb-4 position-relative d-inline-block">
+                    {% if request.user.profile.profile_image %}
+                        <img src="{{ request.user.profile.profile_image.url }}" alt="{{ request.user.username }}" class="rounded-circle border border-warning img-thumbnail" style="width: 120px; height: 120px; object-fit: cover; background: none;">
+                    {% else %}
+                        <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold mx-auto border border-warning" style="width: 120px; height: 120px; font-size: 3rem;">
+                            {{ request.user.username|slice:":1"|upper }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <h4 class="font-serif">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+                <p class="small text-muted mb-4">@{{ request.user.username }}</p>
+                <div class="badge bg-secondary mb-3 py-2 px-3">
+                    {% if request.user.profile.email_verified %}
+                        <i class="fas fa-check-circle text-success me-1"></i> Verified Account
+                    {% else %}
+                        <i class="fas fa-times-circle text-danger me-1"></i> Unverified Account
+                    {% endif %}
+                </div>
+
+                <hr class="border-secondary my-4">
+
+                <div class="d-grid gap-2">
+                    <a href="{% url 'orders:order_list' %}" class="btn btn-neon-outline py-2"><i class="fas fa-box-open me-2"></i>View My Orders</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Form -->
+        <div class="col-lg-8 scroll-reveal">
+            <div class="glass-card spotlight-card p-5">
+                <h3 class="font-serif text-uppercase mb-4" style="letter-spacing: 1px;">Update Account Details</h3>
+                
+                <form method="POST" action="{% url 'accounts:profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <!-- First Name -->
+                        <div class="col-md-6">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">First Name</label>
+                            <input type="text" name="first_name" class="form-control bg-transparent text-white border-secondary" value="{{ u_form.first_name.value|default:'' }}" required style="height:46px;">
+                        </div>
+                        
+                        <!-- Last Name -->
+                        <div class="col-md-6">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Last Name</label>
+                            <input type="text" name="last_name" class="form-control bg-transparent text-white border-secondary" value="{{ u_form.last_name.value|default:'' }}" required style="height:46px;">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Email</label>
+                            <input type="email" name="email" class="form-control bg-transparent text-white border-secondary" value="{{ u_form.email.value|default:'' }}" required style="height:46px;">
+                        </div>
+
+                        <!-- Mobile -->
+                        <div class="col-md-6">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Mobile Phone</label>
+                            <input type="text" name="mobile" class="form-control bg-transparent text-white border-secondary" value="{{ p_form.mobile.value|default:'' }}" required style="height:46px;">
+                        </div>
+
+                        <!-- Profile Image Upload -->
+                        <div class="col-12">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Change Profile Picture</label>
+                            <input type="file" name="profile_image" class="form-control bg-transparent text-muted border-secondary">
+                        </div>
+
+                        <hr class="border-secondary my-4">
+                        <h5 class="font-serif text-uppercase text-warning mb-2" style="letter-spacing: 1px;">Shipping & Delivery Details</h5>
+
+                        <!-- Shipping Address -->
+                        <div class="col-12">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Address</label>
+                            <textarea name="address" class="form-control bg-transparent text-white border-secondary" rows="3" placeholder="Enter delivery address">{{ p_form.address.value|default:'' }}</textarea>
+                        </div>
+
+                        <!-- City -->
+                        <div class="col-md-4">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">City</label>
+                            <input type="text" name="city" class="form-control bg-transparent text-white border-secondary" value="{{ p_form.city.value|default:'' }}" style="height:46px;">
+                        </div>
+
+                        <!-- State -->
+                        <div class="col-md-4">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">State</label>
+                            <input type="text" name="state" class="form-control bg-transparent text-white border-secondary" value="{{ p_form.state.value|default:'' }}" style="height:46px;">
+                        </div>
+
+                        <!-- Pincode -->
+                        <div class="col-md-4">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Pincode</label>
+                            <input type="text" name="pincode" class="form-control bg-transparent text-white border-secondary" value="{{ p_form.pincode.value|default:'' }}" style="height:46px;">
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-neon py-3">Save Modifications</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

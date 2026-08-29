@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- Title -->
+    <div class="mb-5 scroll-reveal">
+        <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">Purchases</span>
+        <h1 class="text-luxury-title mt-1">My Orders</h1>
+    </div>
+
+    {% if orders %}
+        <div class="glass-card spotlight-card p-4 scroll-reveal">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent; --bs-table-border-color: rgba(255,255,255,0.05);">
+                    <thead>
+                        <tr class="text-muted small text-uppercase">
+                            <th scope="col" class="py-3">Order ID</th>
+                            <th scope="col" class="py-3">Date</th>
+                            <th scope="col" class="py-3">Recipient</th>
+                            <th scope="col" class="py-3">Total Amount</th>
+                            <th scope="col" class="py-3">Status</th>
+                            <th scope="col" class="py-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr style="vertical-align: middle;">
+                                <td class="py-3 fw-bold text-warning">#{{ order.id }}</td>
+                                <td class="py-3 small text-muted">{{ order.created_at|date:"M d, Y" }}</td>
+                                <td class="py-3 small text-white">{{ order.full_name }}</td>
+                                <td class="py-3 fw-bold text-white">${{ order.total_amount }}</td>
+                                <td class="py-3">
+                                    <span class="badge 
+                                        {% if order.status == 'PENDING' %}bg-secondary
+                                        {% elif order.status == 'CONFIRMED' %}bg-info
+                                        {% elif order.status == 'PACKED' %}bg-primary
+                                        {% elif order.status == 'SHIPPED' %}bg-warning text-dark
+                                        {% elif order.status == 'DELIVERED' %}bg-success
+                                        {% else %}bg-danger
+                                        {% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="py-3 text-end">
+                                    <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-sm btn-neon-outline py-2 px-3" style="font-size:0.75rem;">Track Order</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-5 my-5 scroll-reveal">
+            <i class="fas fa-box-open text-muted display-1 mb-4" style="opacity: 0.3;"></i>
+            <h3 class="font-serif text-uppercase">No orders placed yet</h3>
+            <p class="text-muted small mt-2">Create an order and it will list here for tracking.</p>
+            <a href="{% url 'products:product_list' %}" class="btn btn-neon mt-4 py-3 px-5" style="border-radius: 6px;">Shop Catalog</a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

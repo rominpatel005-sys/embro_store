@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Simulated Payment Gateway | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-10 scroll-reveal">
+            <div class="glass-card spotlight-card p-5">
+                <div class="text-center mb-4 pb-3 border-bottom border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <i class="fas fa-shield-alt text-warning display-4 mb-3"></i>
+                    <h2 class="text-luxury-title mb-2">Payment Simulation</h2>
+                    <p class="small text-muted">You are paying for Order <strong class="text-white">#{{ order.id }}</strong>. Total: <strong class="text-warning">${{ order.total_amount }}</strong></p>
+                </div>
+
+                <!-- Simulation Form -->
+                <form method="POST" id="sim-payment-form">
+                    {% csrf_token %}
+                    
+                    <!-- Choose Method Tabs selector -->
+                    <div class="mb-4">
+                        <label class="small text-uppercase tracking-wider text-white mb-2 d-block">Simulated Gateway</label>
+                        <select name="payment_method" id="select-payment-method" class="form-select bg-transparent text-white border-secondary small" style="font-size:0.85rem;" onchange="updateSimulatedFields(this.value)">
+                            <option value="UPI" class="bg-dark" {% if payment_method == 'UPI' %}selected{% endif %}>UPI Payment</option>
+                            <option value="CREDIT_CARD" class="bg-dark" {% if payment_method == 'CREDIT_CARD' %}selected{% endif %}>Credit Card</option>
+                            <option value="DEBIT_CARD" class="bg-dark" {% if payment_method == 'DEBIT_CARD' %}selected{% endif %}>Debit Card</option>
+                            <option value="NET_BANKING" class="bg-dark" {% if payment_method == 'NET_BANKING' %}selected{% endif %}>Net Banking</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic mock forms -->
+                    <!-- UPI Mock Form -->
+                    <div id="form-upi" class="sim-subform mb-4">
+                        <div class="mb-3">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">UPI ID (VPA)</label>
+                            <input type="text" class="form-control bg-transparent text-white border-secondary" placeholder="user@okhdfcbank" style="height: 46px;">
+                        </div>
+                    </div>
+                    
+                    <!-- Card Mock Form -->
+                    <div id="form-card" class="sim-subform mb-4" style="display: none;">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">Card Holder Name</label>
+                                <input type="text" class="form-control bg-transparent text-white border-secondary" placeholder="Full Name" style="height: 46px;">
+                            </div>
+                            <div class="col-12">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">Card Number</label>
+                                <input type="text" class="form-control bg-transparent text-white border-secondary" placeholder="4111 2222 3333 4444" style="height: 46px;">
+                            </div>
+                            <div class="col-6">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">Expiry Date</label>
+                                <input type="text" class="form-control bg-transparent text-white border-secondary" placeholder="MM/YY" style="height: 46px;">
+                            </div>
+                            <div class="col-6">
+                                <label class="small text-uppercase tracking-wider text-white mb-2">CVV</label>
+                                <input type="password" class="form-control bg-transparent text-white border-secondary" placeholder="***" style="height: 46px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Net Banking Mock Form -->
+                    <div id="form-net-banking" class="sim-subform mb-4" style="display: none;">
+                        <div class="mb-3">
+                            <label class="small text-uppercase tracking-wider text-white mb-2">Select Bank</label>
+                            <select class="form-select bg-transparent text-white border-secondary small" style="font-size:0.85rem;">
+                                <option class="bg-dark">HDFC Bank</option>
+                                <option class="bg-dark">SBI Bank</option>
+                                <option class="bg-dark">ICICI Bank</option>
+                                <option class="bg-dark">Axis Bank</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <button type="submit" name="action" value="success" class="btn btn-success w-100 py-3 fw-bold" style="border-radius: 6px;">
+                                <i class="fas fa-check-circle me-1"></i> Success
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" name="action" value="fail" class="btn btn-danger w-100 py-3 fw-bold" style="border-radius: 6px;">
+                                <i class="fas fa-times-circle me-1"></i> Fail Payment
+                            </button>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function updateSimulatedFields(method) {
+        // Hide all subforms
+        document.querySelectorAll('.sim-subform').forEach(form => form.style.display = 'none');
+        
+        if (method === 'UPI') {
+            document.getElementById('form-upi').style.display = 'block';
+        } else if (method === 'CREDIT_CARD' || method === 'DEBIT_CARD') {
+            document.getElementById('form-card').style.display = 'block';
+        } else if (method === 'NET_BANKING') {
+            document.getElementById('form-net-banking').style.display = 'block';
+        }
+    }
+    
+    // Set initial display
+    document.addEventListener('DOMContentLoaded', () => {
+        updateSimulatedFields(document.getElementById('select-payment-method').value);
+    });
+</script>
+{% endblock %}

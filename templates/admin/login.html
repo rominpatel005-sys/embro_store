@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}Admin Sign In | {{ store_settings.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-8 scroll-reveal">
+            <div class="glass-card spotlight-card p-5">
+                <div class="text-center mb-4">
+                    <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 2px;">System Control</span>
+                    <h2 class="text-luxury-title mt-1 mb-0">Admin Sign In</h2>
+                </div>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger bg-transparent border-danger text-danger small py-2 mb-4">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <strong>{{ field.label }}:</strong> {{ error }}<br>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{{ action }}">
+                    {% csrf_token %}
+                    
+                    {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    {% endif %}
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label for="id_username" class="small text-uppercase tracking-wider text-white mb-2">Username</label>
+                        <input type="text" name="username" id="id_username" class="form-control bg-transparent text-white border-secondary" placeholder="Enter admin username" required style="height: 48px;">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <label for="id_password" class="small text-uppercase tracking-wider text-white mb-0">Password</label>
+                            <a href="{% url 'accounts:password_reset' %}" class="small text-warning text-decoration-none" style="font-size:0.8rem;">Forgot?</a>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="id_password" class="form-control bg-transparent text-white border-secondary" placeholder="Enter admin password" required style="height: 48px; border-right: none;">
+                            <button type="button" class="btn border-secondary bg-transparent text-white" id="togglePassword" style="border-left: none; border-radius: 0 6px 6px 0;">
+                                <i class="far fa-eye" id="togglePasswordIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-3 mb-4">
+                        <button type="submit" class="btn btn-neon py-3" style="border-radius: 6px;">Sign In</button>
+                    </div>
+
+                    <div class="text-center small text-muted">
+                        Return to <a href="{% url 'products:home' %}" class="text-warning text-decoration-none">Home Page</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordInput = document.querySelector('#id_password');
+    const togglePasswordIcon = document.querySelector('#togglePasswordIcon');
+    
+    if (togglePassword && passwordInput && togglePasswordIcon) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            togglePasswordIcon.classList.toggle('fa-eye');
+            togglePasswordIcon.classList.toggle('fa-eye-slash');
+        });
+    }
+});
+</script>
+{% endblock %}

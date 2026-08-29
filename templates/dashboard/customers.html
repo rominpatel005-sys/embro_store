@@ -1,0 +1,58 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block title %}Manage Customers | {{ store_settings.store_name }}{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-5">
+    <h2 class="text-luxury-title mb-0">Manage Customers</h2>
+    <p class="text-muted small">View, block, or delete customer accounts.</p>
+</div>
+
+<div class="glass-card spotlight-card p-4">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover mb-0" style="--bs-table-bg: transparent; --bs-table-border-color: rgba(255,255,255,0.05);">
+            <thead>
+                <tr class="small text-muted text-uppercase">
+                    <th>Username</th>
+                    <th>Email Address</th>
+                    <th>Mobile</th>
+                    <th>Registered Date</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if customers %}
+                    {% for client in customers %}
+                        <tr style="vertical-align: middle;">
+                            <td class="small text-white fw-bold">@{{ client.username }}</td>
+                            <td class="small text-muted">{{ client.email }}</td>
+                            <td class="small text-muted">{{ client.profile.mobile|default:"-" }}</td>
+                            <td class="small text-muted">{{ client.date_joined|date:"M d, Y" }}</td>
+                            <td>
+                                {% if client.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Blocked</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <!-- Block / Unblock -->
+                                <a href="{% url 'dashboard:toggle_customer_status' client.id %}" class="btn btn-sm btn-neon-outline me-2 py-1" style="font-size:0.75rem;">
+                                    {% if client.is_active %}<i class="fas fa-ban me-1"></i> Block
+                                    {% else %}<i class="fas fa-check-circle me-1"></i> Unblock
+                                    {% endif %}
+                                </a>
+                                <!-- Delete -->
+                                <a href="{% url 'dashboard:delete_customer' client.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="return confirm('Are you sure you want to permanently delete customer account {{ client.username }}?')"><i class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="6" class="text-center text-muted py-5">No customers registered yet.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
