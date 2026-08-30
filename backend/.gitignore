@@ -1,0 +1,33 @@
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local databases
+db.sqlite3
+db.sqlite3-*
+*.sqlite3-journal
+
+# Django-generated files
+staticfiles/
+
+# Logs and local tooling
+*.log
+.DS_Store
+.idea/
+.vscode/
