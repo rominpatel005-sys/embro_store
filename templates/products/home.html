@@ -1,0 +1,830 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | {{ store_settings.store_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Cover Flow smooth cubic-bezier easing and perspective transitions */
+    .coverflow-item {
+        transition: filter 600ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+            opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .coverflow-item-reflection {
+        transition: filter 600ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+            opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    /* Floating animation for active coverflow item */
+    @keyframes coverflowFloat {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    .coverflow-item.active .coverflow-item-inner {
+        animation: coverflowFloat 4s ease-in-out infinite;
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.35), 0 0 25px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Disable transitions when dragging */
+    .coverflow-viewport.dragging .coverflow-item,
+    .coverflow-viewport.dragging .coverflow-item-reflection {
+        transition: none !important;
+    }
+
+    /* Premium exit/enter transitions for product details */
+    .hero-details-container {
+        transition: opacity 350ms cubic-bezier(0.25, 1, 0.5, 1),
+            transform 350ms cubic-bezier(0.25, 1, 0.5, 1);
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-details-container.details-updating {
+        opacity: 0;
+        transform: translateY(-15px);
+        /* Exit upwards */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 1. Premium Coverflow Hero Section -->
+<section class="premium-hero-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <!-- Left Column: 3D Coverflow Carousel -->
+            <div class="col-lg-6 order-1 order-lg-1">
+                <div class="coverflow-wrapper">
+                    <div class="coverflow-viewport" id="coverflow-viewport">
+                        <div class="coverflow-track" id="coverflow-track">
+                            {% for product in animated_products|slice:":9" %}
+                            <div class="coverflow-item" data-index="{{ forloop.index0 }}" data-name="{{ product.name }}"
+                                data-category="{{ product.category.name }}"
+                                data-price="{% if product.price|floatformat:0 == '350' or product.price|floatformat:0 == '370' or product.price|floatformat:0 == '490' or product.price|floatformat:0 == '300' %}Rs. {{ product.price|floatformat:0 }} /-{% else %}${{ product.price }}{% endif %}"
+                                data-description="{{ product.description }}" data-rating="{{ product.rating }}"
+                                data-rating-percentage="{{ product.rating_percentage }}" data-slug="{{ product.slug }}"
+                                data-id="{{ product.id }}" data-stock="{{ product.stock }}"
+                                data-sizes="{{ product.sizes }}" data-colors="{{ product.colors }}">
+                                <div class="coverflow-item-inner"
+                                    style="width: 100%; height: 100%; border-radius: inherit; overflow: hidden; position: relative;">
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                                        style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                                    <div class="showcase-card-glow"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%, rgba(0, 0, 0, 0.4) 100%); pointer-events: none; z-index: 2;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="coverflow-item-reflection" data-reflection-index="{{ forloop.index0 }}">
+                                <div class="coverflow-item-inner"
+                                    style="width: 100%; height: 100%; border-radius: inherit; overflow: hidden; position: relative;">
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }} reflection"
+                                        style="width: 100%; height: 370px; object-fit: cover; transform: translateY(-270px);"
+                                        draggable="false">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Carousel Controls -->
+                    <div class="coverflow-controls">
+                        <button class="coverflow-nav-btn" id="coverflow-prev-btn" aria-label="Previous Product">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="coverflow-counter text-secondary">
+                            <strong class="text-white" id="coverflow-active-index">1</strong> / <span
+                                id="coverflow-total-count">9</span>
+                        </span>
+                        <button class="coverflow-nav-btn" id="coverflow-next-btn" aria-label="Next Product">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Glassmorphic Details Card -->
+            <div class="col-lg-6 order-2 order-lg-2">
+                <div class="premium-hero-card">
+                    <div class="hero-details-container" id="hero-details-panel">
+                        <!-- Category & Stock Badge -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-uppercase tracking-widest text-warning fw-bold"
+                                style="font-size: 0.8rem; letter-spacing: 2px;" id="hero-category">Category</span>
+                            <span class="badge badge-stock in-stock" id="hero-stock-badge">In Stock</span>
+                        </div>
+
+                        <!-- Product Name -->
+                        <h1 class="font-serif text-white mb-3 display-6" id="hero-title" style="line-height: 1.2;">
+                            Product Name</h1>
+
+                        <!-- Rating & Stars -->
+                        <div class="mb-4 d-flex align-items-center gap-3">
+                            <div class="rating-stars-wrapper">
+                                <div class="stars-outer" style="font-size: 0.95rem;">
+                                    <div class="stars-inner" id="hero-rating-stars" style="width: 90%;"></div>
+                                </div>
+                                <span class="rating-text fw-bold text-white ms-1" id="hero-rating-val">(4.5)</span>
+                            </div>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-4">
+                            <span class="font-serif display-6 text-warning" id="hero-price">Rs. 490 /-</span>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-muted mb-4 lead-sm text-start" id="hero-description"
+                            style="font-size: 0.95rem; line-height: 1.6; min-height: 4.8em;">
+                            Product description.
+                        </p>
+
+                        <!-- Size Options -->
+                        <div class="mb-4 text-start">
+                            <span class="small text-muted d-block mb-2"
+                                style="font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;">Select
+                                Size</span>
+                            <div class="size-options-wrapper" id="hero-sizes-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Actions Buttons -->
+                        <div class="d-flex flex-wrap gap-3 pt-3 border-top border-secondary"
+                            style="border-color: rgba(255, 255, 255, 0.05) !important;">
+                            <a href="#" class="btn btn-gold-outline flex-grow-1 py-3 px-4" id="hero-view-link">
+                                <i class="fas fa-info-circle me-2"></i> View Details
+                            </a>
+                            <form action="" method="POST" id="hero-cart-form" class="ajax-cart-form flex-grow-1">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="1">
+                                <input type="hidden" name="size" id="hero-selected-size" value="M">
+                                <input type="hidden" name="color" id="hero-selected-color" value="Black">
+                                <button type="submit" class="btn btn-gold w-100 py-3 px-4" id="hero-cart-btn">
+                                    <i class="fas fa-shopping-cart me-2"></i> Add To Cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. Statistics Counter -->
+<section class="py-5" style="background-color: var(--bg-secondary); border-bottom: 1px solid var(--glass-border);">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4 col-sm-6 text-center">
+                <div class="stat-box">
+                    <div class="stat-number counter-number" data-target="{{ total_products|default:0 }}"
+                        data-suffix="+">0</div>
+                    <div class="stat-label">Luxury Styles</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
+                <div class="stat-box">
+                    <div class="stat-number counter-number" data-target="{{ total_users|default:0 }}" data-suffix="+">0
+                    </div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 text-center">
+                <div class="stat-box">
+                    <div class="stat-number counter-number" data-target="{{ total_orders|default:0 }}" data-suffix="+">0
+                    </div>
+                    <div class="stat-label">Orders Completed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- 3. Product Carousel Highlights -->
+<div class="container py-5 my-3">
+    <!-- Featured Section -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-uppercase small tracking-wider text-warning" style="letter-spacing: 2px;">Selected
+                    Picks</span>
+                <h2 class="text-luxury-title mt-1 mb-0">Featured Products</h2>
+            </div>
+            <a href="{% url 'products:product_list' %}" class="btn-neon-outline">View All</a>
+        </div>
+
+        <div class="row g-4">
+            {% if featured_products %}
+            {% for product in featured_products %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                {% include 'products/includes/product_card.html' %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 py-5 text-center text-muted border border-secondary border-dashed rounded">
+                <i class="fas fa-box-open mb-3 fs-3 text-warning"></i>
+                <p>No featured products added yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Trending Section -->
+    <section class="mb-5 py-5 border-top border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-uppercase small tracking-wider text-warning" style="letter-spacing: 2px;">Worn by
+                    Creators</span>
+                <h2 class="text-luxury-title mt-1 mb-0">Trending Now</h2>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% if trending_products %}
+            {% for product in trending_products %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                {% include 'products/includes/product_card.html' %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 py-5 text-center text-muted">Products will display here once added.</div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Latest Collection banner (Visual Split) -->
+    <section class="mb-5 py-5">
+        <div class="glass-card spotlight-card p-5" style="border-radius: 20px;">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="text-warning text-uppercase small tracking-widest d-block mb-2"
+                        style="letter-spacing: 3px;">The Atelier</span>
+                    <h2 class="font-serif display-4 mb-4" style="line-height: 1.2;">AUTHENTIC TAILORING, URBAN VIBES
+                    </h2>
+                    <p class="text-muted mb-5 lead">Designed for individuals who demand both comfort and sophistication.
+                        Embro Store bridges luxury fabrication with durable street essentials.</p>
+                    <div class="d-flex gap-3">
+                        <a href="{% url 'products:product_list' %}" class="btn btn-neon">Explore New Arrivals</a>
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'products:custom_design' %}" class="btn btn-neon-outline">Custom</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-3 border border-secondary rounded"
+                        style="background: linear-gradient(135deg, #1c1a22 0%, #0a0a0c 100%); text-align: center;">
+                        <i class="fas fa-crown display-1 text-warning my-5 opacity-50"></i>
+                        <h4 class="font-serif">Embro Atelier Collection</h4>
+                        <p class="small text-muted mb-4">New items dropping weekly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Reviews Section -->
+    <section class="mb-5 py-5 border-top border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+        <div class="text-center mb-5">
+            <span class="text-warning text-uppercase small tracking-widest" style="letter-spacing: 3px;">VOICES</span>
+            <h2 class="text-luxury-title mt-2">What Our Customers Say</h2>
+        </div>
+
+        <div class="row g-4">
+            {% if customer_reviews %}
+            {% for review in customer_reviews %}
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-card spotlight-card h-100">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        {% if review.profile_image %}
+                        <img src="{{ review.profile_image.url }}" alt="{{ review.user.username }}"
+                            class="rounded-circle border border-warning"
+                            style="width: 50px; height: 50px; object-fit: cover;">
+                        {% else %}
+                        <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold"
+                            style="width: 50px; height: 50px; font-size: 1.1rem;">
+                            {{ review.user.username|slice:":1"|upper }}
+                        </div>
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-0">{{ review.user.username }}</h6>
+                            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="stars-outer">
+                            <div class="stars-inner" data-width="{{ review.rating_percentage }}"></div>
+                        </div>
+                    </div>
+
+                    <p class="text-muted small italic-style">"{{ review.comment }}"</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 py-5 text-center text-muted">
+                <p class="small">No approved reviews yet. Reviews submitted by logged-in users show here once approved
+                    by an administrator.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // ==========================================
+    // Premium Coverflow Hero Carousel Controller
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const viewport = document.getElementById('coverflow-viewport');
+        const track = document.getElementById('coverflow-track');
+        const cards = document.querySelectorAll('.coverflow-item');
+        const reflections = document.querySelectorAll('.coverflow-item-reflection');
+
+        if (!viewport || cards.length === 0) return;
+
+        const totalItems = cards.length;
+        let currentProgress = 0;
+        let targetProgress = 0;
+        let currentActiveIndex = 0;
+        let animationFrameId = null;
+        let autoplayTimer = null;
+
+        // Spacing configuration based on window width
+        function getSpacing() {
+            const width = window.innerWidth;
+            if (width < 576) return 95;
+            if (width < 992) return 120;
+            return 155;
+        }
+
+        // Linear interpolation
+        function lerp(a, b, t) {
+            return a + (b - a) * t;
+        }
+
+        // Update card transformations in 3D space
+        function updateCards() {
+            const spacing = getSpacing();
+            const half = totalItems / 2;
+
+            cards.forEach((card, idx) => {
+                let diff = idx - currentProgress;
+
+                // Wrap diff for infinite loop
+                while (diff > half) diff -= totalItems;
+                while (diff < -half) diff += totalItems;
+
+                let absDiff = Math.abs(diff);
+                let sign = diff < 0 ? -1 : 1;
+
+                let translateX = 0;
+                let rotateY = 0;
+                let translateZ = 0;
+                let scale = 1;
+                let opacity = 1;
+                let blurVal = 0;
+                let zIndex = Math.round(100 - absDiff * 10);
+
+                if (absDiff <= 1) {
+                    let t = absDiff;
+                    translateX = lerp(0, sign * spacing, t);
+                    translateZ = lerp(50, -150, t);
+                    rotateY = lerp(0, sign * -40, t);
+                    scale = lerp(1.08, 0.85, t);
+                    opacity = lerp(1.0, 0.4, t);
+                    blurVal = lerp(0, 8, t);
+                } else {
+                    let t = Math.min(1, absDiff - 1);
+                    translateX = lerp(sign * spacing, sign * (spacing * 1.5), t);
+                    translateZ = lerp(-150, -220, t);
+                    rotateY = lerp(sign * -40, sign * -40, t);
+                    scale = lerp(0.85, 0.8, t);
+                    opacity = lerp(0.4, 0.35, t);
+                    blurVal = lerp(8, 10, t);
+                }
+
+                // Apply inline style rules
+                card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) scale(${scale}) rotateY(${rotateY}deg)`;
+                card.style.opacity = opacity;
+                card.style.filter = `blur(${blurVal}px)`;
+                card.style.zIndex = zIndex;
+
+                if (absDiff < 0.1) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+
+                // Update reflection card
+                const reflection = reflections[idx];
+                if (reflection) {
+                    reflection.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) scale(${scale}) rotateY(${rotateY}deg) rotateX(180deg)`;
+                    reflection.style.opacity = opacity * 0.15;
+                    reflection.style.filter = `blur(${blurVal + 2}px)`;
+                    reflection.style.zIndex = zIndex;
+                    if (absDiff < 0.1) {
+                        reflection.classList.add('active');
+                    } else {
+                        reflection.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        function startTransitionTo(targetIndex) {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+
+            targetIndex = (targetIndex % totalItems + totalItems) % totalItems;
+            targetProgress = targetIndex;
+            currentProgress = targetProgress;
+
+            updateCards();
+            updateActiveProductDetails(targetProgress);
+        }
+
+        // Update active product details container on the right
+        function updateActiveProductDetails(targetIndex) {
+            if (targetIndex === currentActiveIndex) return;
+            currentActiveIndex = targetIndex;
+
+            const detailsPanel = document.getElementById('hero-details-panel');
+            if (!detailsPanel) return;
+
+            // Trigger fade & slide out class
+            detailsPanel.classList.add('details-updating');
+
+            const targetCard = cards[targetIndex];
+            if (!targetCard) return;
+
+            const name = targetCard.getAttribute('data-name');
+            const category = targetCard.getAttribute('data-category');
+            const price = targetCard.getAttribute('data-price');
+            const desc = targetCard.getAttribute('data-description');
+            const rating = targetCard.getAttribute('data-rating');
+            const ratingPct = targetCard.getAttribute('data-rating-percentage');
+            const slug = targetCard.getAttribute('data-slug');
+            const pId = targetCard.getAttribute('data-id');
+            const stock = parseInt(targetCard.getAttribute('data-stock') || '0', 10);
+            const sizes = targetCard.getAttribute('data-sizes') || 'S,M,L,XL';
+
+            // Populate text content after transition fade-out duration (180ms)
+            setTimeout(() => {
+                document.getElementById('hero-title').textContent = name;
+                document.getElementById('hero-category').textContent = category;
+                document.getElementById('hero-price').textContent = price;
+                document.getElementById('hero-description').textContent = desc;
+                document.getElementById('hero-rating-val').textContent = `(${rating})`;
+
+                const ratingStars = document.getElementById('hero-rating-stars');
+                if (ratingStars) {
+                    ratingStars.style.width = ratingPct + '%';
+                }
+
+                const stockBadge = document.getElementById('hero-stock-badge');
+                if (stockBadge) {
+                    if (stock > 0) {
+                        stockBadge.textContent = 'In Stock';
+                        stockBadge.className = 'badge badge-stock in-stock';
+                    } else {
+                        stockBadge.textContent = 'Out of Stock';
+                        stockBadge.className = 'badge badge-stock out-of-stock';
+                    }
+                }
+
+                const sizesContainer = document.getElementById('hero-sizes-container');
+                if (sizesContainer) {
+                    sizesContainer.innerHTML = '';
+                    const sizeList = sizes.split(',');
+                    sizeList.forEach((size, idx) => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'size-option-btn' + (idx === 0 ? ' selected' : '');
+                        btn.textContent = size.trim();
+                        btn.addEventListener('click', () => {
+                            sizesContainer.querySelectorAll('.size-option-btn').forEach(b => b.classList.remove('selected'));
+                            btn.classList.add('selected');
+                            document.getElementById('hero-selected-size').value = size.trim();
+                        });
+                        sizesContainer.appendChild(btn);
+                    });
+                    if (sizeList.length > 0) {
+                        document.getElementById('hero-selected-size').value = sizeList[0].trim();
+                    }
+                }
+
+                const viewLink = document.getElementById('hero-view-link');
+                if (viewLink) {
+                    viewLink.href = `/product/${slug}/`;
+                }
+
+                const cartForm = document.getElementById('hero-cart-form');
+                if (cartForm) {
+                    cartForm.action = `/cart/add/${pId}/`;
+                }
+
+                const counterActive = document.getElementById('coverflow-active-index');
+                if (counterActive) {
+                    counterActive.textContent = targetIndex + 1;
+                }
+
+                // Premium entrance animation logic (slide up from bottom)
+                detailsPanel.style.transition = 'none';
+                detailsPanel.style.transform = 'translateY(15px)';
+                detailsPanel.offsetHeight; // force reflow
+                detailsPanel.style.transition = '';
+                detailsPanel.classList.remove('details-updating');
+                detailsPanel.style.transform = '';
+            }, 180);
+        }
+
+        // Drag & Swipe physics implementation
+        let isDragging = false;
+        let startX = 0;
+        let startProgress = 0;
+        let velocity = 0;
+        let lastX = 0;
+        let lastTime = 0;
+
+        function handleDragStart(clientX) {
+            isDragging = true;
+            viewport.classList.add('dragging');
+            startX = clientX;
+            startProgress = currentProgress;
+            lastX = clientX;
+            lastTime = performance.now();
+            velocity = 0;
+
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            stopAutoplay();
+        }
+
+        function handleDragMove(clientX) {
+            if (!isDragging) return;
+            const deltaX = clientX - startX;
+            const width = viewport.clientWidth || 500;
+            const progressOffset = -deltaX / (width * 0.75); // speed tuning
+
+            currentProgress = startProgress + progressOffset;
+            currentProgress = (currentProgress % totalItems + totalItems) % totalItems;
+
+            const now = performance.now();
+            const dt = now - lastTime;
+            if (dt > 0) {
+                velocity = -(clientX - lastX) / dt;
+            }
+            lastX = clientX;
+            lastTime = now;
+
+            updateCards();
+        }
+
+        function handleDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            viewport.classList.remove('dragging');
+
+            let snapIndex = Math.round(currentProgress);
+
+            // Add momentum based push
+            if (Math.abs(velocity) > 0.15) {
+                snapIndex = velocity > 0 ? Math.ceil(currentProgress) : Math.floor(currentProgress);
+            }
+
+            startTransitionTo(snapIndex);
+            updateActiveProductDetails((snapIndex % totalItems + totalItems) % totalItems);
+            startAutoplay();
+        }
+
+        // Mouse events binding
+        viewport.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            handleDragStart(e.clientX);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                handleDragMove(e.clientX);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                handleDragEnd();
+            }
+        });
+
+        // Touch events binding
+        viewport.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                handleDragStart(e.touches[0].clientX);
+            }
+        }, { passive: true });
+
+        viewport.addEventListener('touchmove', (e) => {
+            if (isDragging && e.touches.length === 1) {
+                e.preventDefault();
+                handleDragMove(e.touches[0].clientX);
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('touchend', () => {
+            if (isDragging) {
+                handleDragEnd();
+            }
+        });
+
+        // Cards click to focus binding
+        cards.forEach((card, idx) => {
+            card.addEventListener('click', () => {
+                if (!isDragging && idx !== currentActiveIndex) {
+                    startTransitionTo(idx);
+                    updateActiveProductDetails(idx);
+                }
+            });
+        });
+
+        // Controls binding
+        const prevBtn = document.getElementById('coverflow-prev-btn');
+        const nextBtn = document.getElementById('coverflow-next-btn');
+        const totalCountSpan = document.getElementById('coverflow-total-count');
+
+        if (totalCountSpan) {
+            totalCountSpan.textContent = totalItems;
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                const target = (currentActiveIndex - 1 + totalItems) % totalItems;
+                startTransitionTo(target);
+                updateActiveProductDetails(target);
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                const target = (currentActiveIndex + 1) % totalItems;
+                startTransitionTo(target);
+                updateActiveProductDetails(target);
+            });
+        }
+
+        // Mouse Wheel support
+        let wheelTimeout = null;
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+
+            if (wheelTimeout) return;
+
+            const direction = e.deltaY > 0 ? 1 : -1;
+            const target = (currentActiveIndex + direction + totalItems) % totalItems;
+
+            startTransitionTo(target);
+            updateActiveProductDetails(target);
+
+            wheelTimeout = setTimeout(() => {
+                wheelTimeout = null;
+            }, 300);
+        }, { passive: false });
+
+        // Keyboard bindings
+        document.addEventListener('keydown', (e) => {
+            const rect = viewport.getBoundingClientRect();
+            const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            if (!inViewport) return;
+
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const target = (currentActiveIndex - 1 + totalItems) % totalItems;
+                startTransitionTo(target);
+                updateActiveProductDetails(target);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                const target = (currentActiveIndex + 1) % totalItems;
+                startTransitionTo(target);
+                updateActiveProductDetails(target);
+            }
+        });
+
+        // Autoplay bindings
+        function startAutoplay() {
+            stopAutoplay();
+            autoplayTimer = setInterval(() => {
+                const target = (currentActiveIndex + 1) % totalItems;
+                startTransitionTo(target);
+                updateActiveProductDetails(target);
+            }, 5000);
+        }
+
+        // Resize behavior support
+        window.addEventListener('resize', () => {
+            updateCards();
+        });
+
+        function stopAutoplay() {
+            if (autoplayTimer) {
+                clearInterval(autoplayTimer);
+                autoplayTimer = null;
+            }
+        }
+
+        viewport.addEventListener('mouseenter', stopAutoplay);
+        viewport.addEventListener('mouseleave', startAutoplay);
+
+        // Initialize Layout & Active Product Details
+        updateCards();
+
+        const initialCard = cards[0];
+        if (initialCard) {
+            const name = initialCard.getAttribute('data-name');
+            const category = initialCard.getAttribute('data-category');
+            const price = initialCard.getAttribute('data-price');
+            const desc = initialCard.getAttribute('data-description');
+            const rating = initialCard.getAttribute('data-rating');
+            const ratingPct = initialCard.getAttribute('data-rating-percentage');
+            const slug = initialCard.getAttribute('data-slug');
+            const pId = initialCard.getAttribute('data-id');
+            const stock = parseInt(initialCard.getAttribute('data-stock') || '0', 10);
+            const sizes = initialCard.getAttribute('data-sizes') || 'S,M,L,XL';
+
+            document.getElementById('hero-title').textContent = name;
+            document.getElementById('hero-category').textContent = category;
+            document.getElementById('hero-price').textContent = price;
+            document.getElementById('hero-description').textContent = desc;
+            document.getElementById('hero-rating-val').textContent = `(${rating})`;
+
+            const ratingStars = document.getElementById('hero-rating-stars');
+            if (ratingStars) {
+                ratingStars.style.width = ratingPct + '%';
+            }
+
+            const stockBadge = document.getElementById('hero-stock-badge');
+            if (stockBadge) {
+                if (stock > 0) {
+                    stockBadge.textContent = 'In Stock';
+                    stockBadge.className = 'badge badge-stock in-stock';
+                } else {
+                    stockBadge.textContent = 'Out of Stock';
+                    stockBadge.className = 'badge badge-stock out-of-stock';
+                }
+            }
+
+            const sizesContainer = document.getElementById('hero-sizes-container');
+            if (sizesContainer) {
+                sizesContainer.innerHTML = '';
+                const sizeList = sizes.split(',');
+                sizeList.forEach((size, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'size-option-btn' + (idx === 0 ? ' selected' : '');
+                    btn.textContent = size.trim();
+                    btn.addEventListener('click', () => {
+                        sizesContainer.querySelectorAll('.size-option-btn').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        document.getElementById('hero-selected-size').value = size.trim();
+                    });
+                    sizesContainer.appendChild(btn);
+                });
+                if (sizeList.length > 0) {
+                    document.getElementById('hero-selected-size').value = sizeList[0].trim();
+                }
+            }
+
+            const viewLink = document.getElementById('hero-view-link');
+            if (viewLink) {
+                viewLink.href = `/product/${slug}/`;
+            }
+
+            const cartForm = document.getElementById('hero-cart-form');
+            if (cartForm) {
+                cartForm.action = `/cart/add/${pId}/`;
+            }
+        }
+
+        // Start initial autoplay
+        startAutoplay();
+    });
+</script>
+{% endblock %}
