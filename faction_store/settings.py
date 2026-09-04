@@ -17,11 +17,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-SECRET_KEY = 'django-insecure-e$wjl!!^=lq3uvsrktfffiy7py#t*6nb*cl58%+3o)1nl1tao@'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'dev-only-secret-key-change-before-production',
+)
 
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'DJANGO_ALLOWED_HOSTS',
+        'localhost,127.0.0.1,.vercel.app',
+    ).split(',')
+    if host.strip()
+]
 
 
 # Application definition
@@ -48,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,7 +91,10 @@ WSGI_APPLICATION = 'faction_store.wsgi.application'
 
 
 # Database Configuration
-# Tries to connect to MySQL database. If connection fails, falls back to SQLite.
+# Turso is preferred in production. MySQL remains available for existing setups,
+# and local development falls back to SQLite.
+TURSO_DATABASE_URL = os.environ.get('TURSO_DATABASE_URL', '').strip()
+TURSO_AUTH_TOKEN = os.environ.get('TURSO_AUTH_TOKEN', '').strip()
 USE_MYSQL = False
 DB_HOST = os.environ.get('DB_HOST', '127.0.0.1')
 DB_USER = os.environ.get('DB_USER', 'root')
@@ -88,21 +102,17 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
 DB_NAME = os.environ.get('DB_NAME', 'db.sqlite3_db')
 DB_PORT = int(os.environ.get('DB_PORT', '3306'))
 
-try:
-    conn = pymysql.connect(
-        host=DB_HOST,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME,
-        port=DB_PORT,
-        connect_timeout=2
-    )
-    conn.close()
-    USE_MYSQL = True
-except Exception:
-    USE_MYSQL = False
-
-if USE_MYSQL:
+if TURSO_DATABASE_URL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django_libsql',
+            'NAME': TURSO_DATABASE_URL,
+            'AUTH_TOKEN': TURSO_AUTH_TOKEN,
+            'OPTIONS': {'timeout': 30},
+            'CONN_MAX_AGE': 0,
+        }
+    }
+elif os.environ.get('DB_ENGINE', '').lower() == 'mysql':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -116,7 +126,6 @@ if USE_MYSQL:
             }
         }
     }
-    print("Database status: Connected to MySQL.")
 else:
     DATABASES = {
         'default': {
@@ -124,7 +133,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    print("Database status: MySQL connection failed or db not setup. Falling back to SQLite.")
 
 
 # Password validation
@@ -155,12 +163,25 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 
 # Media files (Uploaded images/profile pictures)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Custom Authentication Settings
 LOGIN_URL = 'accounts:login'
@@ -170,4 +191,3 @@ LOGOUT_REDIRECT_URL = 'products:home'
 # Console Email Backend for local development (Password Resets, Email Verification)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'support@embrostore.com'
-

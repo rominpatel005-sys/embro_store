@@ -4,6 +4,7 @@ node_modules/
 out/
 build/
 coverage/
+staticfiles/
 
 # Package manager and debug logs
 npm-debug.log*
