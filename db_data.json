@@ -808,7 +808,7 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$urCBDM6cratjeEuqRMSMRo$PGJPROG1t2xXK0I7JOgXl/eunds8Kds1O6a/JF6315A=",
+        "password": "pbkdf2_sha256$1200000$pPgn2TB0B1NUQGtUJedEje$lPPAS8mHyDUXY6XOx6b2/4GH+Gzz/mMB3HEr46mQmHk=",
         "last_login": "2026-08-05T10:27:54.165Z",
         "is_superuser": true,
         "username": "admin",
@@ -880,7 +880,7 @@
     "model": "auth.user",
     "pk": 20,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$IepnCNKvAGyXMdzvS2glrW$6KzNdrxb13XvkZuY1K4ek5J6PMmlO+vEoXVcqTdF4kE=",
+        "password": "pbkdf2_sha256$1200000$kfmu7y5o9VYooxfcu7kpEo$/X/RFDjkAm81Ii6hei6vSBKzr6S0c6DsKptrs6uNm+c=",
         "last_login": "2026-09-04T10:41:19.613Z",
         "is_superuser": true,
         "username": "embro",
