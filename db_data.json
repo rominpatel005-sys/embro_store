@@ -808,13 +808,13 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$lia1TawMaU5WEG9g7KbS9c$4Hx8LjGNK3ohLCS0mXSYrrQZO5UKQ+44Glq3Zfo2qG8=",
-        "last_login": "2026-07-14T03:38:50.080Z",
+        "password": "pbkdf2_sha256$1200000$pPgn2TB0B1NUQGtUJedEje$lPPAS8mHyDUXY6XOx6b2/4GH+Gzz/mMB3HEr46mQmHk=",
+        "last_login": "2026-08-05T10:27:54.165Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
         "last_name": "",
-        "email": "admin@factionstore.com",
+        "email": "admin@embrostore.com",
         "is_staff": true,
         "is_active": true,
         "date_joined": "2026-06-20T08:28:12.195Z",
@@ -860,18 +860,36 @@
 },
 {
     "model": "auth.user",
-    "pk": 16,
+    "pk": 19,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$SJ3YtUOIV2gCjBOqKGKq3S$hj+z72RXEFT0pGY0dsQb2N9fYOeCpQGubngGObeebgc=",
-        "last_login": "2026-07-15T04:30:42.039Z",
-        "is_superuser": false,
-        "username": "ROMIN9237",
-        "first_name": "romin",
-        "last_name": "patel",
-        "email": "rominpatel540@gmail.com",
-        "is_staff": false,
+        "password": "pbkdf2_sha256$1200000$E2GmuaHQFFQQXA6H6riqIL$QMUhS8eINoQeESaWlq5a36XD39Ht313s0V4aHySAXig=",
+        "last_login": "2026-08-27T03:46:44.862Z",
+        "is_superuser": true,
+        "username": "emro",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
         "is_active": true,
-        "date_joined": "2026-07-14T03:37:17.757Z",
+        "date_joined": "2026-08-27T03:42:54.470Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 20,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$kfmu7y5o9VYooxfcu7kpEo$/X/RFDjkAm81Ii6hei6vSBKzr6S0c6DsKptrs6uNm+c=",
+        "last_login": "2026-09-04T10:41:19.613Z",
+        "is_superuser": true,
+        "username": "embro",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-09-04T10:25:29.238Z",
         "groups": [],
         "user_permissions": []
     }
@@ -1062,10 +1080,58 @@
 },
 {
     "model": "sessions.session",
-    "pk": "mbup3mi78uo4apk3a3ggmzs7lg74kpvf",
+    "pk": "4fsgxcsfqbe1h5g24ivrwjbcp9ci5omh",
     "fields": {
-        "session_data": ".eJxVjMsOgjAQAP9lz6ahXfri6N1vaLbdxaIGEgon478bEg56nZnMGxLtW017kzVNDANoB5dfmKk8ZT4MP2i-L6os87ZOWR2JOm1Tt4XldT3bv0GlVmGAsaD10eXMzpEOuYtsLIUghCg9ZvHMxmMJHEh6wdgZQWu1HV0Jplj4fAEZhzhG:1wjrGc:ByBDjqO41iDCTpo_si76GB6dLBn8W4wUFLVLX33V4FA",
-        "expire_date": "2026-07-29T04:30:42.072Z"
+        "session_data": ".eJxVjEsOwiAUAO_C2hA-7QNcuu8ZCPAeUjWQlHZlvLsh6UK3M5N5Mx-Ovfij0-ZXZFemBLv8whjSk-ow-Aj13nhqdd_WyEfCT9v50pBet7P9G5TQy_hmRUkrCMmQMw61zdpBFCYCagGWyOZ5mjIIhCjBZAFSQAYzozQxAft8AQRtN74:1x2RMF:Axg-nOiw8oxl8WWnaHLezU9LdszZwu4YitmQuexxHKg",
+        "expire_date": "2026-09-18T10:41:19.642Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "5vspdbh3dtfq4x7kczpom3vxagtpapi3",
+    "fields": {
+        "session_data": ".eJxVjEsOwiAUAO_C2hA-7QNcuu8ZCPAeUjWQlHZlvLsh6UK3M5N5Mx-Ovfij0-ZXZFemBLv8whjSk-ow-Aj13nhqdd_WyEfCT9v50pBet7P9G5TQy_hmRUkrCMmQMw61zdpBFCYCagGWyOZ5mjIIhCjBZAFSQAYzozQxAft8AQRtN74:1x2RL5:lc3i8c_wYqWSFT6RkX0eEOmZhsRNftFxxaJptMIxkPU",
+        "expire_date": "2026-09-18T10:40:07.024Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "dh31j0bbkloj2n0x1uiurmsmzfb6cyec",
+    "fields": {
+        "session_data": ".eJxVjEEKwyAQAP-y5yLGjaI59t43iLuuNW0xEJNT6d9LIIf2OjPMG2Latxr3LmucM0wwBLj8Qkr8lHaY_Ejtvihe2rbOpI5Enbar25LldT3bv0FNvcIEYhxbHrQ4ZkLn0FIJkryMOmXrsGQywWMoaLmMJnhCzt4iG8eBNMHnCyLyOKQ:1wzR4e:FecB6UiwrDz4vmN9r6kSZbBBgxis3fan34K0wSaHL6s",
+        "expire_date": "2026-09-10T03:46:44.893Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "dzyukj4tcx5wy6sm4yddapnw6zl3rky6",
+    "fields": {
+        "session_data": ".eJxVjMsKwjAQAP9lzyW4TdMmPXr3C0RCkt211ZJCH4qI_y6FHvQ6M8wbfFiXzq8zT74naAEbKH5hDOnOeTN0C_k6qjTmZeqj2hK121mdRuLhuLd_gy7MHbQQG7GkrXESpNZiDVqSErHS0TXGOstMFTkiTK6UiCisyQlXwZT6kCIUMHHivAwv_-j5yQTtGesC3eXzBVR8QWE:1wmmbV:NeW2f4dzd04h6MCuWDQODg1-BQMNlv8jBZ9-tzy40Zg",
+        "expire_date": "2026-08-06T06:08:21.458Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "nlxiquw45xvodv49t4gfv6zmafmxuxx7",
+    "fields": {
+        "session_data": ".eJxVjEsOwiAUAO_C2hA-7QNcuu8ZCPAeUjWQlHZlvLsh6UK3M5N5Mx-Ovfij0-ZXZFemBLv8whjSk-ow-Aj13nhqdd_WyEfCT9v50pBet7P9G5TQy_hmRUkrCMmQMw61zdpBFCYCagGWyOZ5mjIIhCjBZAFSQAYzozQxAft8AQRtN74:1x2RK8:CQCR2MXYS6jS6IKnddFhO09e7jM6nXpLGb10ZhcUVLk",
+        "expire_date": "2026-09-18T10:39:08.992Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "qx5zb9o932fygpr38k6lt5gqmxxedq5h",
+    "fields": {
+        "session_data": ".eJxVjEEKwyAQAP-y5yLGjaI59t43iLuuNW0xEJNT6d9LIIf2OjPMG2Latxr3LmucM0wwBLj8Qkr8lHaY_Ejtvihe2rbOpI5Enbar25LldT3bv0FNvcIEYhxbHrQ4ZkLn0FIJkryMOmXrsGQywWMoaLmMJnhCzt4iG8eBNMHnCyLyOKQ:1wzR4d:kQcyvopljvwiSCKoRc5UjnMWtmwZTiU15lKbDH2GpFI",
+        "expire_date": "2026-09-10T03:46:43.681Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "toumzz3u235j0vsjuish6uzp39cw56m8",
+    "fields": {
+        "session_data": ".eJxVjDEOgzAMAP_iuYpiiB1g7N43ICc2hbYCicBU9e8VEkO73p3uDb3s29jvxdZ-UugAG7j8wiT5afNh9CHzfXF5mbd1Su5I3GmLuy1qr-vZ_g1GKSN0ID5gjsFYmsCcCJOxN_KNVeg5DbGKdWCSlpCyJtRIWnOgWqQdUAf4fAHvxDeg:1wrYse:4_Jp3_hGdrtRyynGFJOk6eUT5lvNnfdtqGdbYDMIqIg",
+        "expire_date": "2026-08-19T10:29:48.422Z"
     }
 },
 {
@@ -1112,10 +1178,24 @@
 },
 {
     "model": "accounts.userprofile",
-    "pk": 17,
+    "pk": 20,
     "fields": {
-        "user": 16,
-        "mobile": "1234567890",
+        "user": 19,
+        "mobile": null,
+        "address": null,
+        "state": null,
+        "city": null,
+        "pincode": null,
+        "profile_image": "",
+        "email_verified": false
+    }
+},
+{
+    "model": "accounts.userprofile",
+    "pk": 21,
+    "fields": {
+        "user": 20,
+        "mobile": null,
         "address": null,
         "state": null,
         "city": null,
@@ -1612,15 +1692,6 @@
 },
 {
     "model": "accounts.userloginhistory",
-    "pk": 255,
-    "fields": {
-        "user": 16,
-        "timestamp": "2026-07-14T03:37:21.654Z",
-        "ip_address": "127.0.0.1"
-    }
-},
-{
-    "model": "accounts.userloginhistory",
     "pk": 256,
     "fields": {
         "user": 1,
@@ -1630,10 +1701,64 @@
 },
 {
     "model": "accounts.userloginhistory",
-    "pk": 257,
+    "pk": 261,
     "fields": {
-        "user": 16,
-        "timestamp": "2026-07-15T04:30:42.020Z",
+        "user": 1,
+        "timestamp": "2026-08-05T10:27:54.143Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 263,
+    "fields": {
+        "user": 19,
+        "timestamp": "2026-08-27T03:43:36.717Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 265,
+    "fields": {
+        "user": 19,
+        "timestamp": "2026-08-27T03:46:42.681Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 266,
+    "fields": {
+        "user": 19,
+        "timestamp": "2026-08-27T03:46:44.847Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 267,
+    "fields": {
+        "user": 20,
+        "timestamp": "2026-09-04T10:39:08.931Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 268,
+    "fields": {
+        "user": 20,
+        "timestamp": "2026-09-04T10:40:06.982Z",
+        "ip_address": "127.0.0.1"
+    }
+},
+{
+    "model": "accounts.userloginhistory",
+    "pk": 269,
+    "fields": {
+        "user": 20,
+        "timestamp": "2026-09-04T10:41:19.602Z",
         "ip_address": "127.0.0.1"
     }
 },
@@ -1737,7 +1862,7 @@
         "price": "49.99",
         "discount_price": "39.99",
         "category": 2,
-        "brand": "Faction Premium",
+        "brand": "Embro Premium",
         "stock": 25,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1757,7 +1882,7 @@
         "price": "79.99",
         "discount_price": null,
         "category": 3,
-        "brand": "Faction Street",
+        "brand": "Embro Street",
         "stock": 15,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1777,7 +1902,7 @@
         "price": "119.99",
         "discount_price": "99.99",
         "category": 4,
-        "brand": "Faction Denim",
+        "brand": "Embro Denim",
         "stock": 12,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1797,7 +1922,7 @@
         "price": "89.99",
         "discount_price": null,
         "category": 5,
-        "brand": "Faction Denim",
+        "brand": "Embro Denim",
         "stock": 30,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1817,7 +1942,7 @@
         "price": "24.99",
         "discount_price": "19.99",
         "category": 1,
-        "brand": "Faction Basics",
+        "brand": "Embro Basics",
         "stock": 50,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1837,7 +1962,7 @@
         "price": "29.99",
         "discount_price": null,
         "category": 6,
-        "brand": "Faction Studio",
+        "brand": "Embro Studio",
         "stock": 40,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1857,7 +1982,7 @@
         "price": "69.99",
         "discount_price": "59.99",
         "category": 7,
-        "brand": "Faction Studio",
+        "brand": "Embro Studio",
         "stock": 18,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1877,7 +2002,7 @@
         "price": "59.99",
         "discount_price": "49.99",
         "category": 8,
-        "brand": "Faction Basics",
+        "brand": "Embro Basics",
         "stock": 22,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1897,7 +2022,7 @@
         "price": "99.99",
         "discount_price": null,
         "category": 10,
-        "brand": "Faction Denim",
+        "brand": "Embro Denim",
         "stock": 20,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1917,7 +2042,7 @@
         "price": "149.99",
         "discount_price": "129.99",
         "category": 9,
-        "brand": "Faction Premium",
+        "brand": "Embro Premium",
         "stock": 8,
         "rating": "0.00",
         "image": "products/default.jpg",
@@ -1937,14 +2062,14 @@
         "price": "490.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Premium",
-        "stock": 15,
+        "brand": "Embro Premium",
+        "stock": 13,
         "rating": "4.80",
         "image": "products/elephant_black.png",
         "sizes": "S,M,L,XL",
         "colors": "Black,White,Cream,Maroon,Brown",
         "created_at": "2026-06-21T06:29:50.508Z",
-        "updated_at": "2026-06-24T10:03:21.335Z"
+        "updated_at": "2026-08-27T03:45:34.908Z"
     }
 },
 {
@@ -1957,7 +2082,7 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Basics",
+        "brand": "Embro Basics",
         "stock": 15,
         "rating": "4.50",
         "image": "products/tropical_palms_brown.png",
@@ -1977,14 +2102,14 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Street",
-        "stock": 15,
+        "brand": "Embro Street",
+        "stock": 13,
         "rating": "4.70",
         "image": "products/marvel_icons_cream.png",
         "sizes": "S,M,L,XL",
         "colors": "Black,White,Cream,Maroon,Brown",
         "created_at": "2026-06-21T06:29:50.540Z",
-        "updated_at": "2026-06-24T10:03:21.358Z"
+        "updated_at": "2026-08-05T10:23:49.976Z"
     }
 },
 {
@@ -1997,7 +2122,7 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Basics",
+        "brand": "Embro Basics",
         "stock": 15,
         "rating": "4.60",
         "image": "products/snoopy_maroon.png",
@@ -2017,7 +2142,7 @@
         "price": "370.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Premium",
+        "brand": "Embro Premium",
         "stock": 15,
         "rating": "4.90",
         "image": "products/royal_enfield_cream.png",
@@ -2037,7 +2162,7 @@
         "price": "300.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Street",
+        "brand": "Embro Street",
         "stock": 15,
         "rating": "4.40",
         "image": "products/majestic_stag_black.png",
@@ -2057,7 +2182,7 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Street",
+        "brand": "Embro Street",
         "stock": 15,
         "rating": "4.70",
         "image": "products/marvel_team_cream.png",
@@ -2077,7 +2202,7 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Basics",
+        "brand": "Embro Basics",
         "stock": 15,
         "rating": "4.50",
         "image": "products/tropical_palms_espresso.png",
@@ -2097,7 +2222,7 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Street",
+        "brand": "Embro Street",
         "stock": 14,
         "rating": "4.60",
         "image": "products/forest_deer_black.png",
@@ -2117,7 +2242,7 @@
         "price": "350.00",
         "discount_price": null,
         "category": 1,
-        "brand": "Faction Premium",
+        "brand": "Embro Premium",
         "stock": 15,
         "rating": "4.90",
         "image": "products/running_stallion_black.png",
@@ -2158,403 +2283,14 @@
     }
 },
 {
-    "model": "cart.cart",
-    "pk": 4,
-    "fields": {
-        "user": 16,
-        "session_key": null,
-        "created_at": "2026-07-14T03:37:35.015Z",
-        "updated_at": "2026-07-14T03:37:35.015Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 8,
-    "fields": {
-        "user": 5,
-        "full_name": "romin patel",
-        "mobile": "+1 525-555-1452",
-        "email": "rominpatel540@gmail.com",
-        "address": "629 Fashion Ave",
-        "state": "Texas",
-        "city": "Houston",
-        "pincode": "77001",
-        "total_amount": "1750.00",
-        "status": "DELIVERED",
-        "created_at": "2026-05-21T12:13:15.409Z",
-        "updated_at": "2026-07-15T04:08:37.119Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 16,
-    "fields": {
-        "user": 5,
-        "full_name": "romin patel",
-        "mobile": "+1 263-555-3034",
-        "email": "rominpatel540@gmail.com",
-        "address": "616 Fashion Ave",
-        "state": "Illinois",
-        "city": "Chicago",
-        "pincode": "60601",
-        "total_amount": "650.00",
-        "status": "DELIVERED",
-        "created_at": "2026-05-29T01:21:15.409Z",
-        "updated_at": "2026-07-15T04:08:40.185Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 22,
-    "fields": {
-        "user": 5,
-        "full_name": "romin patel",
-        "mobile": "+1 625-555-5332",
-        "email": "rominpatel540@gmail.com",
-        "address": "459 Fashion Ave",
-        "state": "New York",
-        "city": "New York City",
-        "pincode": "10001",
-        "total_amount": "350.00",
-        "status": "PACKED",
-        "created_at": "2026-06-04T22:42:15.409Z",
-        "updated_at": "2026-07-15T04:08:45.148Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 25,
-    "fields": {
-        "user": 5,
-        "full_name": "romin patel",
-        "mobile": "+1 956-555-8952",
-        "email": "rominpatel540@gmail.com",
-        "address": "592 Fashion Ave",
-        "state": "New York",
-        "city": "New York City",
-        "pincode": "10001",
-        "total_amount": "59.99",
-        "status": "DELIVERED",
-        "created_at": "2026-06-07T21:37:15.409Z",
-        "updated_at": "2026-07-15T04:08:48.879Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 31,
-    "fields": {
-        "user": 1,
-        "full_name": " ",
-        "mobile": "+1 679-555-8873",
-        "email": "admin@factionstore.com",
-        "address": "796 Fashion Ave",
-        "state": "New York",
-        "city": "New York City",
-        "pincode": "10001",
-        "total_amount": "619.95",
-        "status": "DELIVERED",
-        "created_at": "2026-06-13T17:12:15.409Z",
-        "updated_at": "2026-07-15T04:08:52.603Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 36,
-    "fields": {
-        "user": 5,
-        "full_name": "romin patel",
-        "mobile": "+1 837-555-5348",
-        "email": "rominpatel540@gmail.com",
-        "address": "846 Fashion Ave",
-        "state": "Florida",
-        "city": "Miami",
-        "pincode": "33101",
-        "total_amount": "2100.00",
-        "status": "CANCELLED",
-        "created_at": "2026-06-18T17:12:15.409Z",
-        "updated_at": "2026-06-28T04:40:43.127Z"
-    }
-},
-{
-    "model": "orders.order",
-    "pk": 43,
-    "fields": {
-        "user": 16,
-        "full_name": "romin patel",
-        "mobile": "1234567890",
-        "email": "rominpatel540@gmail.com",
-        "address": "wdkfefefkmd;kisjfsrkfslkmn",
-        "state": "rtuhrtrt",
-        "city": "mehsana",
-        "pincode": "4",
-        "total_amount": "350.00",
-        "status": "CONFIRMED",
-        "created_at": "2026-07-14T03:38:03.583Z",
-        "updated_at": "2026-07-15T04:07:59.485Z"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 12,
-    "fields": {
-        "order": 8,
-        "product": 17,
-        "product_name": "Marvel Team Cream T-Shirt",
-        "price": "350.00",
-        "quantity": 2,
-        "size": "M",
-        "color": "Maroon"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 13,
-    "fields": {
-        "order": 8,
-        "product": 17,
-        "product_name": "Marvel Team Cream T-Shirt",
-        "price": "350.00",
-        "quantity": 2,
-        "size": "XL",
-        "color": "Cream"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 14,
-    "fields": {
-        "order": 8,
-        "product": 19,
-        "product_name": "Forest Deer Black T-Shirt",
-        "price": "350.00",
-        "quantity": 1,
-        "size": "L",
-        "color": "Brown"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 26,
-    "fields": {
-        "order": 16,
-        "product": 16,
-        "product_name": "Majestic Stag Black T-Shirt",
-        "price": "300.00",
-        "quantity": 1,
-        "size": "L",
-        "color": "Cream"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 27,
-    "fields": {
-        "order": 16,
-        "product": 14,
-        "product_name": "Snoopy Chill Maroon T-Shirt",
-        "price": "350.00",
-        "quantity": 1,
-        "size": "S",
-        "color": "White"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 38,
-    "fields": {
-        "order": 22,
-        "product": 14,
-        "product_name": "Snoopy Chill Maroon T-Shirt",
-        "price": "350.00",
-        "quantity": 1,
-        "size": "XL",
-        "color": "Cream"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 44,
-    "fields": {
-        "order": 25,
-        "product": 7,
-        "product_name": "Floral Summer Midi Dress",
-        "price": "59.99",
-        "quantity": 1,
-        "size": "XL",
-        "color": "Blue Floral"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 57,
-    "fields": {
-        "order": 31,
-        "product": 6,
-        "product_name": "Ribbed Knit Crop Top",
-        "price": "29.99",
-        "quantity": 3,
-        "size": "S",
-        "color": "Dusty Rose"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 58,
-    "fields": {
-        "order": 31,
-        "product": 13,
-        "product_name": "Marvel Icons Cream T-Shirt",
-        "price": "350.00",
-        "quantity": 1,
-        "size": "L",
-        "color": "White"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 59,
-    "fields": {
-        "order": 31,
-        "product": 4,
-        "product_name": "Vintage Wash Relaxed Jeans",
-        "price": "89.99",
-        "quantity": 2,
-        "size": "30",
-        "color": "Light Grey"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 68,
-    "fields": {
-        "order": 36,
-        "product": 18,
-        "product_name": "Tropical Palms Espresso T-Shirt",
-        "price": "350.00",
-        "quantity": 3,
-        "size": "M",
-        "color": "Maroon"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 69,
-    "fields": {
-        "order": 36,
-        "product": 18,
-        "product_name": "Tropical Palms Espresso T-Shirt",
-        "price": "350.00",
-        "quantity": 3,
-        "size": "XL",
-        "color": "Cream"
-    }
-},
-{
-    "model": "orders.orderitem",
-    "pk": 81,
-    "fields": {
-        "order": 43,
-        "product": 19,
-        "product_name": "Forest Deer Black T-Shirt",
-        "price": "350.00",
-        "quantity": 1,
-        "size": "S",
-        "color": "Black"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 8,
-    "fields": {
-        "order": 8,
-        "payment_method": "NET_BANKING",
-        "transaction_id": "TXN43621815",
-        "amount": "1750.00",
-        "status": "PAID",
-        "created_at": "2026-06-24T02:13:17.833Z"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 16,
-    "fields": {
-        "order": 16,
-        "payment_method": "CREDIT_CARD",
-        "transaction_id": "TXN38282973",
-        "amount": "650.00",
-        "status": "PAID",
-        "created_at": "2026-06-24T02:13:18.180Z"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 22,
-    "fields": {
-        "order": 22,
-        "payment_method": "CREDIT_CARD",
-        "transaction_id": "TXN75606715",
-        "amount": "350.00",
-        "status": "PAID",
-        "created_at": "2026-06-24T02:13:18.455Z"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 25,
-    "fields": {
-        "order": 25,
-        "payment_method": "NET_BANKING",
-        "transaction_id": "TXN53162908",
-        "amount": "59.99",
-        "status": "PAID",
-        "created_at": "2026-06-24T02:13:18.604Z"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 31,
-    "fields": {
-        "order": 31,
-        "payment_method": "NET_BANKING",
-        "transaction_id": "TXN34225053",
-        "amount": "619.95",
-        "status": "PAID",
-        "created_at": "2026-06-24T02:13:18.968Z"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 36,
-    "fields": {
-        "order": 36,
-        "payment_method": "COD",
-        "transaction_id": "TXN29803311",
-        "amount": "2100.00",
-        "status": "PAID",
-        "created_at": "2026-06-24T02:13:19.234Z"
-    }
-},
-{
-    "model": "payments.payment",
-    "pk": 43,
-    "fields": {
-        "order": 43,
-        "payment_method": "COD",
-        "transaction_id": null,
-        "amount": "350.00",
-        "status": "PENDING",
-        "created_at": "2026-07-14T03:38:03.662Z"
-    }
-},
-{
     "model": "dashboard.settings",
     "pk": 1,
     "fields": {
-        "store_name": "Faction Store",
+        "store_name": "Embro Store",
         "logo": "",
-        "contact_email": "support@factionstore.com",
+        "contact_email": "support@embrostore.com",
         "contact_phone": "+1 234 567 8900",
-        "address": "123 Fashion Ave, New York, NY 10001",
+        "address": "123 Embro Ave, New York, NY 10001",
         "facebook_url": "https://facebook.com",
         "instagram_url": "https://instagram.com",
         "twitter_url": "https://twitter.com"
