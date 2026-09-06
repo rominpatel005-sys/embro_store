@@ -1,3 +1,0 @@
-"use client";
-import Link from "next/link";import { useEffect,useState } from "react";import { api,money,Order } from "@/lib/api";
-export default function Orders(){const [orders,setOrders]=useState<Order[]>([]);useEffect(()=>{api<{results:Order[]}>("/orders/").then(x=>setOrders(x.results))},[]);return <div className="mx-auto max-w-5xl px-5 py-12"><h1 className="text-4xl font-black">Orders</h1><div className="mt-8 space-y-4">{orders.map(o=><Link href={`/orders/${o.id}`} key={o.id} className="flex justify-between rounded-2xl border border-white/10 p-5"><span>Order #{o.id}<small className="ml-3 text-zinc-400">{new Date(o.created_at).toLocaleDateString()}</small></span><span>{o.status} · {money(o.total_amount)}</span></Link>)}</div></div>}
