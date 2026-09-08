@@ -67,9 +67,10 @@
                             <td class="small text-white font-serif">${{ order.total_amount }}</td>
                             <td>
                                 <!-- Status update form -->
-                                <form action="{% url 'dashboard:update_order_status' order.id %}" method="POST" class="d-inline-flex gap-2 align-items-center">
+                                <form id="order-status-form-{{ order.id }}" action="{% url 'dashboard:update_order_status' order.id %}" method="POST" class="d-inline-block">
                                     {% csrf_token %}
-                                    <select name="status" class="form-select form-select-sm bg-transparent text-white border-secondary py-1" style="font-size: 0.75rem; width: 130px;" onchange="this.form.submit()">
+                                    <input type="hidden" name="cancel_reason" id="cancel-reason-{{ order.id }}" value="">
+                                    <select name="status" class="form-select form-select-sm bg-transparent text-white border-secondary py-1" style="font-size: 0.75rem; width: 130px;" onchange="handleStatusChange(this, '{{ order.id }}', '{{ order.status }}')">
                                         <option value="PENDING" class="bg-dark" {% if order.status == 'PENDING' %}selected{% endif %}>Pending</option>
                                         <option value="CONFIRMED" class="bg-dark" {% if order.status == 'CONFIRMED' %}selected{% endif %}>Confirmed</option>
                                         <option value="PACKED" class="bg-dark" {% if order.status == 'PACKED' %}selected{% endif %}>Packed</option>
@@ -77,6 +78,11 @@
                                         <option value="DELIVERED" class="bg-dark" {% if order.status == 'DELIVERED' %}selected{% endif %}>Delivered</option>
                                         <option value="CANCELLED" class="bg-dark" {% if order.status == 'CANCELLED' %}selected{% endif %}>Cancelled</option>
                                     </select>
+                                    {% if order.status == 'CANCELLED' and order.cancel_reason %}
+                                        <div class="text-danger mt-1" style="font-size: 0.68rem; max-width: 140px; line-height: 1.2;" title="{{ order.cancel_reason }}">
+                                            <i class="fas fa-comment-alt me-1"></i>{{ order.cancel_reason|truncatechars:26 }}
+                                        </div>
+                                    {% endif %}
                                 </form>
                             </td>
                             <td class="text-end">
@@ -91,4 +97,89 @@
         </table>
     </div>
 </div>
+
+<!-- Admin Cancel Order Modal -->
+<div class="modal fade" id="adminCancelModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-danger text-white" style="background: #141416; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+            <div class="modal-header border-secondary border-opacity-25 pb-3">
+                <h5 class="modal-title d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle text-danger me-2"></i>Cancel Order <span id="adminCancelModalOrderText" class="ms-1 text-warning"></span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" onclick="dismissAdminCancelModal()"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="small text-muted mb-3">
+                    Please provide the reason for cancelling this order. This reason will be recorded and visible to the customer on their order details page.
+                </p>
+                <div class="mb-2">
+                    <label for="adminCancelReason" class="form-label small fw-bold text-white">
+                        Cancellation Reason <span class="text-danger">*</span>
+                    </label>
+                    <textarea id="adminCancelReason" class="form-control bg-transparent text-white border-secondary" rows="3" placeholder="Enter reason (e.g. Out of stock, Customer requested cancellation, Fraudulent order...)" required style="font-size: 0.9rem; resize: none;"></textarea>
+                    <div id="adminCancelReasonError" class="text-danger small mt-1 d-none">Please enter a cancellation reason before proceeding.</div>
+                </div>
+            </div>
+            <div class="modal-footer border-secondary border-opacity-25 pt-3">
+                <button type="button" class="btn btn-outline-secondary px-3 py-2" onclick="dismissAdminCancelModal()" style="font-size: 0.85rem; border-radius: 6px;">Close</button>
+                <button type="button" class="btn btn-danger px-4 py-2" onclick="confirmAdminCancellation()" style="font-size: 0.85rem; border-radius: 6px;">
+                    <i class="fas fa-times-circle me-1"></i> Confirm Cancellation
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentCancelOrderId = null;
+let currentCancelSelectEl = null;
+let currentCancelPrevStatus = null;
+
+function handleStatusChange(selectEl, orderId, prevStatus) {
+    if (selectEl.value === 'CANCELLED') {
+        currentCancelOrderId = orderId;
+        currentCancelSelectEl = selectEl;
+        currentCancelPrevStatus = prevStatus;
+        document.getElementById('adminCancelModalOrderText').textContent = '#' + orderId;
+        document.getElementById('adminCancelReason').value = '';
+        document.getElementById('adminCancelReasonError').classList.add('d-none');
+        
+        const modal = new bootstrap.Modal(document.getElementById('adminCancelModal'));
+        modal.show();
+    } else {
+        selectEl.form.submit();
+    }
+}
+
+function dismissAdminCancelModal() {
+    if (currentCancelSelectEl && currentCancelPrevStatus) {
+        currentCancelSelectEl.value = currentCancelPrevStatus;
+    }
+    const modalEl = document.getElementById('adminCancelModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+}
+
+function confirmAdminCancellation() {
+    const reasonInput = document.getElementById('adminCancelReason');
+    const reason = reasonInput.value.trim();
+    const errorEl = document.getElementById('adminCancelReasonError');
+    
+    if (!reason) {
+        errorEl.classList.remove('d-none');
+        reasonInput.focus();
+        return;
+    }
+    
+    const hiddenReasonInput = document.getElementById('cancel-reason-' + currentCancelOrderId);
+    if (hiddenReasonInput) {
+        hiddenReasonInput.value = reason;
+    }
+    
+    const form = document.getElementById('order-status-form-' + currentCancelOrderId);
+    if (form) {
+        form.submit();
+    }
+}
+</script>
 {% endblock %}

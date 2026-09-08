@@ -461,9 +461,30 @@ def update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == 'POST':
         status = request.POST.get('status')
-        order.status = status
-        order.save()
-        messages.success(request, f"Order #{order.id} status updated to {order.get_status_display()}.")
+        cancel_reason = request.POST.get('cancel_reason', '').strip()
+        
+        if status == 'CANCELLED':
+            if not cancel_reason:
+                messages.error(request, f"Cancellation reason is required to cancel Order #{order.id}.")
+                return redirect('dashboard:manage_orders')
+            
+            with transaction.atomic():
+                was_cancelled = (order.status == 'CANCELLED')
+                order.status = status
+                order.cancel_reason = cancel_reason
+                order.save()
+                
+                # Restock items if order wasn't already cancelled
+                if not was_cancelled:
+                    for item in order.items.all():
+                        if item.product:
+                            item.product.stock += item.quantity
+                            item.product.save()
+                messages.success(request, f"Order #{order.id} has been cancelled and items restocked.")
+        else:
+            order.status = status
+            order.save()
+            messages.success(request, f"Order #{order.id} status updated to {order.get_status_display()}.")
     return redirect('dashboard:manage_orders')
 
 @staff_member_required

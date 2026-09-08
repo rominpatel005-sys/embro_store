@@ -101,18 +101,26 @@ def order_cancel(request, order_id):
         order = get_object_or_404(Order, id=order_id)
     else:
         order = get_object_or_404(Order, id=order_id, user=request.user)
-    if order.is_cancellable:
-        with transaction.atomic():
-            order.status = 'CANCELLED'
-            order.save()
-            
-            # Restock items
-            for item in order.items.all():
-                if item.product:
-                    item.product.stock += item.quantity
-                    item.product.save()
-                    
-            messages.success(request, f"Order #{order.id} has been cancelled and items have been restocked.")
-    else:
-        messages.error(request, f"Order #{order.id} cannot be cancelled as it is already {order.get_status_display()}.")
+
+    if request.method == 'POST':
+        if order.is_cancellable:
+            cancel_reason = request.POST.get('cancel_reason', '').strip()
+            if not cancel_reason:
+                messages.error(request, "Cancellation reason is required to cancel this order.")
+                return redirect('orders:order_detail', order_id=order.id)
+
+            with transaction.atomic():
+                order.status = 'CANCELLED'
+                order.cancel_reason = cancel_reason
+                order.save()
+                
+                # Restock items
+                for item in order.items.all():
+                    if item.product:
+                        item.product.stock += item.quantity
+                        item.product.save()
+                        
+                messages.success(request, f"Order #{order.id} has been cancelled and items have been restocked.")
+        else:
+            messages.error(request, f"Order #{order.id} cannot be cancelled as it is already {order.get_status_display()}.")
     return redirect('orders:order_detail', order_id=order.id)

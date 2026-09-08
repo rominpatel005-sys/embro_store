@@ -197,11 +197,24 @@
                 </div>
             </div>
         </div>
-    {% else %}
-        <!-- Cancellation Banner alert -->
-        <div class="alert alert-danger bg-transparent border-danger text-danger p-4 mb-5 scroll-reveal" style="border-radius:10px;">
-            <h5 class="fw-bold mb-1"><i class="fas fa-times-circle me-2"></i>Order Cancelled</h5>
-            <p class="small mb-0 text-muted">This order has been cancelled and items have been restocked to inventory. Payment collections are stopped.</p>
+        <!-- Cancellation Banner alert (Centered in red border box) -->
+        <div class="alert alert-danger bg-transparent border-danger text-danger p-4 mb-5 scroll-reveal text-center" style="border-radius:12px; background: rgba(220, 53, 69, 0.04) !important; border: 1.5px solid rgba(220, 53, 69, 0.7) !important;">
+            <h4 class="fw-bold mb-2 d-flex align-items-center justify-content-center">
+                <i class="fas fa-times-circle me-2 text-danger"></i>Order Cancelled
+            </h4>
+            <p class="small mb-0 text-muted mx-auto" style="max-width: 650px;">
+                This order has been cancelled and items have been restocked to inventory. Payment collections are stopped.
+            </p>
+            {% if order.cancel_reason %}
+                <div class="mt-4 pt-3 border-top border-danger border-opacity-25 d-inline-block text-center w-100" style="max-width: 650px;">
+                    <span class="text-white small fw-bold d-block mb-2 text-uppercase" style="letter-spacing: 1px; font-size: 0.75rem;">
+                        <i class="fas fa-comment-dots me-1 text-danger"></i>Cancellation Reason
+                    </span>
+                    <div class="p-3 rounded text-white d-inline-block text-center" style="background: rgba(220, 53, 69, 0.1); border: 1px dashed rgba(220, 53, 69, 0.45); font-size: 0.95rem; min-width: 280px; max-width: 100%;">
+                        "{{ order.cancel_reason }}"
+                    </div>
+                </div>
+            {% endif %}
         </div>
     {% endif %}
 
@@ -313,12 +326,44 @@
                 <!-- Cancel Button -->
                 {% if order.is_cancellable %}
                     <div class="d-grid">
-                        <form action="{% url 'orders:order_cancel' order.id %}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?')">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-neon-outline w-100 py-3 text-danger border-danger" style="border-radius: 6px;">
-                                <i class="fas fa-trash-alt me-2"></i> Cancel Order
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-neon-outline w-100 py-3 text-danger border-danger" data-bs-toggle="modal" data-bs-target="#cancelOrderModal" style="border-radius: 6px;">
+                            <i class="fas fa-trash-alt me-2"></i> Cancel Order
+                        </button>
+                    </div>
+
+                    <!-- Cancel Order Modal (Requires Reason) -->
+                    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content glass-card border-danger text-white" style="background: #141416; border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+                                <div class="modal-header border-secondary border-opacity-25 pb-3">
+                                    <h5 class="modal-title d-flex align-items-center" id="cancelOrderModalLabel">
+                                        <i class="fas fa-exclamation-triangle text-danger me-2"></i>Cancel Order #{{ order.id }}
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{% url 'orders:order_cancel' order.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body py-4">
+                                        <p class="small text-muted mb-3">
+                                            Are you sure you want to cancel this order? Items will be restocked to inventory.
+                                        </p>
+                                        <div class="mb-2">
+                                            <label for="cancelReasonInput" class="form-label small fw-bold text-white">
+                                                Reason for Cancellation <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea id="cancelReasonInput" name="cancel_reason" class="form-control bg-transparent text-white border-secondary" rows="3" placeholder="Please enter the reason for cancelling this order..." required style="font-size: 0.9rem; resize: none;"></textarea>
+                                            <div class="form-text text-muted small">This reason will be visible on the order tracking page.</div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-secondary border-opacity-25 pt-3">
+                                        <button type="button" class="btn btn-outline-secondary px-3 py-2" data-bs-dismiss="modal" style="font-size: 0.85rem; border-radius: 6px;">Keep Order</button>
+                                        <button type="submit" class="btn btn-danger px-4 py-2" style="font-size: 0.85rem; border-radius: 6px;">
+                                            <i class="fas fa-times-circle me-1"></i> Confirm Cancellation
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 {% endif %}
 

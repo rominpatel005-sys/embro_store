@@ -22,6 +22,7 @@ class Order(models.Model):
     pincode = models.CharField(max_length=10)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='PENDING')
+    cancel_reason = models.TextField(blank=True, null=True, verbose_name="Cancellation Reason")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -120,24 +120,33 @@ if DATABASE_URL:
     if 'pooler.supabase.com' in DATABASE_URL or str(DATABASES['default'].get('PORT')) == '6543':
         DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 else:
-    db_host = os.environ.get('DB_HOST', 'localhost')
-    db_port = os.environ.get('DB_PORT', '5432')
-    if 'pooler.supabase.com' in db_host and db_port == '5432':
-        db_port = '6543'
+    db_engine = os.environ.get('DB_ENGINE', '').lower()
+    if db_engine == 'postgresql' or 'DB_NAME' in os.environ:
+        db_host = os.environ.get('DB_HOST', 'localhost')
+        db_port = os.environ.get('DB_PORT', '5432')
+        if 'pooler.supabase.com' in db_host and db_port == '5432':
+            db_port = '6543'
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME', 'embro_store'),
-            'USER': os.environ.get('DB_USER', 'postgres'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': db_host,
-            'PORT': db_port,
-            'CONN_MAX_AGE': 0 if IS_SERVERLESS else 60,
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.environ.get('DB_NAME', 'embro_store'),
+                'USER': os.environ.get('DB_USER', 'postgres'),
+                'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+                'HOST': db_host,
+                'PORT': db_port,
+                'CONN_MAX_AGE': 0 if IS_SERVERLESS else 60,
+            }
         }
-    }
-    if 'pooler.supabase.com' in db_host or str(db_port) == '6543':
-        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+        if 'pooler.supabase.com' in db_host or str(db_port) == '6543':
+            DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 
 
 # Password validation
