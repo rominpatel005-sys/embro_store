@@ -335,9 +335,9 @@
                     </div>
 
                     <!-- Cancel Order Modal (Requires Reason) -->
-                    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content glass-card border-danger text-white" style="background: #141416; border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+                    <div class="modal fade" id="cancelOrderModal" aria-labelledby="cancelOrderModalLabel" aria-hidden="true" style="z-index: 1065;">
+                        <div class="modal-dialog modal-dialog-centered" style="z-index: 1070;">
+                            <div class="modal-content glass-card border-danger text-white" style="background: #141416; border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative; z-index: 1075;">
                                 <div class="modal-header border-secondary border-opacity-25 pb-3">
                                     <h5 class="modal-title d-flex align-items-center" id="cancelOrderModalLabel">
                                         <i class="fas fa-exclamation-triangle text-danger me-2"></i>Cancel Order #{{ order.id }}
@@ -354,7 +354,7 @@
                                             <label for="cancelReasonInput" class="form-label small fw-bold text-white">
                                                 Reason for Cancellation <span class="text-danger">*</span>
                                             </label>
-                                            <textarea id="cancelReasonInput" name="cancel_reason" class="form-control bg-transparent text-white border-secondary" rows="3" placeholder="Please enter the reason for cancelling this order..." required style="font-size: 0.9rem; resize: none;"></textarea>
+                                            <textarea id="cancelReasonInput" name="cancel_reason" class="form-control text-white border-secondary" rows="3" placeholder="Please enter the reason for cancelling this order..." required style="font-size: 0.9rem; resize: vertical; min-height: 90px; background-color: #1a1a20 !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,0.25) !important; cursor: text !important; position: relative; z-index: 1080;"></textarea>
                                             <div class="form-text text-muted small">This reason will be visible on the order tracking page.</div>
                                         </div>
                                     </div>
@@ -368,6 +368,20 @@
                             </div>
                         </div>
                     </div>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const modal = document.getElementById('cancelOrderModal');
+                        if (modal && modal.parentElement !== document.body) {
+                            document.body.appendChild(modal);
+                        }
+                        if (modal) {
+                            modal.addEventListener('shown.bs.modal', function() {
+                                const input = document.getElementById('cancelReasonInput');
+                                if (input) input.focus();
+                            });
+                        }
+                    });
+                    </script>
                 {% endif %}
 
             </div>

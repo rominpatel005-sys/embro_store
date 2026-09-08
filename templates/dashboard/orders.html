@@ -99,9 +99,9 @@
 </div>
 
 <!-- Admin Cancel Order Modal -->
-<div class="modal fade" id="adminCancelModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content glass-card border-danger text-white" style="background: #141416; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+<div class="modal fade" id="adminCancelModal" aria-hidden="true" style="z-index: 1065;">
+    <div class="modal-dialog modal-dialog-centered" style="z-index: 1070;">
+        <div class="modal-content glass-card border-danger text-white" style="background: #141416; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative; z-index: 1075;">
             <div class="modal-header border-secondary border-opacity-25 pb-3">
                 <h5 class="modal-title d-flex align-items-center">
                     <i class="fas fa-exclamation-triangle text-danger me-2"></i>Cancel Order <span id="adminCancelModalOrderText" class="ms-1 text-warning"></span>
@@ -116,7 +116,7 @@
                     <label for="adminCancelReason" class="form-label small fw-bold text-white">
                         Cancellation Reason <span class="text-danger">*</span>
                     </label>
-                    <textarea id="adminCancelReason" class="form-control bg-transparent text-white border-secondary" rows="3" placeholder="Enter reason (e.g. Out of stock, Customer requested cancellation, Fraudulent order...)" required style="font-size: 0.9rem; resize: none;"></textarea>
+                    <textarea id="adminCancelReason" class="form-control text-white border-secondary" rows="3" placeholder="Enter reason (e.g. Out of stock, Customer requested cancellation, Fraudulent order...)" required style="font-size: 0.9rem; resize: vertical; min-height: 90px; background-color: #1a1a20 !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,0.25) !important; cursor: text !important; position: relative; z-index: 1080;"></textarea>
                     <div id="adminCancelReasonError" class="text-danger small mt-1 d-none">Please enter a cancellation reason before proceeding.</div>
                 </div>
             </div>
@@ -135,17 +135,39 @@ let currentCancelOrderId = null;
 let currentCancelSelectEl = null;
 let currentCancelPrevStatus = null;
 
+// Move modal directly to document.body on load to escape parent stacking contexts
+document.addEventListener('DOMContentLoaded', function() {
+    const modalEl = document.getElementById('adminCancelModal');
+    if (modalEl && modalEl.parentElement !== document.body) {
+        document.body.appendChild(modalEl);
+    }
+});
+
 function handleStatusChange(selectEl, orderId, prevStatus) {
     if (selectEl.value === 'CANCELLED') {
         currentCancelOrderId = orderId;
         currentCancelSelectEl = selectEl;
         currentCancelPrevStatus = prevStatus;
         document.getElementById('adminCancelModalOrderText').textContent = '#' + orderId;
-        document.getElementById('adminCancelReason').value = '';
+        
+        const reasonInput = document.getElementById('adminCancelReason');
+        reasonInput.value = '';
         document.getElementById('adminCancelReasonError').classList.add('d-none');
         
-        const modal = new bootstrap.Modal(document.getElementById('adminCancelModal'));
+        const modalEl = document.getElementById('adminCancelModal');
+        if (modalEl.parentElement !== document.body) {
+            document.body.appendChild(modalEl);
+        }
+        
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl, {
+            backdrop: true,
+            focus: true
+        });
         modal.show();
+        
+        setTimeout(function() {
+            reasonInput.focus();
+        }, 300);
     } else {
         selectEl.form.submit();
     }
