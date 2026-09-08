@@ -54,7 +54,7 @@
                                     <a href="{% url 'dashboard:reject_review' r.id %}" class="btn btn-sm btn-warning text-dark me-2 py-1"><i class="fas fa-times"></i> Reject</a>
                                 {% endif %}
                                 <!-- Delete -->
-                                <a href="{% url 'dashboard:delete_review' r.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="return confirm('Are you sure you want to delete this review?')"><i class="far fa-trash-alt"></i></a>
+                                <a href="{% url 'dashboard:delete_review' r.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="if(!confirm('Are you sure you want to delete this review?')) return false; this.style.pointerEvents='none'; this.style.opacity='0.5';"><i class="far fa-trash-alt"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

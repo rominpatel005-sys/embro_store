@@ -468,9 +468,16 @@ def update_order_status(request, order_id):
 
 @staff_member_required
 def delete_order(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    order.delete()
-    messages.success(request, f"Order #{order_id} deleted successfully.")
+    try:
+        with transaction.atomic():
+            order = Order.objects.filter(id=order_id).first()
+            if order:
+                order.delete()
+                messages.success(request, f"Order #{order_id} deleted successfully.")
+            else:
+                messages.info(request, f"Order #{order_id} was already removed.")
+    except Exception as e:
+        messages.error(request, f"Could not delete order #{order_id}: {str(e)}")
     return redirect('dashboard:manage_orders')
 
 # --- CUSTOMER MANAGEMENT ---
@@ -481,19 +488,29 @@ def manage_customers(request):
 
 @staff_member_required
 def toggle_customer_status(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    user.is_active = not user.is_active
-    user.save()
-    status = "unblocked" if user.is_active else "blocked"
-    messages.success(request, f"Customer '{user.username}' has been {status}.")
+    try:
+        user = get_object_or_404(User, id=user_id)
+        user.is_active = not user.is_active
+        user.save()
+        status = "unblocked" if user.is_active else "blocked"
+        messages.success(request, f"Customer '{user.username}' has been {status}.")
+    except Exception as e:
+        messages.error(request, f"Could not update customer status: {str(e)}")
     return redirect('dashboard:manage_customers')
 
 @staff_member_required
 def delete_customer(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    username = user.username
-    user.delete()
-    messages.success(request, f"Customer '{username}' has been deleted.")
+    try:
+        with transaction.atomic():
+            user = User.objects.filter(id=user_id, is_staff=False).first()
+            if user:
+                username = user.username
+                user.delete()
+                messages.success(request, f"Customer '{username}' has been deleted.")
+            else:
+                messages.info(request, "Customer was already removed.")
+    except Exception as e:
+        messages.error(request, f"Could not delete customer: {str(e)}")
     return redirect('dashboard:manage_customers')
 
 # --- REVIEW MANAGEMENT ---

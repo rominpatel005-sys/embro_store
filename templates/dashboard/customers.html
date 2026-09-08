@@ -44,7 +44,7 @@
                                     {% endif %}
                                 </a>
                                 <!-- Delete -->
-                                <a href="{% url 'dashboard:delete_customer' client.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="return confirm('Are you sure you want to permanently delete customer account {{ client.username }}?')"><i class="far fa-trash-alt"></i></a>
+                                <a href="{% url 'dashboard:delete_customer' client.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="if(!confirm('Are you sure you want to permanently delete customer account {{ client.username }}?')) return false; this.style.pointerEvents='none'; this.style.opacity='0.5';"><i class="far fa-trash-alt"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

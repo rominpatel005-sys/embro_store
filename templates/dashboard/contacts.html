@@ -31,7 +31,7 @@
                             <td>
                                 <!-- View details button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-neon-outline me-2 py-1" data-bs-toggle="modal" data-bs-target="#msgModal-{{ msg.id }}"><i class="far fa-eye"></i> View</button>
-                                <a href="{% url 'dashboard:delete_contact' msg.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="return confirm('Delete this message?')"><i class="far fa-trash-alt"></i></a>
+                                <a href="{% url 'dashboard:delete_contact' msg.id %}" class="btn btn-sm btn-outline-danger py-1" onclick="if(!confirm('Delete this message?')) return false; this.style.pointerEvents='none'; this.style.opacity='0.5';"><i class="far fa-trash-alt"></i></a>
                             </td>
                         </tr>
 

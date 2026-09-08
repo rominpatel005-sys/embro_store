@@ -94,25 +94,50 @@ WSGI_APPLICATION = 'faction_store.wsgi.application'
 # Fallback: set individual DB_* env vars for local development.
 DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
 
+# Detect serverless environment (Vercel, AWS Lambda)
+IS_SERVERLESS = 'VERCEL' in os.environ or 'AWS_LAMBDA_FUNCTION_NAME' in os.environ
+
 if DATABASE_URL:
+    # Supabase Connection Pooler optimization:
+    # Port 5432 is Session mode (limited to 15 clients -> raises EMAXCONNSESSION when multiple requests run).
+    # Port 6543 is Transaction mode (PgBouncer/Supavisor -> supports thousands of concurrent serverless clients).
+    if 'pooler.supabase.com' in DATABASE_URL and ':5432' in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL.replace(':5432', ':6543')
+
+    # In serverless environments (e.g. Vercel) or when using poolers, connections should not be kept
+    # open (conn_max_age=0) so frozen lambda containers release Supabase connections immediately.
+    conn_max_age = int(os.environ.get('CONN_MAX_AGE', 0 if (IS_SERVERLESS or 'pooler.supabase.com' in DATABASE_URL) else 60))
+
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
-            conn_max_age=600,
+            conn_max_age=conn_max_age,
             conn_health_checks=True,
         )
     }
+
+    # Disable server-side cursors for Supabase pooler / PgBouncer transaction mode
+    if 'pooler.supabase.com' in DATABASE_URL or str(DATABASES['default'].get('PORT')) == '6543':
+        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 else:
+    db_host = os.environ.get('DB_HOST', 'localhost')
+    db_port = os.environ.get('DB_PORT', '5432')
+    if 'pooler.supabase.com' in db_host and db_port == '5432':
+        db_port = '6543'
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ.get('DB_NAME', 'embro_store'),
             'USER': os.environ.get('DB_USER', 'postgres'),
             'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
+            'HOST': db_host,
+            'PORT': db_port,
+            'CONN_MAX_AGE': 0 if IS_SERVERLESS else 60,
         }
     }
+    if 'pooler.supabase.com' in db_host or str(db_port) == '6543':
+        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 
 
 # Password validation
@@ -151,7 +176,6 @@ STORAGES = {
 }
   
 
-  
 # Media files (Uploaded images/profile pictures)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
