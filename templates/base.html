@@ -46,9 +46,29 @@
                     {{ store_settings.store_name|slice:":5" }}<span>{{ store_settings.store_name|slice:"5:" }}</span>
                 </a>
                 
-                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <!-- Mobile Action Icons (Wishlist & Cart) + 3-line Menu Button -->
+                <div class="d-flex align-items-center gap-3 d-lg-none">
+                    <!-- Wishlist Indicator (Mobile) -->
+                    <a href="{% url 'wishlist:wishlist_list' %}" class="position-relative text-white nav-link-custom px-1" title="Wishlist">
+                        <i class="far fa-heart" style="font-size: 1.25rem;"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger wishlist-count-badge" {% if wishlist_count == 0 %}style="font-size: 0.65rem; display: none;"{% else %}style="font-size: 0.65rem;"{% endif %}>
+                            {{ wishlist_count }}
+                        </span>
+                    </a>
+
+                    <!-- Shopping Cart Indicator (Mobile) -->
+                    <a href="{% url 'cart:cart_detail' %}" class="position-relative text-white nav-link-custom px-1" title="Cart">
+                        <i class="fas fa-shopping-bag" style="font-size: 1.25rem;"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark cart-count-badge" {% if cart_count == 0 %}style="font-size: 0.65rem; display: none;"{% else %}style="font-size: 0.65rem;"{% endif %}>
+                            {{ cart_count }}
+                        </span>
+                    </a>
+
+                    <!-- 3-line Hamburger Menu Button -->
+                    <button class="navbar-toggler border-0 text-white shadow-none p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-label="Toggle navigation">
+                        <i class="fas fa-bars" style="font-size: 1.35rem;"></i>
+                    </button>
+                </div>
                 
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <!-- Main Navigation Links -->
@@ -90,16 +110,16 @@
                         <!-- Icons and buttons row/column -->
                         <div class="d-flex flex-wrap align-items-center gap-3 w-100 justify-content-between justify-content-lg-start">
                             <div class="d-flex align-items-center gap-3">
-                                <!-- Wishlist Indicator -->
-                                <a href="{% url 'wishlist:wishlist_list' %}" class="position-relative text-white nav-link-custom px-1" title="Wishlist">
+                                <!-- Wishlist Indicator (Desktop) -->
+                                <a href="{% url 'wishlist:wishlist_list' %}" class="position-relative text-white nav-link-custom px-1 d-none d-lg-inline-block" title="Wishlist">
                                     <i class="far fa-heart" style="font-size: 1.25rem;"></i>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger wishlist-count-badge" {% if wishlist_count == 0 %}style="font-size: 0.65rem; display: none;"{% else %}style="font-size: 0.65rem;"{% endif %}>
                                         {{ wishlist_count }}
                                     </span>
                                 </a>
 
-                                <!-- Shopping Cart Indicator -->
-                                <a href="{% url 'cart:cart_detail' %}" class="position-relative text-white nav-link-custom px-1" title="Cart">
+                                <!-- Shopping Cart Indicator (Desktop) -->
+                                <a href="{% url 'cart:cart_detail' %}" class="position-relative text-white nav-link-custom px-1 d-none d-lg-inline-block" title="Cart">
                                     <i class="fas fa-shopping-bag" style="font-size: 1.25rem;"></i>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark cart-count-badge" {% if cart_count == 0 %}style="font-size: 0.65rem; display: none;"{% else %}style="font-size: 0.65rem;"{% endif %}>
                                         {{ cart_count }}
