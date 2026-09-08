@@ -443,16 +443,29 @@ def delete_category(request, category_id):
 # --- ORDER MANAGEMENT ---
 @staff_member_required
 def manage_orders(request):
-    orders = Order.objects.all().order_by('-created_at')
-    
-    # Search and Filter
-    query = request.GET.get('q')
-    status = request.GET.get('status')
-    
-    if query:
-        orders = orders.filter(id__icontains=query) | orders.filter(full_name__icontains=query)
-    if status:
-        orders = orders.filter(status=status)
+    try:
+        orders = Order.objects.all().order_by('-created_at')
+        query = request.GET.get('q')
+        status = request.GET.get('status')
+        if query:
+            orders = orders.filter(id__icontains=query) | orders.filter(full_name__icontains=query)
+        if status:
+            orders = orders.filter(status=status)
+        list(orders[:1])
+    except Exception:
+        try:
+            from django.db import connection
+            with connection.cursor() as cursor:
+                cursor.execute("ALTER TABLE orders_order ADD COLUMN IF NOT EXISTS cancel_reason TEXT;")
+        except Exception:
+            pass
+        orders = Order.objects.all().order_by('-created_at')
+        query = request.GET.get('q')
+        status = request.GET.get('status')
+        if query:
+            orders = orders.filter(id__icontains=query) | orders.filter(full_name__icontains=query)
+        if status:
+            orders = orders.filter(status=status)
         
     return render(request, 'dashboard/orders.html', {'orders': orders, 'query': query, 'selected_status': status})
 

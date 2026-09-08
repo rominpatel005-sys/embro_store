@@ -84,15 +84,36 @@ def checkout(request):
 
 @login_required
 def order_list(request):
-    orders = Order.objects.filter(user=request.user)
+    try:
+        orders = list(Order.objects.filter(user=request.user))
+    except Exception:
+        try:
+            from django.db import connection
+            with connection.cursor() as cursor:
+                cursor.execute("ALTER TABLE orders_order ADD COLUMN IF NOT EXISTS cancel_reason TEXT;")
+        except Exception:
+            pass
+        orders = list(Order.objects.filter(user=request.user))
     return render(request, 'orders/order_list.html', {'orders': orders})
 
 @login_required
 def order_detail(request, order_id):
-    if request.user.is_staff:
-        order = get_object_or_404(Order, id=order_id)
-    else:
-        order = get_object_or_404(Order, id=order_id, user=request.user)
+    try:
+        if request.user.is_staff:
+            order = get_object_or_404(Order, id=order_id)
+        else:
+            order = get_object_or_404(Order, id=order_id, user=request.user)
+    except Exception:
+        try:
+            from django.db import connection
+            with connection.cursor() as cursor:
+                cursor.execute("ALTER TABLE orders_order ADD COLUMN IF NOT EXISTS cancel_reason TEXT;")
+        except Exception:
+            pass
+        if request.user.is_staff:
+            order = get_object_or_404(Order, id=order_id)
+        else:
+            order = get_object_or_404(Order, id=order_id, user=request.user)
     return render(request, 'orders/order_detail.html', {'order': order})
 
 @login_required
