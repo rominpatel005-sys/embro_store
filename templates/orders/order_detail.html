@@ -301,11 +301,14 @@
                 <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-3" style="border-color: rgba(255,255,255,0.05) !important;">
                     <span class="text-muted small">Payment Status</span>
                     <span class="badge 
-                        {% if order.payment.status == 'PAID' %}bg-success
+                        {% if order.payment.status == 'PAID' or order.status == 'DELIVERED' %}bg-success
                         {% elif order.payment.status == 'FAILED' %}bg-danger
                         {% else %}bg-warning text-dark
                         {% endif %}">
-                        {{ order.payment.get_status_display }}
+                        {% if order.status == 'DELIVERED' and order.payment.status != 'FAILED' %}Paid / Success
+                        {% elif order.payment.status == 'PAID' %}Success
+                        {% else %}{{ order.payment.get_status_display }}
+                        {% endif %}
                     </span>
                 </div>
 

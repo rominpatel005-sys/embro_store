@@ -497,6 +497,13 @@ def update_order_status(request, order_id):
         else:
             order.status = status
             order.save()
+            if status == 'DELIVERED':
+                try:
+                    if hasattr(order, 'payment') and order.payment.status != 'PAID':
+                        order.payment.status = 'PAID'
+                        order.payment.save(update_fields=['status'])
+                except Exception:
+                    pass
             messages.success(request, f"Order #{order.id} status updated to {order.get_status_display()}.")
     return redirect('dashboard:manage_orders')
 

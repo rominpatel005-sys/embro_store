@@ -32,6 +32,16 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.full_name}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.status == 'DELIVERED':
+            try:
+                if hasattr(self, 'payment') and self.payment.status != 'PAID':
+                    self.payment.status = 'PAID'
+                    self.payment.save(update_fields=['status'])
+            except Exception:
+                pass
+
     @property
     def is_cancellable(self):
         return self.status in ['PENDING', 'CONFIRMED']

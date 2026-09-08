@@ -34,3 +34,12 @@ except Exception:
     except Exception:
         pass
 
+# Ensure delivered orders have payment status updated to PAID
+try:
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE payments_payment SET status = 'PAID' WHERE order_id IN (SELECT id FROM orders_order WHERE status = 'DELIVERED') AND status != 'PAID';")
+except Exception:
+    pass
+
+
