@@ -181,27 +181,49 @@
                     <thead>
                         <tr class="small text-muted text-uppercase">
                             <th>ID</th>
-                            <th>Recipient</th>
+                            <th>User / Recipient</th>
+                            <th>Ordered Apparel</th>
                             <th>Total</th>
                             <th>Status</th>
+                            <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% if recent_orders %}
                             {% for order in recent_orders %}
                                 <tr style="vertical-align: middle;">
-                                    <td class="small fw-bold text-warning">
+                                    <td class="small fw-bold text-warning font-monospace">
                                         <a href="{% url 'orders:order_detail' order.id %}" class="text-warning text-decoration-none" style="text-decoration: underline !important;">#{{ order.id }}</a>
                                     </td>
-                                    <td class="small text-white">{{ order.full_name }}</td>
+                                    <td class="small">
+                                        {% if order.user %}
+                                            <span class="badge bg-warning text-dark text-xs mb-1 font-monospace d-inline-block">@{{ order.user.username }}</span>
+                                        {% endif %}
+                                        <span class="text-white d-block small" style="font-size: 0.8rem;">{{ order.full_name }}</span>
+                                    </td>
+                                    <td class="small">
+                                        {% for item in order.items.all|slice:":2" %}
+                                            <div class="text-truncate text-white" style="max-width: 180px; font-size: 0.78rem;">
+                                                <i class="fas fa-tshirt text-warning me-1"></i>{{ item.product_name }}
+                                                <span class="badge bg-dark border border-secondary text-xs text-warning">{{ item.size }}</span>
+                                                <span class="badge bg-secondary text-xs">x{{ item.quantity }}</span>
+                                            </div>
+                                        {% endfor %}
+                                        {% if order.items.count > 2 %}
+                                            <span class="text-muted text-xs">+{{ order.items.count|add:"-2" }} more item(s)</span>
+                                        {% endif %}
+                                    </td>
                                     <td class="small text-white font-serif">${{ order.total_amount }}</td>
                                     <td>
                                         <span class="badge bg-secondary" style="font-size:0.7rem;">{{ order.get_status_display }}</span>
                                     </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-sm btn-neon-outline py-0 px-2 text-xs" style="font-size: 0.72rem;">View</a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         {% else %}
-                            <tr><td colspan="4" class="text-center text-muted small py-4">No orders received yet.</td></tr>
+                            <tr><td colspan="6" class="text-center text-muted small py-4">No orders received yet.</td></tr>
                         {% endif %}
                     </tbody>
                 </table>

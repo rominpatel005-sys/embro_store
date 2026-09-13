@@ -111,7 +111,7 @@ def _get_dashboard_context():
     total_revenue_dict = Order.objects.filter(payment__status='PAID').aggregate(total=Sum('total_amount'))
     total_revenue = total_revenue_dict['total'] if total_revenue_dict['total'] is not None else 0.00
     
-    recent_orders = Order.objects.all().order_by('-created_at')[:10]
+    recent_orders = Order.objects.all().select_related('user').prefetch_related('items__product').order_by('-created_at')[:10]
     low_stock_products = Product.objects.filter(stock__lt=5)
     
     # Chart Data: Categories Share
@@ -444,11 +444,18 @@ def delete_category(request, category_id):
 @staff_member_required
 def manage_orders(request):
     try:
-        orders = Order.objects.all().order_by('-created_at')
+        orders = Order.objects.all().select_related('user').prefetch_related('items__product').order_by('-created_at')
         query = request.GET.get('q')
         status = request.GET.get('status')
         if query:
-            orders = orders.filter(id__icontains=query) | orders.filter(full_name__icontains=query)
+            orders = orders.filter(
+                models.Q(id__icontains=query) |
+                models.Q(full_name__icontains=query) |
+                models.Q(user__username__icontains=query) |
+                models.Q(email__icontains=query) |
+                models.Q(mobile__icontains=query) |
+                models.Q(items__product_name__icontains=query)
+            ).distinct()
         if status:
             orders = orders.filter(status=status)
         list(orders[:1])
@@ -459,11 +466,18 @@ def manage_orders(request):
                 cursor.execute("ALTER TABLE orders_order ADD COLUMN IF NOT EXISTS cancel_reason TEXT;")
         except Exception:
             pass
-        orders = Order.objects.all().order_by('-created_at')
+        orders = Order.objects.all().select_related('user').prefetch_related('items__product').order_by('-created_at')
         query = request.GET.get('q')
         status = request.GET.get('status')
         if query:
-            orders = orders.filter(id__icontains=query) | orders.filter(full_name__icontains=query)
+            orders = orders.filter(
+                models.Q(id__icontains=query) |
+                models.Q(full_name__icontains=query) |
+                models.Q(user__username__icontains=query) |
+                models.Q(email__icontains=query) |
+                models.Q(mobile__icontains=query) |
+                models.Q(items__product_name__icontains=query)
+            ).distinct()
         if status:
             orders = orders.filter(status=status)
         
