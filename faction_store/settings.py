@@ -103,22 +103,25 @@ if DATABASE_URL:
     # Port 6543 is Transaction mode (PgBouncer/Supavisor -> supports thousands of concurrent serverless clients).
     if 'pooler.supabase.com' in DATABASE_URL and ':5432' in DATABASE_URL:
         DATABASE_URL = DATABASE_URL.replace(':5432', ':6543')
+        os.environ['DATABASE_URL'] = DATABASE_URL
 
     # In serverless environments (e.g. Vercel) or when using poolers, connections should not be kept
     # open (conn_max_age=0) so frozen lambda containers release Supabase connections immediately.
     conn_max_age = int(os.environ.get('CONN_MAX_AGE', 0 if (IS_SERVERLESS or 'pooler.supabase.com' in DATABASE_URL) else 60))
 
     DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
+        'default': dj_database_url.parse(
+            DATABASE_URL,
             conn_max_age=conn_max_age,
-            conn_health_checks=True,
+            conn_health_checks=False,
         )
     }
 
-    # Disable server-side cursors for Supabase pooler / PgBouncer transaction mode
-    if 'pooler.supabase.com' in DATABASE_URL or str(DATABASES['default'].get('PORT')) == '6543':
+    # Disable server-side cursors and force transaction pooler port 6543 for Supabase pooler
+    if 'pooler.supabase.com' in str(DATABASES['default'].get('HOST', '')) or 'pooler.supabase.com' in DATABASE_URL:
+        DATABASES['default']['PORT'] = 6543
         DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+        DATABASES['default']['CONN_MAX_AGE'] = 0
 else:
     db_engine = os.environ.get('DB_ENGINE', '').lower()
     if db_engine == 'postgresql' or 'DB_NAME' in os.environ:
@@ -135,11 +138,13 @@ else:
                 'PASSWORD': os.environ.get('DB_PASSWORD', ''),
                 'HOST': db_host,
                 'PORT': db_port,
-                'CONN_MAX_AGE': 0 if IS_SERVERLESS else 60,
+                'CONN_MAX_AGE': 0 if (IS_SERVERLESS or 'pooler.supabase.com' in db_host) else 60,
             }
         }
         if 'pooler.supabase.com' in db_host or str(db_port) == '6543':
+            DATABASES['default']['PORT'] = 6543
             DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+            DATABASES['default']['CONN_MAX_AGE'] = 0
     else:
         DATABASES = {
             'default': {
