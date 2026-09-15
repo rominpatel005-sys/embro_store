@@ -264,6 +264,23 @@
             box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
         }
     }
+
+    /* Mobile Finalize Section styling */
+    @media (max-width: 991.98px) {
+        #mobile-finalize-slot .finalize-section {
+            background: rgba(18, 18, 24, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        #mobile-finalize-slot .finalize-section .finalize-header-wrap {
+            border-top: none !important;
+            padding-top: 0 !important;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -328,24 +345,28 @@
                     </div>
                 </div>
 
-                <!-- 4. Done & Finalize Action -->
-                <div class="pt-3 border-top mb-3" style="border-color: rgba(255, 255, 255, 0.1) !important;">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <label class="small text-uppercase tracking-wider text-white mb-0">4. Finalize Custom Design</label>
-                        <span id="design-ready-badge" class="badge bg-secondary text-xs">Waiting for Design</span>
-                    </div>
-                    <!-- The Done Button -->
-                    <button id="btn-done-custom" type="button" class="btn btn-neon w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow" style="border-radius: 8px; font-size: 0.95rem; letter-spacing: 1px;">
-                        <i class="fas fa-check-circle"></i>
-                        <span>DONE & ORDER T-SHIRT</span>
-                    </button>
-                    <small class="text-muted text-xs d-block text-center mt-1">Finished adjusting? Click to order your custom shirt!</small>
-                </div>
+                <!-- 4. Done & Finalize Action Desktop Slot -->
+                <div id="desktop-finalize-slot">
+                    <div id="finalize-custom-section" class="finalize-section">
+                        <div class="pt-3 border-top mb-3 finalize-header-wrap" style="border-color: rgba(255, 255, 255, 0.1) !important;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="small text-uppercase tracking-wider text-white mb-0">4. Finalize Custom Design</label>
+                                <span id="design-ready-badge" class="badge bg-secondary text-xs">Waiting for Design</span>
+                            </div>
+                            <!-- The Done Button -->
+                            <button id="btn-done-custom" type="button" class="btn btn-neon w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow" style="border-radius: 8px; font-size: 0.95rem; letter-spacing: 1px;">
+                                <i class="fas fa-check-circle"></i>
+                                <span>DONE & ORDER T-SHIRT</span>
+                            </button>
+                            <small class="text-muted text-xs d-block text-center mt-1">Finished adjusting? Click to order your custom shirt!</small>
+                        </div>
 
-                <!-- Reset button -->
-                <button id="btn-reset" type="button" class="btn btn-neon-outline w-100 py-2 text-xs" style="border-radius: 6px; opacity: 0.8;">
-                    <i class="fas fa-undo-alt me-2"></i>Reset Customizer
-                </button>
+                        <!-- Reset button -->
+                        <button id="btn-reset" type="button" class="btn btn-neon-outline w-100 py-2 text-xs" style="border-radius: 6px; opacity: 0.8;">
+                            <i class="fas fa-undo-alt me-2"></i>Reset Customizer
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -399,6 +420,20 @@
                     </div>
                 {% endif %}
             </div>
+
+            <!-- Mobile Slot: Shows "4. Finalize Custom Design" (Done & Reset buttons) AFTER the T-shirt Mockup Images on Mobile (<992px) -->
+            <div id="mobile-finalize-slot" class="d-block d-lg-none mt-4"></div>
+            <script>
+                (function() {
+                    if (window.innerWidth < 992) {
+                        var finalizeSec = document.getElementById('finalize-custom-section');
+                        var mobileSlot = document.getElementById('mobile-finalize-slot');
+                        if (finalizeSec && mobileSlot) {
+                            mobileSlot.appendChild(finalizeSec);
+                        }
+                    }
+                })();
+            </script>
         </div>
     </div>
 </div>
@@ -575,6 +610,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const designReadyBadge = document.getElementById('design-ready-badge');
     const blendBtns = document.querySelectorAll('.blend-selector-btn');
     const overlays = document.querySelectorAll('.tshirt-design-overlay');
+
+    // Slot synchronization for responsive layout (Mobile: Image first, then Done & Reset buttons)
+    function syncFinalizeSlot() {
+        const finalizeSec = document.getElementById('finalize-custom-section');
+        const desktopSlot = document.getElementById('desktop-finalize-slot');
+        const mobileSlot = document.getElementById('mobile-finalize-slot');
+        if (!finalizeSec || !desktopSlot || !mobileSlot) return;
+
+        if (window.innerWidth < 992) {
+            if (!mobileSlot.contains(finalizeSec)) {
+                mobileSlot.appendChild(finalizeSec);
+            }
+        } else {
+            if (!desktopSlot.contains(finalizeSec)) {
+                desktopSlot.appendChild(finalizeSec);
+            }
+        }
+    }
+    syncFinalizeSlot();
+    window.addEventListener('resize', syncFinalizeSlot);
 
     // Modal elements
     const customOrderModalEl = document.getElementById('customOrderModal');
