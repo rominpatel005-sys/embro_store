@@ -54,10 +54,25 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     size = models.CharField(max_length=20)
     color = models.CharField(max_length=50)
+    custom_image = models.ImageField(upload_to='custom_designs/', blank=True, null=True)
 
     @property
     def get_subtotal(self):
         return self.price * self.quantity
+
+    @property
+    def custom_image_url(self):
+        if not self.custom_image:
+            return None
+        try:
+            if hasattr(self.custom_image, 'url') and self.custom_image.url:
+                return self.custom_image.url
+        except Exception:
+            pass
+        val = str(self.custom_image)
+        if val.startswith('data:image') or val.startswith('http') or val.startswith('/media/'):
+            return val
+        return f"/media/{val}"
 
     def __str__(self):
         return f"{self.quantity} x {self.product_name} in Order #{self.order.id}"

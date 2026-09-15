@@ -14,8 +14,10 @@ from contacts.models import ContactMessage
 from accounts.models import UserLoginHistory
 from .models import Settings, DashboardWidget
 from .forms import ProductForm, CategoryForm, SettingsForm
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
+from django.conf import settings
 import json
+import os
 
 def _seed_default_widgets():
     defaults = [
@@ -533,6 +535,34 @@ def delete_order(request, order_id):
                 messages.info(request, f"Order #{order_id} was already removed.")
     except Exception as e:
         messages.error(request, f"Could not delete order #{order_id}: {str(e)}")
+    return redirect('dashboard:manage_orders')
+
+@staff_member_required
+def download_custom_design(request, item_id):
+    item = get_object_or_404(OrderItem, id=item_id)
+    if not item.custom_image:
+        messages.error(request, "No custom design image attached to this item.")
+        return redirect('dashboard:manage_orders')
+
+    try:
+        if hasattr(item.custom_image, 'path') and os.path.exists(item.custom_image.path):
+            filename = os.path.basename(item.custom_image.name)
+            download_name = f"custom_design_order_{item.order_id}_{filename}"
+            return FileResponse(open(item.custom_image.path, 'rb'), as_attachment=True, filename=download_name)
+    except Exception:
+        pass
+
+    media_path = os.path.join(settings.MEDIA_ROOT, str(item.custom_image).replace('/media/', '').lstrip('/\\'))
+    if os.path.exists(media_path):
+        filename = os.path.basename(media_path)
+        download_name = f"custom_design_order_{item.order_id}_{filename}"
+        return FileResponse(open(media_path, 'rb'), as_attachment=True, filename=download_name)
+
+    val = str(item.custom_image)
+    if val.startswith('http'):
+        return redirect(val)
+
+    messages.error(request, "The design image file could not be found on the server.")
     return redirect('dashboard:manage_orders')
 
 # --- CUSTOMER MANAGEMENT ---

@@ -478,6 +478,32 @@
                                     <span class="text-muted small ms-2" id="modal-subtotal-display">Total: $350.00</span>
                                 </div>
                             </div>
+
+                            <!-- Custom Design Artwork Upload Section in Modal -->
+                            <div class="mb-3 p-3 rounded" style="background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(212, 175, 55, 0.35);">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="small text-uppercase tracking-wider text-white mb-0" style="font-size: 0.75rem;">
+                                        <i class="fas fa-palette text-warning me-1"></i>Your Custom Design Artwork
+                                    </label>
+                                    <span id="modal-design-status-badge" class="badge bg-secondary text-xs">Waiting for Design</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div id="modal-design-thumb-wrap" class="rounded overflow-hidden border border-secondary flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px; background: rgba(0,0,0,0.5);">
+                                        <img id="modal-design-thumbnail" src="" class="w-100 h-100 object-fit-contain d-none" alt="Design Artwork">
+                                        <i id="modal-design-placeholder-icon" class="fas fa-image text-muted fs-5"></i>
+                                    </div>
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <div id="modal-design-filename" class="text-white small text-truncate fw-semibold" style="font-size: 0.8rem;">No file uploaded yet</div>
+                                        <div class="text-muted text-xs">PNG, JPG (High resolution for embroidery & print)</div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <button type="button" class="btn btn-xs btn-outline-warning text-xs py-1 px-2" id="modal-btn-upload-file">
+                                            <i class="fas fa-upload me-1"></i><span id="modal-upload-btn-text">Upload File</span>
+                                        </button>
+                                        <input type="file" id="modal-file-input" accept="image/*" class="d-none">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Success Alert Box (hidden initially) -->
@@ -574,6 +600,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const qtyMinus = document.getElementById('qty-minus');
     const qtyPlus = document.getElementById('qty-plus');
 
+    // Modal Custom Design Upload Elements
+    const modalBtnUploadFile = document.getElementById('modal-btn-upload-file');
+    const modalFileInput = document.getElementById('modal-file-input');
+    const modalDesignThumbnail = document.getElementById('modal-design-thumbnail');
+    const modalDesignPlaceholderIcon = document.getElementById('modal-design-placeholder-icon');
+    const modalDesignFilename = document.getElementById('modal-design-filename');
+    const modalDesignStatusBadge = document.getElementById('modal-design-status-badge');
+    const modalUploadBtnText = document.getElementById('modal-upload-btn-text');
+
     // Parse T-Shirts dataset
     let tshirtsList = [];
     const tshirtsDataEl = document.getElementById('tshirts-data');
@@ -587,9 +622,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentSelectedTshirt = tshirtsList.length > 0 ? tshirtsList[0] : null;
     let uploadedImageBase64 = null;
+    let currentCustomImageFile = null;
     let blendMode = 'multiply';
 
-    // File Input trigger
+    // File Input trigger in studio panel
     dropZone.addEventListener('click', () => fileInput.click());
 
     // File Drag and Drop events
@@ -616,6 +652,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Modal file upload trigger
+    if (modalBtnUploadFile && modalFileInput) {
+        modalBtnUploadFile.addEventListener('click', () => modalFileInput.click());
+        modalFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+    }
+
     function handleFile(file) {
         if (!file.type.startsWith('image/')) {
             if (typeof showToast === 'function') {
@@ -626,15 +672,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        currentCustomImageFile = file;
+
         const reader = new FileReader();
         reader.onload = function(event) {
             uploadedImageBase64 = event.target.result;
             
-            // Show thumbnail preview
+            // Show thumbnail preview in studio panel
             uploadPreview.src = uploadedImageBase64;
             uploadPreview.style.display = 'block';
             
-            // Set image to overlays
+            // Set image to overlays on mockup grid
             overlays.forEach(overlay => {
                 overlay.src = uploadedImageBase64;
                 overlay.classList.add('active');
@@ -643,6 +691,25 @@ document.addEventListener('DOMContentLoaded', function() {
             if (modalDesignOverlay) {
                 modalDesignOverlay.src = uploadedImageBase64;
                 modalDesignOverlay.classList.add('active');
+            }
+
+            // Sync with Modal Upload preview box
+            if (modalDesignThumbnail) {
+                modalDesignThumbnail.src = uploadedImageBase64;
+                modalDesignThumbnail.classList.remove('d-none');
+            }
+            if (modalDesignPlaceholderIcon) {
+                modalDesignPlaceholderIcon.classList.add('d-none');
+            }
+            if (modalDesignFilename) {
+                modalDesignFilename.textContent = file.name || "Custom Design Image";
+            }
+            if (modalDesignStatusBadge) {
+                modalDesignStatusBadge.textContent = "Design Attached ✓";
+                modalDesignStatusBadge.className = "badge bg-success text-xs";
+            }
+            if (modalUploadBtnText) {
+                modalUploadBtnText.textContent = "Change File";
             }
             
             applyAdjustments();
@@ -712,6 +779,28 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadPreview.src = '';
         uploadPreview.style.display = 'none';
         uploadedImageBase64 = null;
+        currentCustomImageFile = null;
+
+        if (modalDesignThumbnail) {
+            modalDesignThumbnail.src = '';
+            modalDesignThumbnail.classList.add('d-none');
+        }
+        if (modalDesignPlaceholderIcon) {
+            modalDesignPlaceholderIcon.classList.remove('d-none');
+        }
+        if (modalDesignFilename) {
+            modalDesignFilename.textContent = "No file uploaded yet";
+        }
+        if (modalDesignStatusBadge) {
+            modalDesignStatusBadge.textContent = "Waiting for Design";
+            modalDesignStatusBadge.className = "badge bg-secondary text-xs";
+        }
+        if (modalUploadBtnText) {
+            modalUploadBtnText.textContent = "Upload File";
+        }
+        if (modalFileInput) {
+            modalFileInput.value = '';
+        }
 
         sliderScale.value = 32;
         sliderVertical.value = 45;
@@ -959,6 +1048,19 @@ document.addEventListener('DOMContentLoaded', function() {
     async function submitCustomOrder(redirectCheckout = false) {
         if (!currentSelectedTshirt) return;
 
+        // Ensure user has provided a custom design image
+        if (!currentCustomImageFile && !uploadedImageBase64) {
+            if (typeof showToast === 'function') {
+                showToast("Please upload your custom design image first!", "error");
+            } else {
+                alert("Please upload your custom design image first!");
+            }
+            if (modalFileInput) {
+                modalFileInput.click();
+            }
+            return;
+        }
+
         const csrfTokenEl = document.querySelector('[name=csrfmiddlewaretoken]');
         const csrfToken = csrfTokenEl ? csrfTokenEl.value : '';
         const selectedSizeInput = document.querySelector('input[name="custom_size"]:checked');
@@ -973,6 +1075,12 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('size', size);
         formData.append('color', color);
         formData.append('quantity', quantity);
+
+        if (currentCustomImageFile) {
+            formData.append('custom_image', currentCustomImageFile);
+        } else if (uploadedImageBase64) {
+            formData.append('custom_image_base64', uploadedImageBase64);
+        }
 
         const btnToDisable = redirectCheckout ? btnModalBuyNow : btnModalAddCart;
         const originalText = btnToDisable.innerHTML;

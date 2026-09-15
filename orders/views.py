@@ -41,7 +41,8 @@ def checkout(request):
                             price=product.get_price,
                             quantity=item.quantity,
                             size=item.size,
-                            color=item.color
+                            color=item.color,
+                            custom_image=item.custom_image
                         )
                     
                     payment_method = form.cleaned_data.get('payment_method')

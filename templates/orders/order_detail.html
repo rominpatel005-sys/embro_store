@@ -266,6 +266,27 @@
                                     <span>Color: <strong>{{ item.color }}</strong></span>
                                     <span>Quantity: <strong>{{ item.quantity }}</strong></span>
                                 </div>
+                                {% if item.custom_image %}
+                                    <div class="mt-2 p-2 rounded d-flex align-items-center justify-content-between gap-2 flex-wrap" style="background: rgba(212, 175, 55, 0.08); border: 1px dashed rgba(212, 175, 55, 0.4); max-width: 420px;">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a href="{{ item.custom_image_url }}" target="_blank" class="rounded overflow-hidden border border-warning d-block flex-shrink-0" style="width: 42px; height: 42px; background: #000;">
+                                                <img src="{{ item.custom_image_url }}" alt="Custom Design" class="w-100 h-100" style="object-fit: contain;">
+                                            </a>
+                                            <div>
+                                                <span class="badge bg-warning text-dark fw-bold" style="font-size: 0.65rem;"><i class="fas fa-palette me-1"></i>Custom Design Artwork</span>
+                                                <span class="text-white text-xs d-block mt-0">Attached by customer</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-1">
+                                            <a href="{{ item.custom_image_url }}" target="_blank" class="btn btn-xs btn-outline-warning py-1 px-2 text-xs" title="View Full Design">
+                                                <i class="fas fa-eye me-1"></i>View
+                                            </a>
+                                            <a href="{{ item.custom_image_url }}" download class="btn btn-xs btn-warning text-dark fw-bold py-1 px-2 text-xs" title="Download Design File">
+                                                <i class="fas fa-download me-1"></i>Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                             
                             <div class="fw-bold text-white small">${{ item.get_subtotal }}</div>

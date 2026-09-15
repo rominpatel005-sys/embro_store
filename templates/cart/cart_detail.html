@@ -45,6 +45,17 @@
                                         <span>Size: <strong class="text-warning">{{ item.size }}</strong></span>
                                         <span>Color: <strong class="text-warning">{{ item.color }}</strong></span>
                                     </div>
+                                    {% if item.custom_image %}
+                                        <div class="mt-2 p-2 rounded d-flex align-items-center gap-2" style="background: rgba(212, 175, 55, 0.08); border: 1px dashed rgba(212, 175, 55, 0.4); max-width: 280px;">
+                                            <a href="{{ item.custom_image_url }}" target="_blank" class="rounded overflow-hidden border border-warning flex-shrink-0 d-block" style="width: 36px; height: 36px; background: #000;">
+                                                <img src="{{ item.custom_image_url }}" alt="Custom Design" class="w-100 h-100" style="object-fit: contain;">
+                                            </a>
+                                            <div style="line-height: 1.2;">
+                                                <span class="badge bg-warning text-dark fw-bold" style="font-size: 0.65rem;"><i class="fas fa-palette me-1"></i>Custom Design</span>
+                                                <a href="{{ item.custom_image_url }}" target="_blank" class="text-warning text-xs d-block text-decoration-none hover-white mt-1">View Artwork</a>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
 
                                 <!-- Quantity / Update Form -->

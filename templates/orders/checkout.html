@@ -488,6 +488,12 @@
                                     <span>Size: <strong>{{ item.size }}</strong></span>
                                     <span>Color: <strong>{{ item.color }}</strong></span>
                                 </div>
+                                {% if item.custom_image %}
+                                    <div class="mt-1 d-flex align-items-center gap-1">
+                                        <span class="badge bg-warning text-dark px-1 py-0" style="font-size: 0.65rem;"><i class="fas fa-palette me-1"></i>Custom Design</span>
+                                        <a href="{{ item.custom_image_url }}" target="_blank" class="text-warning text-xs text-decoration-underline ms-1">View Design</a>
+                                    </div>
+                                {% endif %}
                                 <div class="small text-muted mt-1">{{ item.quantity }} x ${{ item.product.get_price }}</div>
                             </div>
                             

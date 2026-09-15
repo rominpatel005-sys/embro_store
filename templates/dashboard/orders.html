@@ -105,31 +105,58 @@
                             <td class="small">
                                 <div class="d-flex flex-column gap-2 py-1">
                                     {% for item in order.items.all %}
-                                        <div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                                            {% if item.product and item.product.image %}
-                                                <a href="{% url 'products:product_detail' item.product.slug %}" target="_blank">
-                                                    <img src="{{ item.product.image.url }}" alt="{{ item.product_name }}" class="rounded" style="width: 44px; height: 44px; object-fit: cover; border: 1px solid rgba(212, 175, 55, 0.3);">
-                                                </a>
-                                            {% else %}
-                                                <div class="rounded d-flex align-items-center justify-content-center bg-dark border border-secondary" style="width: 44px; height: 44px;">
-                                                    <i class="fas fa-tshirt text-warning" style="font-size: 1.1rem;"></i>
-                                                </div>
-                                            {% endif %}
-                                            <div style="line-height: 1.25;">
-                                                {% if item.product %}
-                                                    <a href="{% url 'products:product_detail' item.product.slug %}" target="_blank" class="text-white fw-semibold text-decoration-none hover-accent d-block" style="font-size: 0.82rem;">
-                                                        {{ item.product_name }}
+                                        <div class="d-flex flex-column p-2 rounded" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
+                                            <div class="d-flex align-items-center gap-2">
+                                                {% if item.product and item.product.image %}
+                                                    <a href="{% url 'products:product_detail' item.product.slug %}" target="_blank">
+                                                        <img src="{{ item.product.image.url }}" alt="{{ item.product_name }}" class="rounded" style="width: 44px; height: 44px; object-fit: cover; border: 1px solid rgba(212, 175, 55, 0.3);">
                                                     </a>
                                                 {% else %}
-                                                    <span class="text-white fw-semibold d-block" style="font-size: 0.82rem;">{{ item.product_name }}</span>
+                                                    <div class="rounded d-flex align-items-center justify-content-center bg-dark border border-secondary" style="width: 44px; height: 44px;">
+                                                        <i class="fas fa-tshirt text-warning" style="font-size: 1.1rem;"></i>
+                                                    </div>
                                                 {% endif %}
-                                                <div class="d-flex flex-wrap gap-1 mt-1">
-                                                    <span class="badge bg-dark border border-secondary text-warning" style="font-size: 0.65rem;">Size: {{ item.size }}</span>
-                                                    <span class="badge bg-dark border border-secondary text-info" style="font-size: 0.65rem;">Color: {{ item.color }}</span>
-                                                    <span class="badge bg-warning text-dark fw-bold" style="font-size: 0.65rem;">Qty: {{ item.quantity }}</span>
-                                                    <span class="text-muted" style="font-size: 0.7rem;">(${{ item.price }})</span>
+                                                <div style="line-height: 1.25;">
+                                                    {% if item.product %}
+                                                        <a href="{% url 'products:product_detail' item.product.slug %}" target="_blank" class="text-white fw-semibold text-decoration-none hover-accent d-block" style="font-size: 0.82rem;">
+                                                            {{ item.product_name }}
+                                                        </a>
+                                                    {% else %}
+                                                        <span class="text-white fw-semibold d-block" style="font-size: 0.82rem;">{{ item.product_name }}</span>
+                                                    {% endif %}
+                                                    <div class="d-flex flex-wrap gap-1 mt-1">
+                                                        <span class="badge bg-dark border border-secondary text-warning" style="font-size: 0.65rem;">Size: {{ item.size }}</span>
+                                                        <span class="badge bg-dark border border-secondary text-info" style="font-size: 0.65rem;">Color: {{ item.color }}</span>
+                                                        <span class="badge bg-warning text-dark fw-bold" style="font-size: 0.65rem;">Qty: {{ item.quantity }}</span>
+                                                        <span class="text-muted" style="font-size: 0.7rem;">(${{ item.price }})</span>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            {% if item.custom_image %}
+                                                <!-- Customer's Uploaded Custom Design Photo Box -->
+                                                <div class="mt-2 p-2 rounded" style="background: rgba(212, 175, 55, 0.07); border: 1px dashed rgba(212, 175, 55, 0.4);">
+                                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                                        <span class="badge bg-warning text-dark fw-bold" style="font-size: 0.65rem;">
+                                                            <i class="fas fa-palette me-1"></i>Customer's Design
+                                                        </span>
+                                                        <a href="{% url 'dashboard:download_custom_design' item.id %}" class="btn btn-xs btn-warning text-dark fw-bold py-0 px-2 d-inline-flex align-items-center gap-1" style="font-size: 0.68rem;" title="Download High-Res Design">
+                                                            <i class="fas fa-download"></i><span>Download</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2 mt-1">
+                                                        <div class="rounded overflow-hidden border border-warning flex-shrink-0" style="width: 46px; height: 46px; background: #0b0b0e; cursor: pointer;" onclick="openDesignPreview('{{ item.custom_image_url }}', 'Order #{{ order.id }} - {{ item.product_name|escapejs }}', '{% url 'dashboard:download_custom_design' item.id %}')" title="Click to inspect design">
+                                                            <img src="{{ item.custom_image_url }}" alt="Custom Design" class="w-100 h-100" style="object-fit: contain;">
+                                                        </div>
+                                                        <div style="line-height: 1.25;">
+                                                            <span class="text-white text-xs d-block fw-semibold">Uploaded Artwork</span>
+                                                            <button type="button" class="btn btn-link text-warning p-0 text-decoration-none text-xs d-inline-flex align-items-center gap-1" onclick="openDesignPreview('{{ item.custom_image_url }}', 'Order #{{ order.id }} - {{ item.product_name|escapejs }}', '{% url 'dashboard:download_custom_design' item.id %}')">
+                                                                <i class="fas fa-search-plus"></i><span>Preview Image</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% empty %}
                                         <span class="text-muted text-xs fst-italic">No items recorded for this order.</span>
@@ -218,10 +245,61 @@
     </div>
 </div>
 
+<!-- Admin Custom Design Preview Modal -->
+<div class="modal fade" id="designPreviewModal" tabindex="-1" aria-labelledby="designPreviewModalLabel" aria-hidden="true" style="z-index: 1065;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="z-index: 1070;">
+        <div class="modal-content glass-card text-white border-warning" style="background: rgba(18, 18, 24, 0.98); border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.85); backdrop-filter: blur(20px);">
+            <div class="modal-header border-secondary border-opacity-25 pb-3">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="designPreviewModalLabel">
+                    <i class="fas fa-palette text-warning"></i>
+                    <span>Customer Uploaded Design Artwork</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <p id="designPreviewSubtitle" class="text-muted small mb-3">Order Details</p>
+                <div class="p-3 rounded border border-secondary mb-3 d-flex align-items-center justify-content-center" style="background: #08080a; min-height: 350px; max-height: 550px; overflow: hidden;">
+                    <img id="designPreviewImg" src="" alt="Customer Design" class="img-fluid rounded" style="max-height: 500px; object-fit: contain; box-shadow: 0 5px 25px rgba(0,0,0,0.5);">
+                </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 border-top border-secondary border-opacity-25">
+                    <span class="text-muted text-xs"><i class="fas fa-info-circle me-1"></i>Full-resolution customer file for embroidery & print production</span>
+                    <div class="d-flex gap-2">
+                        <a id="designPreviewNewTab" href="#" target="_blank" class="btn btn-sm btn-outline-secondary py-1 px-3 text-xs">
+                            <i class="fas fa-external-link-alt me-1"></i>Open in New Tab
+                        </a>
+                        <a id="designPreviewDownloadBtn" href="#" class="btn btn-sm btn-neon py-1 px-3 text-xs fw-bold">
+                            <i class="fas fa-download me-1"></i>Download Design File
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 let currentCancelOrderId = null;
 let currentCancelSelectEl = null;
 let currentCancelPrevStatus = null;
+
+function openDesignPreview(imageUrl, title, downloadUrl) {
+    const modalEl = document.getElementById('designPreviewModal');
+    const imgEl = document.getElementById('designPreviewImg');
+    const subtitleEl = document.getElementById('designPreviewSubtitle');
+    const downloadBtn = document.getElementById('designPreviewDownloadBtn');
+    const newTabBtn = document.getElementById('designPreviewNewTab');
+
+    imgEl.src = imageUrl;
+    subtitleEl.textContent = title || 'Custom Embroidery / Print Design';
+    downloadBtn.href = downloadUrl || imageUrl;
+    newTabBtn.href = imageUrl;
+
+    if (modalEl.parentElement !== document.body) {
+        document.body.appendChild(modalEl);
+    }
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
+}
 
 // Move modal directly to document.body on load to escape parent stacking contexts
 document.addEventListener('DOMContentLoaded', function() {
