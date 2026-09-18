@@ -145,12 +145,12 @@
                                                         </a>
                                                     </div>
                                                     <div class="d-flex align-items-center gap-2 mt-1">
-                                                        <div class="rounded overflow-hidden border border-warning flex-shrink-0" style="width: 46px; height: 46px; background: #0b0b0e; cursor: pointer;" onclick="openDesignPreview('{{ item.custom_image_url }}', 'Order #{{ order.id }} - {{ item.product_name|escapejs }}', '{% url 'dashboard:download_custom_design' item.id %}')" title="Click to inspect design">
+                                                        <div class="rounded overflow-hidden border border-warning flex-shrink-0 design-preview-trigger" style="width: 46px; height: 46px; background: #0b0b0e; cursor: pointer;" data-image-url="{{ item.custom_image_url }}" data-title="Order #{{ order.id }} - {{ item.product_name }}" data-download-url="{% url 'dashboard:download_custom_design' item.id %}" title="Click to inspect design">
                                                             <img src="{{ item.custom_image_url }}" alt="Custom Design" class="w-100 h-100" style="object-fit: contain;">
                                                         </div>
                                                         <div style="line-height: 1.25;">
                                                             <span class="text-white text-xs d-block fw-semibold">Uploaded Artwork</span>
-                                                            <button type="button" class="btn btn-link text-warning p-0 text-decoration-none text-xs d-inline-flex align-items-center gap-1" onclick="openDesignPreview('{{ item.custom_image_url }}', 'Order #{{ order.id }} - {{ item.product_name|escapejs }}', '{% url 'dashboard:download_custom_design' item.id %}')">
+                                                            <button type="button" class="btn btn-link text-warning p-0 text-decoration-none text-xs d-inline-flex align-items-center gap-1 design-preview-trigger" data-image-url="{{ item.custom_image_url }}" data-title="Order #{{ order.id }} - {{ item.product_name }}" data-download-url="{% url 'dashboard:download_custom_design' item.id %}">
                                                                 <i class="fas fa-search-plus"></i><span>Preview Image</span>
                                                             </button>
                                                         </div>
@@ -300,6 +300,18 @@ function openDesignPreview(imageUrl, title, downloadUrl) {
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modal.show();
 }
+
+// Handle design preview triggers
+document.addEventListener('click', function(e) {
+    const trigger = e.target.closest('.design-preview-trigger');
+    if (trigger) {
+        e.preventDefault();
+        const imageUrl = trigger.getAttribute('data-image-url');
+        const title = trigger.getAttribute('data-title');
+        const downloadUrl = trigger.getAttribute('data-download-url');
+        openDesignPreview(imageUrl, title, downloadUrl);
+    }
+});
 
 // Move modal directly to document.body on load to escape parent stacking contexts
 document.addEventListener('DOMContentLoaded', function() {
