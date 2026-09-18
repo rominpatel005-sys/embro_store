@@ -30,6 +30,8 @@ def home(request):
         'forest-deer-black-t-shirt',
         'running-stallion-black-t-shirt'
     ])
+    if not animated_products.exists():
+        animated_products = Product.objects.filter(image__isnull=False).exclude(image='')[:10]
     
     # Approved reviews to show on home page
     customer_reviews = Review.objects.filter(approved=True).order_by('-created_at')[:6]

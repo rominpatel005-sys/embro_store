@@ -62,7 +62,7 @@
                 <div class="coverflow-wrapper">
                     <div class="coverflow-viewport" id="coverflow-viewport">
                         <div class="coverflow-track" id="coverflow-track">
-                            {% for product in animated_products|slice:":9" %}
+                            {% for product in animated_products %}
                             <div class="coverflow-item" data-index="{{ forloop.index0 }}"
                                  data-name="{{ product.name }}"
                                  data-category="{{ product.category.name }}"
@@ -95,7 +95,7 @@
                             <i class="fas fa-chevron-left"></i>
                         </button>
                         <span class="coverflow-counter text-secondary">
-                            <strong class="text-white" id="coverflow-active-index">1</strong> / <span id="coverflow-total-count">9</span>
+                            <strong class="text-white" id="coverflow-active-index">1</strong> / <span id="coverflow-total-count">{{ animated_products|length }}</span>
                         </span>
                         <button class="coverflow-nav-btn" id="coverflow-next-btn" aria-label="Next Product">
                             <i class="fas fa-chevron-right"></i>
