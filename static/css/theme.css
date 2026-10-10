@@ -126,37 +126,246 @@ body.modal-open .main-wrapper {
     z-index: 1070 !important;
 }
 
-/* Preloader Screen */
+/* ==========================================================================
+   Luxury Animated Preloader Screen
+   ========================================================================== */
 .preloader {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-primary);
-    z-index: 10000;
+    width: 100vw;
+    height: 100vh;
+    background: #08080a;
+    z-index: 99999;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    overflow: hidden;
+    transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .preloader.fade-out {
     opacity: 0;
     visibility: hidden;
+    transform: scale(1.05);
+    pointer-events: none;
 }
-.preloader-spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(212, 175, 55, 0.1);
-    border-top: 3px solid var(--accent);
+
+/* Atmospheric Radial Glow */
+.preloader-backdrop-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(255, 170, 0, 0.05) 45%, transparent 70%);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    filter: blur(50px);
+    animation: preloaderAuraPulse 3s ease-in-out infinite alternate;
+    pointer-events: none;
 }
-@keyframes spin {
+
+.preloader-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Glowing Luxury Crest & Orbit Rings */
+.preloader-logo-wrap {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preloader-orbit-outer {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px dashed rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2), inset 0 0 15px rgba(212, 175, 55, 0.1);
+    animation: preloaderOrbitCW 8s linear infinite;
+}
+
+.preloader-orbit-inner {
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #ffe082;
+    border-bottom-color: #d4af37;
+    animation: preloaderOrbitCCW 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.preloader-glow-ring {
+    position: absolute;
+    inset: 18px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 80%);
+    border-radius: 50%;
+    animation: preloaderPulseRing 2s ease-in-out infinite alternate;
+}
+
+.preloader-icon {
+    font-size: 1.65rem;
+    color: #ffd700;
+    filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.8));
+    animation: preloaderIconFloat 2.4s ease-in-out infinite alternate;
+    z-index: 3;
+}
+
+/* Staggered Animated Embro Brand Name */
+.preloader-brand {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    padding-left: 0.35em; /* Optical alignment for letter-spacing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.preloader-char {
+    display: inline-block;
+    color: #fff;
+    background: linear-gradient(135deg, #ffffff 0%, #ffeaa7 25%, #d4af37 55%, #ffd700 75%, #ffffff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 22px rgba(212, 175, 55, 0.45);
+    opacity: 0;
+    transform: translateY(32px) scale(0.8);
+    filter: blur(10px);
+    animation: 
+        preloaderLetterDrop 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards calc(var(--char-i) * 0.18s),
+        preloaderTextShimmer 4s linear infinite calc(1.4s + (var(--char-i) * 0.15s)),
+        preloaderTextFloat 3.5s ease-in-out infinite alternate calc(1.4s + (var(--char-i) * 0.12s));
+}
+
+/* Tagline Expansion */
+.preloader-tagline {
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 500;
+    margin-bottom: 28px;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: preloaderTaglineReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.1s;
+}
+
+.preloader-tagline span {
+    background: linear-gradient(90deg, rgba(255,255,255,0.4), #d4af37, rgba(255,255,255,0.4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Luxury Glowing Progress Track */
+.preloader-progress-track {
+    width: 170px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    animation: preloaderTaglineReveal 1s ease forwards 0.8s;
+}
+
+.preloader-progress-bar {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    height: 100%;
+    width: 50%;
+    background: linear-gradient(90deg, transparent, #ffe082, #d4af37, transparent);
+    box-shadow: 0 0 12px #ffd700, 0 0 24px rgba(212, 175, 55, 0.6);
+    border-radius: 10px;
+    animation: preloaderProgressSweep 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Keyframe Animations */
+@keyframes preloaderOrbitCW {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes preloaderOrbitCCW {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+@keyframes preloaderPulseRing {
+    0% { transform: scale(0.85); opacity: 0.3; }
+    100% { transform: scale(1.2); opacity: 0.8; }
+}
+
+@keyframes preloaderIconFloat {
+    0% { transform: translateY(0) scale(0.96); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+    100% { transform: translateY(-4px) scale(1.05); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.95)); }
+}
+
+@keyframes preloaderLetterDrop {
+    0% {
+        opacity: 0;
+        transform: translateY(28px) scale(0.85);
+        filter: blur(8px);
+    }
+    60% {
+        opacity: 1;
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+        filter: blur(0px);
+    }
+}
+
+@keyframes preloaderTextShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes preloaderTextFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-3px); }
+}
+
+@keyframes preloaderTaglineReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(12px);
+        letter-spacing: 0.2em;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: 0.35em;
+    }
+}
+
+@keyframes preloaderProgressSweep {
+    0% { left: -50%; width: 30%; }
+    50% { width: 60%; }
+    100% { left: 120%; width: 30%; }
+}
+
+@keyframes preloaderAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.4; }
+    100% { transform: scale(1.15); opacity: 0.75; }
 }
 
 /* Glassmorphism Styles */

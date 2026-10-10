@@ -25,18 +25,30 @@ document.addEventListener('DOMContentLoaded', () => {
 function initPreloader() {
     const preloader = document.querySelector('.preloader');
     if (preloader) {
-        window.addEventListener('load', () => {
+        const startTime = Date.now();
+        const minDisplayTime = 3000; // 3.0 seconds display time for full luxury experience
+
+        const hidePreloader = () => {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, minDisplayTime - elapsed);
+
             setTimeout(() => {
                 preloader.classList.add('fade-out');
-            }, 600);
-        });
+            }, remaining);
+        };
+
+        if (document.readyState === 'complete') {
+            hidePreloader();
+        } else {
+            window.addEventListener('load', hidePreloader);
+        }
         
-        // Safety timeout in case load event already fired
+        // Safety timeout in case load event takes too long
         setTimeout(() => {
             if (!preloader.classList.contains('fade-out')) {
                 preloader.classList.add('fade-out');
             }
-        }, 3000);
+        }, 5000);
     }
 }
 
